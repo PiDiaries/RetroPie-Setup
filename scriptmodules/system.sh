@@ -287,11 +287,22 @@ function get_os_version() {
 
 function get_retropie_depends() {
     local depends=(git dialog wget gcc g++ build-essential unzip xmlstarlet python3-pyudev ca-certificates dirmngr)
+    
 
     [[ -n "$DISTCC_HOSTS" ]] && depends+=(distcc)
 
     if ! getDepends "${depends[@]}"; then
         fatalError "Unable to install packages required by $0 - ${md_ret_errors[@]}"
+    fi
+
+    #Add some of my usual installations. 
+
+    if [[ "$__os_id" != "ubuntu|pop|linuxmint" ]] &&  isPlatform "x86"; then
+        getDepends git-extras obs-studio neofetch fonts-hack fonts-opendyslexic nfs-kernel-server nfs-common p7zip-rar unrar gwenview ppa-purge snapd samba samba-common exfat-fuse exfat-utils
+    fi
+
+    if [[ "$__os_id" != "ubuntu|pop" ]] &&  isPlatform "x86"; then
+        getDepends ubuntu-restricted-extras ubuntu-restricted-addons gnome-tweak-tool gnome-tweaks 
     fi
 
     # make sure we don't have xserver-xorg-legacy installed as it breaks launching x11 apps from ES

@@ -1,5 +1,14 @@
 RetroPie-Setup
 ==============
+This is my fork of RetroPie.  I'll be adding some stuff that I usually install automatically when doing a fresh install of Linux. As I always install RetroPie on new builds I might as well add everything else and automate more of the process. 
+
+Use at your own risk.  Some stuff you may or may not find useful. 
+
+Things that are usually installed from the Distro's repositories like fonts, nfs, gnome-tweaks are in the system depends and installed when first running retropie_setup.sh
+
+Other things that are built from source I'll probably put into a install script. 
+
+As time goes on I'll be adding mnore of the customisations I usually add manually. 
 
 General Usage
 -------------
