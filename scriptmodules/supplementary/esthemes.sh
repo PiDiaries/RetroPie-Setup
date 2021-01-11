@@ -29,16 +29,16 @@ function install_theme_esthemes() {
     fi
     if [[ -z "$theme" ]]; then
         theme="carbon"
-        repo="RetroPie"
+        repo="PiDiaries"
     fi
-    mkdir -p "/etc/emulationstation/themes"
-    gitPullOrClone "/etc/emulationstation/themes/$theme" "https://github.com/$repo/es-theme-$theme.git"
+    mkdir -p "$home/.emulationstation/themes"
+    gitPullOrClone "$home/.emulationstation/themes/$theme" "https://github.com/$repo/es-theme-$theme.git"
 }
 
 function uninstall_theme_esthemes() {
     local theme="$1"
-    if [[ -d "/etc/emulationstation/themes/$theme" ]]; then
-        rm -rf "/etc/emulationstation/themes/$theme"
+    if [[ -d "$home/.emulationstation/themes/$theme" ]]; then
+        rm -rf "$home/.emulationstation/themes/$theme"
     fi
 }
 
@@ -256,7 +256,7 @@ function gui_esthemes() {
         local status=()
         local default
 
-        local gallerydir="/etc/emulationstation/es-theme-gallery"
+        local gallerydir="$home/.emulationstation/es-theme-gallery"
         if [[ -d "$gallerydir" ]]; then
             status+=("i")
             options+=(G "View or Update Theme Gallery")
@@ -272,7 +272,7 @@ function gui_esthemes() {
             theme=($theme)
             repo="${theme[0]}"
             theme="${theme[1]}"
-            if [[ -d "/etc/emulationstation/themes/$theme" ]]; then
+            if [[ -d "$home/.emulationstation/themes/$theme" ]]; then
                 status+=("i")
                 options+=("$i" "Update or Uninstall $repo/$theme (installed)")
                 installed_themes+=("$theme $repo")

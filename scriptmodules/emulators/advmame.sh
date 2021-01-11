@@ -59,7 +59,7 @@ function install_advmame() {
 
 function configure_advmame() {
     mkRomDir "arcade"
-    mkRomDir "arcade/advmame"
+    mkUserDir "$romdir/arcade/advmame"
     mkRomDir "mame-advmame"
 
     moveConfigDir "$home/.advance" "$md_conf_root/mame-advmame"
@@ -78,9 +78,9 @@ function configure_advmame() {
 
     if [[ "$md_mode" == "install" ]]; then
         local mame_sub_dir
-        for mame_sub_dir in artwork diff hi inp memcard nvram sample snap sta; do
-            mkRomDir "mame-advmame/$mame_sub_dir"
-            ln -sf "$romdir/mame-advmame/$mame_sub_dir" "$romdir/arcade/advmame"
+        for mame_sub_dir in artwork diff hi inp memcard nvram roms sample snap sta; do
+            mkUserDir "$romdir/mame-advmame/$mame_sub_dir"
+            ln -sf "$romdir/mame-advmame/$mame_sub_dir" "$romdir/arcade/advmame/"
             # fix for older broken symlink generation
             rm -f "$romdir/mame-advmame/$mame_sub_dir/$mame_sub_dir"
         done
@@ -93,7 +93,7 @@ function configure_advmame() {
         iniConfig " " "" "$md_conf_root/mame-advmame/$md_id.rc"
 
         iniSet "misc_quiet" "yes"
-        iniSet "dir_rom" "$romdir/mame-advmame:$romdir/arcade"
+        iniSet "dir_rom" "$romdir/mame-advmame/roms:$romdir/arcade"
         iniSet "dir_artwork" "$romdir/mame-advmame/artwork"
         iniSet "dir_sample" "$romdir/mame-advmame/samples"
         iniSet "dir_diff" "$romdir/mame-advmame/diff"

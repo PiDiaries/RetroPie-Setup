@@ -49,14 +49,14 @@ function install_fuse() {
 function configure_fuse() {
     mkRomDir "zxspectrum"
 
-    mkUserDir "$md_conf_root/zxspectrum"
+    #mkUserDir "$md_conf_root/zxspectrum"
 
-    moveConfigFile "$home/.fuserc" "$md_conf_root/zxspectrum/.fuserc"
+    #moveConfigFile "$home/.fuserc" "$md_conf_root/zxspectrum/.fuserc"
 
     setDispmanx "$md_id" 1
     configure_dispmanx_on_fuse
 
-        cat > "$romdir/zxspectrum/+Start Fuse.sh" << _EOF_
+        cat > "$romdir/zxspectrum/roms/+Start Fuse.sh" << _EOF_
 #!/bin/bash
 $md_inst/bin/fuse --machine 128 --full-screen
 _EOF_

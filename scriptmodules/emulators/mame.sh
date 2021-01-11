@@ -90,10 +90,10 @@ function configure_mame() {
         mkRomDir "$system"
 
         # Create required MAME directories underneath the ROM directory
-        local mame_sub_dir
-        for mame_sub_dir in artwork cfg comments diff inp nvram samples scores snap sta; do
-            mkRomDir "$system/$mame_sub_dir"
-        done
+        #local mame_sub_dir
+        #for mame_sub_dir in artwork cfg comments diff inp nvram samples scores snap sta; do
+        #    mkRomDir "$system/$mame_sub_dir"
+        #done
 
         # Create a BIOS directory, where people will be able to store their BIOS files, separate from ROMs
         mkUserDir "$biosdir/$system"

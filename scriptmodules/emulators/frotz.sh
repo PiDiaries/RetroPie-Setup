@@ -36,8 +36,8 @@ function game_data_frotz() {
         for file in zork1 zork2 zork3; do
             wget -nv -O "$file.zip" "$__archive_url/$file.zip"
             unzip -L -n "$file.zip" "data/$file.dat"
-            mv "data/$file.dat" "$romdir/zmachine/"
-            chown $user:$user "$romdir/zmachine/$file.dat"
+            mv "data/$file.dat" "$romdir/zmachine/roms"
+            chown $user:$user "$romdir/zmachine/roms/$file.dat"
             rm "$file.zip"
         done
         rmdir data

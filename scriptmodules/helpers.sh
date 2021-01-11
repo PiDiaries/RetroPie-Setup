@@ -477,13 +477,10 @@ function mkUserDir() {
 ## @param dir rom directory to create
 ## @brief Creates a directory under $romdir owned by the current user.
 function mkRomDir() {
-    mkUserDir "$romdir/$1"
-    if [[ "$1" == "megadrive" ]]; then
-        pushd "$romdir"
-        ln -snf "$1" "genesis"
-        popd
-    fi
-}
+    mkUserDir "$romdir/$1/roms" 
+    mkUserDir "$romdir/$1/media"
+    chown -R $user:$user "$romdir/$1"
+    }
 
 ## @fn moveConfigDir()
 ## @param from source directory
@@ -857,7 +854,7 @@ function iniFileEditor() {
 ## @param command command to run
 ## @param platform name of platform (used by es for scraping)
 ## @param theme name of theme to use
-## @brief Adds a system entry for Emulation Station (to /etc/emulationstation/es_systems.cfg).
+## @brief Adds a system entry for Emulation Station (to $home/.emulationstation/es_systems.cfg).
 function setESSystem() {
     local function
     for function in $(compgen -A function _add_system_); do
@@ -892,7 +889,7 @@ function ensureSystemretroconfig() {
     fi
 
     # include the main retroarch config
-    echo -e "\n#include \"$configdir/all/retroarch.cfg\"" >>"$config"
+    echo -e "\n#include \"$home/.config/retroarch/retroarch.cfg\"" >>"$config"
 
     copyDefaultConfig "$config" "$configdir/$system/retroarch.cfg"
     rm "$config"
@@ -901,16 +898,16 @@ function ensureSystemretroconfig() {
 ## @fn setRetroArchCoreOption()
 ## @param option option to set
 ## @param value value to set
-## @brief Sets a retroarch core option in `$configdir/all/retroarch-core-options.cfg`.
+## @brief Sets a retroarch core option in `$home/.config/retroarch/retroarch-core-options.cfg`.
 function setRetroArchCoreOption() {
     local option="$1"
     local value="$2"
-    iniConfig " = " "\"" "$configdir/all/retroarch-core-options.cfg"
+    iniConfig " = " "\"" "$home/.config/retroarch/retroarch-core-options.cfg"
     iniGet "$option"
     if [[ -z "$ini_value" ]]; then
         iniSet "$option" "$value"
     fi
-    chown $user:$user "$configdir/all/retroarch-core-options.cfg"
+    chown $user:$user "$home/.config/retroarch/retroarch-core-options.cfg"
 }
 
 ## @fn setConfigRoot()
@@ -1221,9 +1218,12 @@ function addSystem() {
     if [[ "$system" == "ports" ]]; then
         cmd="bash %ROM%"
         path="$romdir/ports"
+    elif [[ "$system" == "fba" ]]; then
+        cmd="$rootdir/supplementary/runcommand/runcommand.sh 0 _SYS_ $system %ROM%"
+        path="$romdir/$system/roms/arcade"
     else
         cmd="$rootdir/supplementary/runcommand/runcommand.sh 0 _SYS_ $system %ROM%"
-        path="$romdir/$system"
+        path="$romdir/$system/roms"
     fi
 
     exts+=("$(getPlatformConfig "${system}_exts")")

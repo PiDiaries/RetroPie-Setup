@@ -1,14 +1,25 @@
 RetroPie-Setup
 ==============
 This is my fork of RetroPie.  I'll be adding some stuff that I usually install automatically when doing a fresh install of Linux. As I always install RetroPie on new builds I might as well add everything else and automate more of the process. 
+Things that are usually installed from the Distro's repositories like fonts, nfs, gnome-tweaks may go in the system depends and installed when first running retropie_setup.sh
 
-Use at your own risk.  Some stuff you may or may not find useful. 
 
-Things that are usually installed from the Distro's repositories like fonts, nfs, gnome-tweaks are in the system depends and installed when first running retropie_setup.sh
+Move some stuff so using Rom Managers is made easier.  So ONLY roms in roms folders. Likely $romdir/roms for mame amd FBA which means all the other mame extras can go in the Rom folder too without messing up Rom Managers that don't like extra stuff in the rom folder.
+
+Remove configs from /opt/retropie/configs that are symlinked to the home folder.  Keep them in the home folder to make it easier for multi users to have their own settings. I'll eventually move everything.  Makes it easier for multiusers and you don't lose stuff if you keep your home folder intact during an OS reinstall if it wipes the /opt folder. 
+
+Change the core options to the $system/retroarch.cfg.  So that when you have megadrive and genesis using the same core you can have different core options for each.  i.e. genesis on the ntsc options and megadrive on pal. 
+
+Give each mame core it's own rom folder and system so you can keep multiple romsets with their own settings easier if you so wish.  
+
+Automate the bezel project
+ 
 
 Other things that are built from source I'll probably put into a install script. 
 
-As time goes on I'll be adding mnore of the customisations I usually add manually. 
+I had most of this done before but lack of knowledge meant it got messy and wasn't as clean as it could have been.  So I am doing it again. 
+
+I am a total novice Use at your own risk.  Some stuff you may or may not find useful.
 
 General Usage
 -------------
@@ -58,3 +69,9 @@ Thanks
 ------
 
 This script just simplifies the usage of the great works of many other people that enjoy the spirit of retrogaming. Many thanks go to them!
+
+
+Things done in this fork
+added system and rom folder for mame2003-plus
+removed genesis symlink
+removed kodi and Retroarch config folders symlinks. Now point to standard home folder configs. 

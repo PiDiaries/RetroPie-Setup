@@ -11,7 +11,7 @@
 
 rp_module_id="lr-mame2003"
 rp_module_desc="Arcade emu - MAME 0.78 port for libretro"
-rp_module_help="ROM Extension: .zip\n\nCopy your MAME roms to either $romdir/mame-libretro or\n$romdir/arcade"
+rp_module_help="ROM Extension: .zip\n\nCopy your MAME roms to either $romdir/mame-libretro or\n$romdir/arcade or\n$romdir/mame2003-plus"
 rp_module_licence="NONCOM https://raw.githubusercontent.com/libretro/mame2003-libretro/master/LICENSE.md"
 rp_module_section="main armv6=opt"
 
@@ -48,10 +48,18 @@ function install_lr-mame2003() {
 
 function configure_lr-mame2003() {
     local so_name="$(_get_so_name_${md_id})"
+    local dir_name="$(_get_dir_name_${md_id})"
+
     addEmulator 0 "$md_id" "arcade" "$md_inst/${so_name}_libretro.so"
     addEmulator 1 "$md_id" "mame-libretro" "$md_inst/${so_name}_libretro.so"
+    addEmulator 1 "$md_id" "$dir_name" "$md_inst/${so_name}_libretro.so"
     addSystem "arcade"
     addSystem "mame-libretro"
+
+    addSystem "$dir_name"
+    mkRomDir "$dir_name"
+    ensureSystemretroconfig "$dir_name"
+
 
     [[ "$md_mode" == "remove" ]] && return
 
@@ -59,15 +67,33 @@ function configure_lr-mame2003() {
 
     local mame_dir
     local mame_sub_dir
-    for mame_dir in arcade mame-libretro; do
-        mkRomDir "$mame_dir"
-        mkRomDir "$mame_dir/$dir_name"
-        ensureSystemretroconfig "$mame_dir"
 
-        for mame_sub_dir in cfg ctrlr diff hi memcard nvram; do
-            mkRomDir "$mame_dir/$dir_name/$mame_sub_dir"
+    addSystem "$dir_name"
+    mkRomDir "$dir_name"
+    ensureSystemretroconfig "$dir_name"
+        
+    if [[ "$md_mode" == "install" ]]; then
+        local mame_sub_dir
+        for mame_sub_dir in artwork cfg comments ctrlr diff hi inp memcard nvram roms samples scores snap sta; do
+            mkUserDir "$romdir/$dir_name/$mame_sub_dir"
         done
+    fi
+      
+
+    for mame_dir in arcade mame-libretro ; do
+        mkRomDir "$mame_dir"
+        mkUserDir "$romdir/$mame_dir/$dir_name"
+        ensureSystemretroconfig "$mame_dir"
+        pushd "$romdir"
+            for mame_sub_dir in artwork cfg comments ctrlr diff hi inp memcard nvram roms samples scores snap sta; do
+                mkUserDir "$mame_dir/$mame_sub_dir"
+            done
+            for i in $dir_name/*; do 
+                ln -sf "$romdir/$dirname/$i" "$romdir/$mame_dir/$dir_name/"
+            done
+        popd
     done
+
 
     mkUserDir "$biosdir/$dir_name"
     mkUserDir "$biosdir/$dir_name/samples"

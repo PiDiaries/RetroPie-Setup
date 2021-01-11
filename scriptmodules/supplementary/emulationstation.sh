@@ -12,11 +12,11 @@
 rp_module_id="emulationstation"
 rp_module_desc="EmulationStation - Frontend used by RetroPie for launching emulators"
 rp_module_licence="MIT https://raw.githubusercontent.com/RetroPie/EmulationStation/master/LICENSE.md"
-rp_module_section="core"
+rp_module_section=""
 rp_module_flags="frontend"
 
 function _get_input_cfg_emulationstation() {
-    echo "$configdir/all/emulationstation/es_input.cfg"
+    echo "$home/.emulationstation/es_input.cfg"
 }
 
 function _update_hook_emulationstation() {
@@ -29,11 +29,11 @@ function _update_hook_emulationstation() {
 
 function _sort_systems_emulationstation() {
     local field="$1"
-    cp "/etc/emulationstation/es_systems.cfg" "/etc/emulationstation/es_systems.cfg.bak"
+    cp "$home/.emulationstation/es_systems.cfg" "$home/.emulationstation/es_systems.cfg.bak"
     xmlstarlet sel -D -I \
         -t -m "/" -e "systemList" \
         -m "//system" -s A:T:U "$1" -c "." \
-        "/etc/emulationstation/es_systems.cfg.bak" >"/etc/emulationstation/es_systems.cfg"
+        "$home/.emulationstation/es_systems.cfg.bak" >"$home/.emulationstation/es_systems.cfg"
 }
 
 function _add_system_emulationstation() {
@@ -45,8 +45,8 @@ function _add_system_emulationstation() {
     local platform="$6"
     local theme="$7"
 
-    local conf="/etc/emulationstation/es_systems.cfg"
-    mkdir -p "/etc/emulationstation"
+    local conf="$home/.emulationstation/es_systems.cfg"
+    mkdir -p "$home/.emulationstation"
     if [[ ! -f "$conf" ]]; then
         echo "<systemList />" >"$conf"
     fi
@@ -79,8 +79,8 @@ function _add_system_emulationstation() {
 function _del_system_emulationstation() {
     local fullname="$1"
     local name="$2"
-    if [[ -f /etc/emulationstation/es_systems.cfg ]]; then
-        xmlstarlet ed -L -P -d "/systemList/system[name='$name']" /etc/emulationstation/es_systems.cfg
+    if [[ -f $home/.emulationstation/es_systems.cfg ]]; then
+        xmlstarlet ed -L -P -d "/systemList/system[name='$name']" $home/.emulationstation/es_systems.cfg
     fi
 }
 
@@ -92,7 +92,7 @@ function _add_rom_emulationstation() {
     local desc="$5"
     local image="$6"
 
-    local config_dir="$configdir/all/emulationstation"
+    local config_dir="$home/.emulationstation"
 
     mkUserDir "$config_dir"
     mkUserDir "$config_dir/gamelists"
@@ -296,7 +296,7 @@ function configure_emulationstation() {
 
     install_launch_emulationstation
 
-    mkdir -p "/etc/emulationstation"
+    mkdir -p "$home/.emulationstation"
 
     # ensure we have a default theme
     rp_callModule esthemes install_theme
@@ -352,7 +352,7 @@ function gui_emulationstation() {
                 setAutoConf "es_swap_a_b" "$es_swap"
                 local ra_swap="false"
                 getAutoConf "es_swap_a_b" && ra_swap="true"
-                iniSet "menu_swap_ok_cancel_buttons" "$ra_swap" "$configdir/all/retroarch.cfg"
+                iniSet "menu_swap_ok_cancel_buttons" "$ra_swap" "$home/.config/retroarch/retroarch.cfg"
                 printMsgs "dialog" "You will need to reconfigure you controller in Emulation Station for the changes to take effect."
                 ;;
         esac

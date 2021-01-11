@@ -17,7 +17,7 @@ rp_module_section="exp"
 rp_module_flags="noinstclean nobin"
 
 function depends_retropie-manager() {
-    local depends=(python-dev virtualenv)
+    local depends=(python-dev-is-python2 python-dev-is-python3 virtualenv)
     getDepends "${depends[@]}"
 }
 

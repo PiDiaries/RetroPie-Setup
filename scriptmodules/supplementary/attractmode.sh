@@ -16,7 +16,7 @@ rp_module_section="exp"
 rp_module_flags="!mali frontend"
 
 function _get_configdir_attractmode() {
-    echo "$configdir/all/attractmode"
+    echo "$home/.attract"
 }
 
 function _add_system_attractmode() {
@@ -180,17 +180,17 @@ function remove_attractmode() {
 }
 
 function configure_attractmode() {
-    moveConfigDir "$home/.attract" "$md_conf_root/all/attractmode"
+    #moveConfigDir "$home/.attract" "$home/.attract"
 
     [[ "$md_mode" == "remove" ]] && return
 
-    local config="$md_conf_root/all/attractmode/attract.cfg"
+    local config="$home/.attract/attract.cfg"
     if [[ ! -f "$config" ]]; then
         echo "general" >"$config"
         echo -e "\twindow_mode          fullscreen" >>"$config"
     fi
 
-    mkUserDir "$md_conf_root/all/attractmode/emulators"
+    mkUserDir "$home/.attract/emulators"
     cat >/usr/bin/attract <<_EOF_
 #!/bin/bash
 MODETEST=/opt/retropie/supplementary/mesa-drm/modetest

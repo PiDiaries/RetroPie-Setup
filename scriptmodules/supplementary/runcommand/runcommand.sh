@@ -67,7 +67,7 @@
 ## and other options (depending what is being launched).
 
 ROOTDIR="/opt/retropie"
-CONFIGDIR="$ROOTDIR/configs"
+CONFIGDIR="$HOME/.config/RetroPie/configs"
 LOG="/dev/shm/runcommand.log"
 
 RUNCOMMAND_CONF="$CONFIGDIR/all/runcommand.cfg"

@@ -116,7 +116,7 @@ function remap() {
         bind=""
         for device_num in "${!devices[@]}"; do
             # get name of retroarch auto config file
-            file=$(grep -lF "\"${devices[$device_num]}\"" "$configdir/all/retroarch-joypads/"*.cfg)
+            file=$(grep -lF "\"${devices[$device_num]}\"" "$home/.config/retroarch/autoconfig/"*.cfg)
             atebitdo_hack=0
             [[ "$file" == *8Bitdo* ]] && getAutoConf "8bitdo_hack" && atebitdo_hack=1
             if [[ -f "$file" ]]; then

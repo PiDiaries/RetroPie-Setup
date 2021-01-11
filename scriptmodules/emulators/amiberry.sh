@@ -76,8 +76,8 @@ function configure_amiberry() {
     [[ "$md_mode" == "remove" ]] && return
 
     # symlink the retroarch config / autoconfigs for amiberry to use
-    ln -sf "$configdir/all/retroarch/autoconfig" "$md_inst/controllers"
-    ln -sf "$configdir/all/retroarch.cfg" "$md_inst/conf/retroarch.cfg"
+    ln -sf "$home/.config/retroarch/autoconfig" "$md_inst/controllers"
+    ln -sf "$home/.config/retroarch/retroarch.cfg" "$md_inst/conf/retroarch.cfg"
 
     local config_dir="$md_conf_root/amiga/$md_id"
 
