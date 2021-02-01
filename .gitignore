@@ -15,3 +15,5 @@ tmp/
 
 SomeFile.txt
 log.txt
+# 3rd Party Repos
+ext/*

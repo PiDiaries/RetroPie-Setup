@@ -25,6 +25,10 @@ function rps_logInit() {
             fatalError "Couldn't make directory $__logdir"
         fi
     fi
+
+    # remove all but the last 20 logs
+    find "$__logdir" -type f | sort | head -n -20 | xargs -d '\n' --no-run-if-empty rm
+
     local now=$(date +'%Y-%m-%d_%H%M%S')
     logfilename="$__logdir/rps_$now.log.gz"
     touch "$logfilename"
@@ -96,11 +100,11 @@ function depends_setup() {
         done
     fi
 
-    # remove all but the last 20 logs
-    find "$__logdir" -type f | sort | head -n -20 | xargs -d '\n' --no-run-if-empty rm
-
     # set a global __setup to 1 which is used to adjust package function behaviour if called from the setup gui
     __setup=1
+
+    # print any pending msgs - eg during module scanning which wouldn't be seen otherwise
+    rps_printInfo
 }
 
 function updatescript_setup()
@@ -155,6 +159,11 @@ function package_setup() {
     local id="$1"
     local default=""
 
+    if ! rp_isEnabled "$id"; then
+        printMsgs "dialog" "Sorry but package '$id' is not available for your system ($__platform)\n\nPackage flags: ${__mod_info[$id/flags]}\n\nYour $__platform flags: ${__platform_flags[*]}"
+        return 1
+    fi
+
     # associative array so we can pull out the messages later for the confirmation requester
     declare -A option_msgs=(
         ["U"]=""
@@ -178,7 +187,7 @@ function package_setup() {
         if rp_isInstalled "$id"; then
             eval $(rp_getPackageInfo "$id")
             status="Installed - via $pkg_origin"
-            [[ -n "$pkg_date" ]] && status+=" (built: $pkg_date)"
+            [[ -n "$pkg_date" ]] && status+=" (built: $(date -u -d "$pkg_date"))"
 
             if [[ "$pkg_origin" != "source" && "$has_binary" -eq 1 ]]; then
                 rp_hasNewerBinary "$id"
@@ -207,7 +216,7 @@ function package_setup() {
         fi
 
         # if we had a network error don't display install options
-        if [[ "$binary_ret" -eq 4 ]]; then
+        if [[ "$binary_ret" -eq 6 || "$binary_ret" -eq 7 ]]; then
             status+="\nInstall options disabled (Unable to access internet)"
         else
             if [[ "$source_update" -eq 1 || "$binary_update" -eq 1 ]]; then
@@ -234,7 +243,7 @@ function package_setup() {
             options+=(Z "Clean source folder")
         fi
 
-        local help="${__mod_desc[$id]}\n\n${__mod_help[$id]}"
+        local help="${__mod_info[$id/desc]}\n\n${__mod_info[$id/help]}"
         if [[ -n "$help" ]]; then
             options+=(H "Package Help")
         fi
@@ -273,7 +282,7 @@ function package_setup() {
                 ;;
             X)
                 local text="Are you sure you want to remove $id?"
-                case "${__mod_section[$id]}" in
+                case "${__mod_info[$id/section]}" in
                     core)
                         text+="\n\nWARNING - core packages are needed for RetroPie to function!"
                         ;;
@@ -318,15 +327,29 @@ function section_gui_setup() {
         local id
         local pkg_origin
         local num_pkgs=0
+        local info
+        local type
+        local last_type=""
         for id in $(rp_getSectionIds $section); do
-            if rp_isInstalled "$id"; then
-                eval $(rp_getPackageInfo "$id")
-                installed="\Zb(Installed - via $pkg_origin)\Zn"
-                ((num_pkgs++))
-            else
-                installed=""
+            local type="${__mod_info[$id/vendor]} - ${__mod_info[$id/type]}"
+            # do a heading for each origin and module type
+            if [[ "$last_type" != "$type" ]]; then
+                info="$type"
+                pkgs+=("----" "\Z4$info ----\Zn" "Packages from $info")
+                last_type="$type"
             fi
-            pkgs+=("${__mod_idx[$id]}" "$id $installed" "$id - ${__mod_desc[$id]}"$'\n\n'"${__mod_help[$id]}")
+            if ! rp_isEnabled "$id"; then
+                info="\Zb*$id - Not available for your system\Zn"
+            else
+                if rp_isInstalled "$id"; then
+                    eval $(rp_getPackageInfo "$id")
+                    info="\Zb\Z7$id\Zn \Zb(Installed - via $pkg_origin)"
+                    ((num_pkgs++))
+                else
+                    info="$id"
+                fi
+            fi
+            pkgs+=("${__mod_idx[$id]}" "$info" "$id - ${__mod_info[$id/desc]}"$'\n\n'"${__mod_info[$id/help]}")
         done
 
         if [[ "$num_pkgs" -gt 0 ]]; then
@@ -372,6 +395,7 @@ function section_gui_setup() {
                 {
                     rps_logStart
                     for id in $(rp_getSectionIds $section); do
+                        ! rp_isEnabled "$id" && continue
                         # if we are updating, skip packages that are not installed
                         if [[ "$mode" == "update" ]]; then
                             if rp_isInstalled "$id"; then
@@ -399,6 +423,8 @@ function section_gui_setup() {
                 } &> >(_setup_gzip_log "$logfilename")
                 rps_printInfo "$logfilename"
                 ;;
+            ----)
+                ;;
             *)
                 package_setup "${__mod_id[$choice]}"
                 ;;
@@ -414,8 +440,8 @@ function config_gui_setup() {
         local id
         for id in "${__mod_id[@]}"; do
             # show all configuration modules and any installed packages with a gui function
-            if [[ "${__mod_section[$id]}" == "config" ]] || rp_isInstalled "$id" && fnExists "gui_$id"; then
-                options+=("${__mod_idx[$id]}" "$id  - ${__mod_desc[$id]}" "${__mod_idx[$id]} ${__mod_desc[$id]}")
+            if [[ "${__mod_info[$id/section]}" == "config" ]] || rp_isInstalled "$id" && fnExists "gui_$id"; then
+                options+=("${__mod_idx[$id]}" "$id  - ${__mod_info[$id/desc]}" "${__mod_idx[$id]} ${__mod_info[$id/desc]}")
             fi
         done
 
@@ -456,7 +482,7 @@ function update_packages_setup() {
     clear
     local id
     for id in ${__mod_id[@]}; do
-        if rp_isInstalled "$id" && [[ "${__mod_section[$id]}" != "depends" ]]; then
+        if rp_isInstalled "$id" && [[ "${__mod_info[$id/section]}" != "depends" ]]; then
             rp_installModule "$id" "_update_"
         fi
     done
