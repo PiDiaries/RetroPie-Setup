@@ -14,18 +14,18 @@ function onstart_reicast_joystick() {
 
     case "$DEVICE_NAME" in
         "Xbox 360 Controller (xpad driver)")
-            file="$configdir/dreamcast/mappings/controller_xpad.cfg"
+            file="$HOME/.config/RetroPie/configs/dreamcast/mappings/controller_xpad.cfg"
             ;;
         "Xbox 360 Controller (xboxdrv userspace driver)")
-            file="$configdir/dreamcast/mappings/controller_xboxdrv.cfg"
+            file="$HOME/.config/RetroPie/configs/dreamcast/mappings/controller_xboxdrv.cfg"
             ;;
         *)
-            file="$configdir/dreamcast/mappings/evdev_${DEVICE_NAME//[:><?\"]/-}.cfg"
+            file="$HOME/.config/RetroPie/configs/dreamcast/mappings/evdev_${DEVICE_NAME//[:><?\"]/-}.cfg"
             ;;
     esac
 
     # create mapping dir if necessary.
-    mkdir -p "$configdir/dreamcast/mappings"
+    mkdir -p "$HOME/.config/RetroPie/configs/dreamcast/mappings"
 
     # remove old config file
     rm -f "$file"
@@ -215,13 +215,13 @@ function onend_reicast_joystick() {
 
     case "$DEVICE_NAME" in
         "Xbox 360 Controller (xpad driver)")
-            file="$configdir/dreamcast/mappings/controller_xpad.cfg"
+            file="$HOME/.config/RetroPie/configs/dreamcast/mappings/controller_xpad.cfg"
             ;;
         "Xbox 360 Controller (xboxdrv userspace driver)")
-            file="$configdir/dreamcast/mappings/controller_xboxdrv.cfg"
+            file="$HOME/.config/RetroPie/configs/dreamcast/mappings/controller_xboxdrv.cfg"
             ;;
         *)
-            file="$configdir/dreamcast/mappings/evdev_${DEVICE_NAME//[:><?\"]/-}.cfg"
+            file="$HOME/.config/RetroPie/configs/dreamcast/mappings/evdev_${DEVICE_NAME//[:><?\"]/-}.cfg"
             ;;
     esac
 

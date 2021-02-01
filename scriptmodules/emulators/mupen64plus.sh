@@ -232,6 +232,7 @@ function configure_mupen64plus() {
     [[ "$md_mode" == "remove" ]] && return
 
     # copy hotkey remapping start script
+    # maybe need modified for extra n64 systems
     cp "$md_data/mupen64plus.sh" "$md_inst/bin/"
     chmod +x "$md_inst/bin/mupen64plus.sh"
 

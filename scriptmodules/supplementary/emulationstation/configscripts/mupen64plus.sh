@@ -226,6 +226,7 @@ function onend_mupen64plus_joystick() {
 
     # abort if old device config cannot be deleted.
     # keep original mupen64plus-input-sdl configs.
+    # maybe To Be Modified for extra N64 systems
     local file="$configdir/n64/InputAutoCfg.ini"
     if [[ -f "$file" ]]; then
         # backup current config file

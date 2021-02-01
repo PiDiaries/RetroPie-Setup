@@ -20,7 +20,7 @@ PARAMS="${@:5}"
 WINDOW_MODE="--fullscreen $RES"
 
 rootdir="/opt/retropie"
-configdir="$rootdir/configs"
+configdir="$HOME/.config/RetroPie/configs"
 config="$configdir/n64/mupen64plus.cfg"
 inputconfig="$configdir/n64/InputAutoCfg.ini"
 datadir="$HOME/RetroPie"

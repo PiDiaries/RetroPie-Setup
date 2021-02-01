@@ -46,10 +46,14 @@ function install_lr-snes9x2010() {
 
 function configure_lr-snes9x2010() {
     mkRomDir "snes"
+    mkRomDir "snesmsu1"
     ensureSystemretroconfig "snes"
+    ensureSystemretroconfig "snesmsu1"
 
     local def=0
     isPlatform "armv7" && def=1
     addEmulator $def "$md_id" "snes" "$md_inst/snes9x2010_libretro.so"
+    addEmulator $def "$md_id" "snesmsu1" "$md_inst/snes9x2010_libretro.so"
     addSystem "snes"
+    addSystem "snesmsu1"
 }

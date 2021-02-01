@@ -48,8 +48,20 @@ function build_lr-hbmame() {
 
 function install_lr-hbmame() {
     md_ret_files=(
+        'artwork'
+        'bgfx'
+        'ctrlr'
+        'docs'
+        'hash'
+        'hlsl'
+        'ini'
         'COPYING'
+        'language'
         'hbmame_libretro.so'
+        'plugins'
+        'roms'
+        'samples'
+        'COPYING'
         'README.md'
     )
 }
