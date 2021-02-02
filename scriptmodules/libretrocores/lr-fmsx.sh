@@ -34,15 +34,21 @@ function install_lr-fmsx() {
 }
 
 function configure_lr-fmsx() {
-    mkRomDir "msx"
-    ensureSystemretroconfig "msx"
 
     # default to MSX2+ core
-    setRetroArchCoreOption "fmsx_mode" "MSX2+"
+    local system
+    for system in msx msx2; do
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"        
+        local core_config="$configdir/$system/retroarch.cfg"
+        iniConfig " = " '"' "$configdir/$system/retroarch.cfg"
+        iniSet "core_options_path" "$core_config"
+        iniSet "fmsx_mode" "MSX2+" "$core_config"
+        chown $user:$user "$core_config"
 
-    addEmulator 0 "$md_id" "msx" "$md_inst/fmsx_libretro.so"
-    addSystem "msx"
-
+        addEmulator 0 "$md_id" "$system" "$md_inst/fmsx_libretro.so"
+        addSystem "$system"
+    done
     [[ "$md_mode" == "remove" ]] && return
 
     # Copy CARTS.SHA to $biosdir

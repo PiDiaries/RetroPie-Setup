@@ -881,7 +881,7 @@ function ensureSystemretroconfig() {
     local config="$(mktemp)"
     # add the initial comment regarding include order
     echo -e "# Settings made here will only override settings in the global retroarch.cfg if placed above the #include line\n" >"$config"
-
+    echo -e "core_options_path = $configdir/$system/retroarch.cfg"  >>"$config"
     # add the per system default settings
     iniConfig " = " '"' "$config"
     iniSet "input_remapping_directory" "$configdir/$system/"
@@ -893,8 +893,8 @@ function ensureSystemretroconfig() {
     fi
 
     # include the main retroarch config
-    echo -e "\n#include \"$home/.config/retroarch/retroarch.cfg\"" >>"$config"
-
+    echo -e "\ncore_options_path = \"$configdir/$system/retroarch.cfg\""
+    echo -e "\n#include \"$raconfigdir/retroarch.cfg\"" >>"$config"
     copyDefaultConfig "$config" "$configdir/$system/retroarch.cfg"
     rm "$config"
 }
