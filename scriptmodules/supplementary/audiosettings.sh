@@ -216,7 +216,7 @@ function _pulseaudio_audiosettings() {
                 alsactl store
                 ;;
             R)
-                rm -fr "$home/.config/pulse"
+                rm -fr "/home/RetroPie/configs/$user/pulse"
                 /etc/init.d/alsa-utils reset
                 alsactl store
                 printMsgs "dialog" "Audio settings reset to defaults"

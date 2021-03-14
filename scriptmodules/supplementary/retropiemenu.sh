@@ -109,7 +109,7 @@ function configure_retropiemenu()
         file="${files[i]}"
         name="${names[i]}"
         desc="${descs[i]}"
-        image="$home/RetroPie/retropiemenu/icons/${files[i]}.png"
+        image="$home/$user/RetroPie/retropiemenu/icons/${files[i]}.png"
 
         touch "$rpdir/$file.rp"
 
@@ -121,7 +121,7 @@ function configure_retropiemenu()
 }
 
 function remove_retropiemenu() {
-    rm -rf "$home/RetroPie/retropiemenu"
+    rm -rf "$home/$user/RetroPie/retropiemenu"
     rm -rf "$home/.emulationstation/gamelists/retropie"
     delSystem retropie
 }
@@ -135,10 +135,10 @@ function launch_retropiemenu() {
     case "$basename" in
         retroarch.rp)
             joy2keyStop
-            cp "$home/.config/retroarch/retroarch.cfg" "$home/.config/retroarch/retroarch.cfg.bak"
-            chown $user:$user "$home/.config/retroarch/retroarch.cfg.bak"
-            su $user -c "\"$emudir/retroarch/bin/retroarch\" --menu --config \"$home/.config/retroarch/retroarch.cfg\""
-            iniConfig " = " '"' "$home/.config/retroarch/retroarch.cfg"
+            cp "/home/RetroPie/configs/$user/retroarch/retroarch.cfg" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg.bak"
+            chown $user:$user "/home/RetroPie/configs/$user/retroarch/retroarch.cfg.bak"
+            su $user -c "\"$emudir/retroarch/bin/retroarch\" --menu --config \"/home/RetroPie/configs/$user/retroarch/retroarch.cfg\""
+            iniConfig " = " '"' "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
             iniSet "config_save_on_exit" "false"
             ;;
         rpsetup.rp)
@@ -163,7 +163,7 @@ function launch_retropiemenu() {
             fi
             ;;
         *.sh)
-            cd "$home/RetroPie/retropiemenu"
+            cd "$home/$user/RetroPie/retropiemenu"
             sudo -u "$user" bash "$command"
             ;;
     esac

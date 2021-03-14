@@ -111,9 +111,9 @@ function dual_snes_gamecondriver() {
     [[ -n "$(lsmod | grep gamecon_gpio_rpi)" ]] && rmmod gamecon_gpio_rpi
     modprobe gamecon_gpio_rpi
 
-    iniConfig " = " "" "$home/.config/retroarch/retroarch.cfg"
+    iniConfig " = " "" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
 
-    if dialog --yesno "Would you like to update button mappings in $home/.config/retroarch/retroarch.cfg for 2 SNES controllers?" 22 76 >/dev/tty; then
+    if dialog --yesno "Would you like to update button mappings in /home/RetroPie/configs/$user/retroarch/retroarch.cfg for 2 SNES controllers?" 22 76 >/dev/tty; then
         if [[ "$GPIOREV" == 1 ]]; then
             iniSet "input_player1_joypad_index" "0"
             iniSet "input_player2_joypad_index" "1"

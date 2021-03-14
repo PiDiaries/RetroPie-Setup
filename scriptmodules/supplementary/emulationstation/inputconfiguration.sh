@@ -208,8 +208,8 @@ function sdl1_map() {
 user=$(id -un)
 home="$(eval echo ~$user)"
 
-rootdir="/opt/retropie"
-configdir="$home/.config/RetroPie/configs"
+rootdir="$home/RetroPie/opt"
+configdir="$home/RetroPie/configs/$user"
 
 source "$rootdir/lib/inifuncs.sh"
 

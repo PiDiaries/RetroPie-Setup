@@ -1,0 +1,9 @@
+    local system
+    local def
+    for system in ; do
+        def=0
+        [[ "$system" == "" ]] && def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "
+        addSystem "$system"
+    done

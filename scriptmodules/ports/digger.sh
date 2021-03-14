@@ -36,7 +36,7 @@ function install_digger() {
 
 function configure_digger() {
     # remove symlink that isn't used
-    rm -f "$home/.config/digger"
+    rm -f "/home/RetroPie/configs/$user/digger"
 
     # symlink config and hiscore save file
     moveConfigFile "$home/.digger.rc" "$md_conf_root/digger/.digger.rc"

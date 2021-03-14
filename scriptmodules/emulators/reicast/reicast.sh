@@ -13,9 +13,9 @@ AUDIO="$1"
 ROM="$2"
 XRES="$3"
 YRES="$4"
-rootdir="/opt/retropie"
-configdir="$HOME/.config/RetroPie/configs"
-biosdir="$HOME/RetroPie/BIOS/dc"
+rootdir="/home/$user/RetroPie/opt"
+configdir="$HOME/$user/RetroPie/configs/$user"
+biosdir="$HOME/$user/RetroPie/BIOS/dc"
 
 source "$rootdir/lib/inifuncs.sh"
 

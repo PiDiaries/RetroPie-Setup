@@ -53,8 +53,8 @@ function enable_autostart() {
     local mode="$1"
 
     if isPlatform "x11"; then
-        mkUserDir "$home/.config/autostart"
-        ln -sf "/usr/local/share/applications/retropie.desktop" "$home/.config/autostart/"
+        mkUserDir "/home/RetroPie/configs/$user/autostart"
+        ln -sf "/usr/local/share/applications/retropie.desktop" "/home/RetroPie/configs/$user/autostart/"
     else
         if [[ "$__os_id" == "Raspbian" ]]; then
             # remove any old autologin.conf - we use raspi-config now
@@ -77,7 +77,7 @@ function disable_autostart() {
     local login_type="$1"
     [[ -z "$login_type" ]] && login_type="B2"
     if isPlatform "x11"; then
-        rm "$home/.config/autostart/retropie.desktop"
+        rm "/home/RetroPie/configs/$user/autostart/retropie.desktop"
     else
         if [[ "$__os_id" == "Raspbian" ]]; then
             if [[ "$__chroot" -eq 1 ]]; then
@@ -105,7 +105,7 @@ function gui_autostart() {
     while true; do
         if isPlatform "x11"; then
             local x11_autostart
-            if [[ -f "$home/.config/autostart/retropie.desktop" ]]; then
+            if [[ -f "/home/RetroPie/configs/$user/autostart/retropie.desktop" ]]; then
                 options=(1 "Autostart Emulation Station after login (Enabled)")
                 x11_autostart=1
             else

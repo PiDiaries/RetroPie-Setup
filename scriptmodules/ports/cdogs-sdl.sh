@@ -51,4 +51,5 @@ function configure_cdogs-sdl() {
     setDispmanx "$md_id" 1
 
     moveConfigDir "$home/.config/cdogs-sdl" "$md_conf_root/cdogs-sdl"
+
 }

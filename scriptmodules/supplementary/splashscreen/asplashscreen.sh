@@ -6,7 +6,7 @@ REGEX_VIDEO=""
 REGEX_IMAGE=""
 
 # Load user settings
-. /opt/retropie/configs/all/splashscreen.cfg
+. /home/$user/RetroPie/opt/configs/all/splashscreen.cfg
 
 is_fkms() {
     if grep -q okay /proc/device-tree/soc/v3d@7ec00000/status 2> /dev/null || grep -q okay /proc/device-tree/soc/firmwarekms@7e600000/status 2> /dev/null ; then
@@ -20,7 +20,7 @@ do_start () {
     local config="/etc/splashscreen.list"
     local line
     local re="$REGEX_VIDEO\|$REGEX_IMAGE"
-    local omxiv="/opt/retropie/supplementary/omxiv/omxiv"
+    local omxiv="/home/$user/RetroPie/opt/supplementary/omxiv/omxiv"
     case "$RANDOMIZE" in
         disabled)
             line="$(head -1 "$config")"

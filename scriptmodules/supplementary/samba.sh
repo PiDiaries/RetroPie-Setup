@@ -47,7 +47,7 @@ function restart_samba() {
 function install_shares_samba() {
     cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
     add_share_samba "roms" "$romdir"
-    add_share_samba "bios" "$home/RetroPie/BIOS"
+    add_share_samba "bios" "$datadir/BIOS"
     add_share_samba "configs" "$configdir"
     add_share_samba "splashscreens" "$datadir/splashscreens"
     restart_samba

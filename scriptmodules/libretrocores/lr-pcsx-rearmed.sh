@@ -55,9 +55,17 @@ function install_lr-pcsx-rearmed() {
 }
 
 function configure_lr-pcsx-rearmed() {
-    mkRomDir "psx"
-    ensureSystemretroconfig "psx"
+    #mkRomDir "psx"
+    #ensureSystemretroconfig "psx"
 
-    addEmulator 1 "$md_id" "psx" "$md_inst/pcsx_rearmed_libretro.so"
-    addSystem "psx"
+    #addEmulator 1 "$md_id" "psx" "$md_inst/pcsx_rearmed_libretro.so"
+    #addSystem "psx"
+    
+    local system
+    for system in psx psx-usa psx-japan psx-extras; do
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator 1 "$md_id" "$system" "$md_inst/pcsx_rearmed_libretro.so"
+        addSystem "$system"
+    done
 }

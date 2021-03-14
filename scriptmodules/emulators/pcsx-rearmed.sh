@@ -54,7 +54,7 @@ function install_pcsx-rearmed() {
 }
 
 function configure_pcsx-rearmed() {
-    mkRomDir "psx"
+    #mkRomDir "psx"
     mkUserDir "$md_conf_root/psx"
     mkdir -p "$md_inst/bios"
 
@@ -66,6 +66,13 @@ function configure_pcsx-rearmed() {
 
     setDispmanx "$md_id" 1
 
-    addEmulator 0 "$md_id" "psx" "pushd $md_inst; ./pcsx -cdfile %ROM%; popd"
-    addSystem "psx"
+    #addEmulator 0 "$md_id" "psx" "pushd $md_inst; ./pcsx -cdfile %ROM%; popd"
+    #addSystem "psx"
+
+    local system
+    for system in psx psx-usa psx-japan psx-extras; do
+        mkRomDir "$system"
+        addEmulator 0 "$md_id" "$system" "pushd $md_inst; ./pcsx -cdfile %ROM%; popd"
+        addSystem "$system"
+    done
 }

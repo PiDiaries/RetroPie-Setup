@@ -19,8 +19,8 @@ PARAMS="${@:5}"
 [[ -z "$RSP_PLUGIN" ]] && RSP_PLUGIN="mupen64plus-rsp-hle"
 WINDOW_MODE="--fullscreen $RES"
 
-rootdir="/opt/retropie"
-configdir="$HOME/.config/RetroPie/configs"
+rootdir="/home/$user/RetroPie/opt"
+configdir="$HOME/$user/RetroPie/configs/$user"
 config="$configdir/n64/mupen64plus.cfg"
 inputconfig="$configdir/n64/InputAutoCfg.ini"
 datadir="$HOME/RetroPie"
@@ -116,7 +116,7 @@ function remap() {
         bind=""
         for device_num in "${!devices[@]}"; do
             # get name of retroarch auto config file
-            file=$(grep -lF "\"${devices[$device_num]}\"" "$home/.config/retroarch/autoconfig/"*.cfg)
+            file=$(grep -lF "\"${devices[$device_num]}\"" "/home/RetroPie/configs/$user/retroarch/autoconfig/"*.cfg)
             atebitdo_hack=0
             [[ "$file" == *8Bitdo* ]] && getAutoConf "8bitdo_hack" && atebitdo_hack=1
             if [[ -f "$file" ]]; then

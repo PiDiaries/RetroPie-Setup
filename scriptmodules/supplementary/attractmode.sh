@@ -193,7 +193,7 @@ function configure_attractmode() {
     mkUserDir "$home/.attract/emulators"
     cat >/usr/bin/attract <<_EOF_
 #!/bin/bash
-MODETEST=/opt/retropie/supplementary/mesa-drm/modetest
+MODETEST=/home/$user/RetroPie/opt/supplementary/mesa-drm/modetest
 if [[ -z "\$DISPLAY" && -f "\$MODETEST" && ! "\$1" =~ build-romlist ]]; then
     MODELIST="\$(\$MODETEST -r 2>/dev/null)"
     default_mode="\$(echo "\$MODELIST" | grep -Em1 "^Mode:.*(driver|userdef).*crtc" | cut -f 2 -d ' ')"

@@ -11,7 +11,7 @@
 
 rom="$1"
 
-rootdir="/opt/retropie"
+rootdir="/home/$user/RetroPie/opt"
 datadir="$HOME/RetroPie"
 romdir="$datadir/roms/amiga"
 savedir="$romdir"

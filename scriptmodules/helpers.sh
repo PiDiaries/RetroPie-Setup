@@ -869,7 +869,7 @@ function setESSystem() {
 ## @fn ensureSystemretroconfig()
 ## @param system system to create retroarch.cfg for
 ## @param shader set a default shader to use (deprecated)
-## @brief Creates a default retroarch.cfg for specified system in `/opt/retropie/configs/$system/retroarch.cfg`.
+## @brief Creates a default retroarch.cfg for specified system in `/home/$user/RetroPie/opt/configs/$system/retroarch.cfg`.
 function ensureSystemretroconfig() {
     local system="$1"
     local shader="$2"
@@ -894,7 +894,9 @@ function ensureSystemretroconfig() {
 
     # include the main retroarch config
     echo -e "\ncore_options_path = \"$configdir/$system/retroarch.cfg\""
-    echo -e "\n#include \"$raconfigdir/retroarch.cfg\"" >>"$config"
+    echo -e "\nsavefile_directory = \"$datadir/gamesaves/$user/savefile/$system/\""
+    echo -e "\nsavefile_directory = \"$datadir/gamesaves/$user/savestate_directory/$system/\""
+    echo -e "\n#include \"$configdir/all/retroarchretroarch.cfg\"" >>"$config"
     copyDefaultConfig "$config" "$configdir/$system/retroarch.cfg"
     rm "$config"
 }
@@ -902,16 +904,16 @@ function ensureSystemretroconfig() {
 ## @fn setRetroArchCoreOption()
 ## @param option option to set
 ## @param value value to set
-## @brief Sets a retroarch core option in `$home/.config/retroarch/retroarch-core-options.cfg`.
+## @brief Sets a retroarch core option in `/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg`.
 function setRetroArchCoreOption() {
     local option="$1"
     local value="$2"
-    iniConfig " = " "\"" "$home/.config/retroarch/retroarch-core-options.cfg"
+    iniConfig " = " "\"" "/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg"
     iniGet "$option"
     if [[ -z "$ini_value" ]]; then
         iniSet "$option" "$value"
     fi
-    chown $user:$user "$home/.config/retroarch/retroarch-core-options.cfg"
+    chown $user:$user "/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg"
 }
 
 ## @fn setConfigRoot()

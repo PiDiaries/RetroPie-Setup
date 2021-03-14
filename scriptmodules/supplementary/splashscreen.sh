@@ -223,7 +223,7 @@ function preview_splashscreen() {
 
     local path
     local file
-    local omxiv="/opt/retropie/supplementary/omxiv/omxiv"
+    local omxiv="/home/$user/RetroPie/opt/supplementary/omxiv/omxiv"
     while true; do
         local cmd=(dialog --backtitle "$__backtitle" --menu "Choose an option." 22 86 16)
         local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)

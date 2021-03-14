@@ -51,7 +51,7 @@
 ## (via tvservice) and the requested mode differs from the currently active mode
 ##
 ## If `_SYS_` or `_PORT_` is provided for the second parameter, the commandline
-## will be extracted from `/opt/retropie/configs/SYSTEM/emulators.cfg` with
+## will be extracted from `/home/$user/RetroPie/opt/configs/SYSTEM/emulators.cfg` with
 ## `%ROM%` `%BASENAME%` being replaced with the ROM parameter. This is the
 ## default mode used when launching in RetroPie so the user can switch emulator
 ## used as well as other options from the runcommand GUI.
@@ -66,8 +66,8 @@
 ## pressed the GUI is shown, where a user can set video modes, default emulators
 ## and other options (depending what is being launched).
 
-ROOTDIR="/opt/retropie"
-CONFIGDIR="$HOME/.config/RetroPie/configs"
+ROOTDIR="/home/RetroPie/opt"
+CONFIGDIR="/home/RetroPie/configs/$USER"
 LOG="/dev/shm/runcommand.log"
 
 RUNCOMMAND_CONF="$CONFIGDIR/all/runcommand.cfg"
@@ -1188,7 +1188,7 @@ function show_launch() {
     if [[ "$IS_SYS" -eq 1 && "$USE_ART" -eq 1 ]]; then
         # if using art look for images in paths for es art.
         images+=(
-            "$HOME/RetroPie/roms/$SYSTEM/images/${ROM_BN}-image"
+            "$HOME/$user/RetroPie/roms/$SYSTEM/images/${ROM_BN}-image"
             "$HOME/.emulationstation/downloaded_images/$SYSTEM/${ROM_BN}-image"
         )
     fi
@@ -1196,7 +1196,7 @@ function show_launch() {
     # look for custom launching images
     if [[ "$IS_SYS" -eq 1 ]]; then
         images+=(
-            "$HOME/RetroPie/roms/$SYSTEM/images/${ROM_BN}-launching"
+            "$HOME/$user/RetroPie/roms/$SYSTEM/images/${ROM_BN}-launching"
             "$CONF_ROOT/launching"
         )
     fi

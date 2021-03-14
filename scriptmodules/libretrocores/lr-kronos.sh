@@ -40,9 +40,17 @@ function install_lr-kronos() {
 }
 
 function configure_lr-kronos() {
-    mkRomDir "saturn"
-    ensureSystemretroconfig "saturn"
+    #mkRomDir "saturn"
+    #ensureSystemretroconfig "saturn"
 
-    addEmulator 1 "$md_id" "saturn" "$md_inst/kronos_libretro.so"
-    addSystem "saturn"
+    #addEmulator 1 "$md_id" "saturn" "$md_inst/kronos_libretro.so"
+    #addSystem "saturn"
+    
+    local system
+    for system in saturn saturn-usa saturn-japan saturn-extras; do
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator 1 "$md_id" "$system" "$md_inst/kronos_libretro.so"
+        addSystem "$system"
+    done
 }
