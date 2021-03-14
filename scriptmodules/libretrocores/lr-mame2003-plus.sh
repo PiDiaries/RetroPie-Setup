@@ -24,7 +24,7 @@ function _get_so_name_lr-mame2003-plus() {
 }
 
 function sources_lr-mame2003-plus() {
-    gitPullOrClone "$md_build" https://github.com/libretro/mame2003-plus-libretro.git
+    gitPullOrClone
 }
 
 function build_lr-mame2003-plus() {

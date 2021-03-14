@@ -389,21 +389,35 @@ function rpSwap() {
 ## A depth parameter of 0 will do a full clone with all history.
 function gitPullOrClone() {
     local dir="$1"
+    [[ -z "$dir" ]] && dir="$md_build"
     local repo="$2"
     local branch="$3"
-    [[ -z "$branch" ]] && branch="master"
     local commit="$4"
     local depth="$5"
+    # if repo is blank then use the rp_module_repo info
+    if [[ -z "$repo" && -n "$md_repo_url" ]]; then
+        repo="$(rp_resolveRepoParam "$md_repo_url")"
+        branch="$(rp_resolveRepoParam "$md_repo_branch")"
+        commit="$(rp_resolveRepoParam "$md_repo_commit")"
+    fi
+    [[ -z "$repo" ]] && return 1
+    [[ -z "$branch" ]] && branch="master"
     if [[ -z "$depth" && "$__persistent_repos" -ne 1 && -z "$commit" ]]; then
         depth=1
     else
         depth=0
     fi
 
+    # record the source directory in __mod_info[ID/repo_dir] if not previously set which will be used
+    # by the packaging functions later to grab repository information
+    if [[ -z "${__mod_info[$md_id/repo_dir]}" ]]; then
+        __mod_info[$md_id/repo_dir]="$dir"
+    fi
+
     if [[ -d "$dir/.git" ]]; then
         pushd "$dir" > /dev/null
         runCmd git checkout "$branch"
-        runCmd git pull
+        runCmd git pull --ff-only
         runCmd git submodule update --init --recursive
         popd > /dev/null
     else
@@ -445,8 +459,8 @@ function setupDirectories() {
 
     # make sure we have inifuncs.sh in place and that it is up to date
     mkdir -p "$rootdir/lib"
-    local helper_libs=(inifuncs.sh archivefuncs.sh)
-    for helper in "${helper_libs[@]}"; do
+    local helper
+    for helper in inifuncs.sh archivefuncs.sh; do
         if [[ ! -f "$rootdir/lib/$helper" || "$rootdir/lib/$helper" -ot "$scriptdir/scriptmodules/$helper" ]]; then
             cp --preserve=timestamps "$scriptdir/scriptmodules/$helper" "$rootdir/lib/$helper"
         fi
@@ -988,6 +1002,48 @@ function applyPatch() {
     return 0
 }
 
+## @fn runCurl()
+## @params ... commandline arguments to pass to curl
+## @brief Run curl with chosen parameters and handle curl errors
+## @details Runs curl with the provided parameters, whilst also capturing the output and extracting
+## any error message, which is stored in the global variable __NET_ERRMSG. Function returns the return
+## code provided by curl. The environment variable __curl_opts can be set to override default curl
+## parameters, eg - timeouts etc.
+## @retval curl return value
+function runCurl() {
+    local params=("$@")
+    # add any user supplied curl opts - timeouts can be overridden as curl uses the last parameters given
+    [[ -z "$__curl_opts" ]] && params+=($__curl_opts)
+
+    local cmd_err
+    local ret
+
+    # get the last non zero exit status (ignoring tee)
+    set -o pipefail
+
+    # set up additional file descriptor for stdin
+    exec 3>&1
+
+    # capture stderr - while passing both stdout and stderr to terminal
+    # curl like wget outputs the progress meter to stderr, so we will extract the error line later
+    cmd_err=$(curl "${params[@]}" 2>&1 1>&3 | tee /dev/stderr)
+    ret="$?"
+
+    # remove stdin copy
+    exec 3>&-
+
+    set +o pipefail
+
+    # if there was an error, extract it and put in __NET_ERRMSG
+    if [[ "$ret" -ne 0 ]]; then
+        # as we also capture the curl progress output, extract the last line which contains the error
+        __NET_ERRMSG="${cmd_err##*$'\n'}"
+    else
+        __NET_ERRMSG=""
+    fi
+    return "$ret"
+}
+
 ## @fn download()
 ## @param url url of file
 ## @param dest destination name (optional), use - for stdout
@@ -1015,43 +1071,21 @@ function download() {
         printMsgs "console" "Downloading $url to $dest ..."
         params+=(-o "$dest")
     fi
-    params+=(--connect-timeout 60 --speed-limit 1 --speed-time 60)
-    # add any user supplied curl opts - timeouts can be overridden as curl uses the last parameters given
-    [[ -z "$__curl_opts" ]] && params+=($__curl_opts)
+    params+=(--connect-timeout 10 --speed-limit 1 --speed-time 60)
     # add the url
     params+=("$url")
 
-    local cmd_err
     local ret
-
-    # get the last non zero exit status (ignoring tee)
-    set -o pipefail
-
-    # capture stderr - while passing both stdout and stderr to terminal
-    # curl like wget outputs the progress meter to stderr, so we will extract the error line later
-
-    # set up additional file descriptor for stdin
-    exec 3>&1
-
-    cmd_err=$(curl "${params[@]}" 2>&1 1>&3 | tee /dev/stderr)
+    runCurl "${params[@]}"
     ret="$?"
-
-    # remove stdin copy
-    exec 3>&-
-
-    set +o pipefail
 
     # if download failed, remove file, log error and return error code
     if [[ "$ret" -ne 0 ]]; then
         # remove dest if not set to stdout and exists
         [[ "$dest" != "-" && -f "$dest" ]] && rm "$dest"
-        # as we also capture the curl progress output, extract the last line which contains the error
-        cmd_err="${cmd_err##*$'\n'}"
-
-        md_ret_errors+=("URL $url failed to download.\n\n$cmd_err")
-        return "$ret"
+        md_ret_errors+=("URL $url failed to download.\n\n$__NET_ERRMSG")
     fi
-    return 0
+    return "$ret"
 }
 
 ## @fn downloadAndVerify()
@@ -1532,6 +1566,21 @@ function getIPAddress() {
 
     # if an external route was found, report its source address
     [[ -n "$ip_route" ]] && grep -oP "src \K[^\s]+" <<< "$ip_route"
+}
+
+## @fn isConnected()
+## @brief Simple check to see if there is a connection to the Internet.
+## @details Uses the getIPAddress function to check if we have a route to the Internet. Also sets
+## __NET_ERRMSG with an error message for use in packages / setup to display to the user if not.
+## @retval 0 on success
+## @retval 1 on failure
+function isConnected() {
+    local ip="$(getIPAddress)"
+    if [[ -z "$ip" ]]; then
+        __NET_ERRMSG="Not connected to the Internet"
+        return 1
+    fi
+    return 0
 }
 
 ## @fn adminRsync()

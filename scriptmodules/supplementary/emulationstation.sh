@@ -142,10 +142,7 @@ function depends_emulationstation() {
     getDepends "${depends[@]}"
 }
 
-function sources_emulationstation() {
-    local repo="$1"
-    local branch="$2"
-    [[ -z "$repo" ]] && repo="https://github.com/RetroPie/EmulationStation"
+function _get_branch_emulationstation() {
     if [[ -z "$branch" ]]; then
         if compareVersions "$__os_debian_ver" gt 8; then
             branch="stable"
@@ -153,7 +150,11 @@ function sources_emulationstation() {
             branch="v2.7.6"
         fi
     fi
-    gitPullOrClone "$md_build" "$repo" "$branch"
+    echo "$branch"
+}
+
+function sources_emulationstation() {
+    gitPullOrClone
 }
 
 function build_emulationstation() {
