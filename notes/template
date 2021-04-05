@@ -2,8 +2,16 @@
     local def
     for system in ; do
         def=0
-        [[ "$system" == "" ]] && def=1
         mkRomDir "$system"
-        addEmulator "$def" "$md_id" "$system" "
+        ensureSystemretroconfig "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/vba_next_libretro.so"
         addSystem "$system"
     done
+
+
+
+
+
+
+

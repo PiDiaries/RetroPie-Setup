@@ -254,125 +254,254 @@ function configure_mupen64plus() {
     local resolutions=("320x240" "640x480")
     isPlatform "kms" && res="%XRES%x%YRES%"
 
-    if isPlatform "rpi"; then
-        # kms needs to run at full screen as it doesn't benefit from our SDL scaling hint
-        if isPlatform "mesa"; then
-            addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=1"
-            addEmulator 0 "${md_id}-GLideN64-highres" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=2"
-            addEmulator 0 "${md_id}-gles2n64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
-            if isPlatform "32bit"; then
-                addEmulator 0 "${md_id}-gles2rice$name" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% $res"
-            fi
-        else
-            for res in "${resolutions[@]}"; do
-                local name=""
-                local nativeResFactor=1
-                if [[ "$res" == "640x480" ]]; then
-                    name="-highres"
-                    nativeResFactor=2
-                fi
-                addEmulator 0 "${md_id}-GLideN64$name" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=$nativeResFactor"
-                addEmulator 0 "${md_id}-gles2rice$name" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% $res"
-            done
-            addEmulator 1 "${md_id}-auto" "n64" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
-        fi
-        addEmulator 0 "${md_id}-gles2n64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
-    elif isPlatform "mali"; then
-        addEmulator 1 "${md_id}-gles2n64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
-        addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM%"
-        addEmulator 0 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM%"
-        addEmulator 0 "${md_id}-gles2rice" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM%"
-        addEmulator 0 "${md_id}-auto" "n64" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
-    else
-        addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res"
-        addEmulator 1 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
-        if isPlatform "x86"; then
-            ! isPlatform "kms" && res="640x480"
-            addEmulator 0 "${md_id}-GLideN64-LLE" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res mupen64plus-rsp-cxd4-sse2"
-        fi
-    fi
-    addSystem "n64"
+#    if isPlatform "rpi"; then
+#        # kms needs to run at full screen as it doesn't benefit from our SDL scaling hint
+#        if isPlatform "mesa"; then
+#            addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=1"
+#            addEmulator 0 "${md_id}-GLideN64-highres" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=2"
+#            addEmulator 0 "${md_id}-gles2n64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
+#            if isPlatform "32bit"; then
+#                addEmulator 0 "${md_id}-gles2rice$name" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% $res"
+#            fi
+#        else
+#            for res in "${resolutions[@]}"; do
+#                local name=""
+#                local nativeResFactor=1
+#                if [[ "$res" == "640x480" ]]; then
+#                    name="-highres"
+#                    nativeResFactor=2
+#                fi
+#                addEmulator 0 "${md_id}-GLideN64$name" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=$nativeResFactor"
+#                addEmulator 0 "${md_id}-gles2rice$name" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% $res"
+#            done
+#            addEmulator 1 "${md_id}-auto" "n64" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
+#        fi
+#        addEmulator 0 "${md_id}-gles2n64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
+#    elif isPlatform "mali"; then
+#        addEmulator 1 "${md_id}-gles2n64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
+#        addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM%"
+#        addEmulator 0 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM%"
+#        addEmulator 0 "${md_id}-gles2rice" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM%"
+#        addEmulator 0 "${md_id}-auto" "n64" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
+#    else
+#        addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res"
+#        addEmulator 1 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
+#        if isPlatform "x86"; then
+#            ! isPlatform "kms" && res="640x480"
+#            addEmulator 0 "${md_id}-GLideN64-LLE" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res mupen64plus-rsp-cxd4-sse2"
+#       fi
+#    fi
+#    addSystem "n64"
+#
+#    mkRomDir "n64"
 
-    mkRomDir "n64"
 
-    [[ "$md_mode" == "remove" ]] && return
+#    [[ "$md_mode" == "remove" ]] && return
 
     # copy hotkey remapping start script
     # maybe need modified for extra n64 systems
-    cp "$md_data/mupen64plus.sh" "$md_inst/bin/"
-    chmod +x "$md_inst/bin/mupen64plus.sh"
+#    cp "$md_data/mupen64plus.sh" "$md_inst/bin/"
+#    chmod +x "$md_inst/bin/mupen64plus.sh"
 
-    mkUserDir "$md_conf_root/n64/"
+#    mkUserDir "$md_conf_root/n64/"
 
-    # Copy config files
-    cp -v "$md_inst/share/mupen64plus/"{*.ini,font.ttf} "$md_conf_root/n64/"
-    isPlatform "rpi" && cp -v "$md_inst/share/mupen64plus/"*.conf "$md_conf_root/n64/"
-
-    local config="$md_conf_root/n64/mupen64plus.cfg"
-    local cmd="$md_inst/bin/mupen64plus --configdir $md_conf_root/n64 --datadir $md_conf_root/n64"
-
-    # if the user has an existing mupen64plus config we back it up, generate a new configuration
-    # copy that to rp-dist and put the original config back again. We then make any ini changes
-    # on the rp-dist file. This preserves any user configs from modification and allows us to have
-    # a default config for reference
-    if [[ -f "$config" ]]; then
-        mv "$config" "$config.user"
-        su "$user" -c "$cmd"
-        mv "$config" "$config.rp-dist"
-        mv "$config.user" "$config"
-        config+=".rp-dist"
-    else
-        su "$user" -c "$cmd"
-    fi
-
-    # RPI main/GLideN64 settings
-    if isPlatform "rpi"; then
-        iniConfig " = " "" "$config"
-        # VSync is mandatory for good performance on KMS
-        if isPlatform "kms"; then
-            if ! grep -q "\[Video-General\]" "$config"; then
-                echo "[Video-General]" >> "$config"
+#    # Copy config files
+#    cp -v "$md_inst/share/mupen64plus/"{*.ini,font.ttf} "$md_conf_root/n64/"
+#    isPlatform "rpi" && cp -v "$md_inst/share/mupen64plus/"*.conf "$md_conf_root/n64/"
+#
+#    local config="$md_conf_root/n64/mupen64plus.cfg"
+#    local cmd="$md_inst/bin/mupen64plus --configdir $md_conf_root/n64 --datadir $md_conf_root/n64"#
+#
+#    # if the user has an existing mupen64plus config we back it up, generate a new configuration
+#    # copy that to rp-dist and put the original config back again. We then make any ini changes
+#    # on the rp-dist file. This preserves any user configs from modification and allows us to have
+#   # a default config for reference
+#    if [[ -f "$config" ]]; then
+#        mv "$config" "$config.user"
+#        su "$user" -c "$cmd"
+#        mv "$config" "$config.rp-dist"
+#        mv "$config.user" "$config"
+#        config+=".rp-dist"
+#    else
+#        su "$user" -c "$cmd"
+#    fi
+#
+#    # RPI main/GLideN64 settings
+#    if isPlatform "rpi"; then
+#        iniConfig " = " "" "$config"
+#        # VSync is mandatory for good performance on KMS
+#        if isPlatform "kms"; then
+#            if ! grep -q "\[Video-General\]" "$config"; then
+#                echo "[Video-General]" >> "$config"
+#            fi
+#            iniSet "VerticalSync" "True"
+#        fi
+#        # Create GlideN64 section in .cfg
+#        if ! grep -q "\[Video-GLideN64\]" "$config"; then
+#            echo "[Video-GLideN64]" >> "$config"
+#        fi
+#        # Settings version. Don't touch it.
+#        iniSet "configVersion" "17"
+#        # Bilinear filtering mode (0=N64 3point, 1=standard)
+#        iniSet "bilinearMode" "1"
+#        iniSet "EnableFBEmulation" "True"
+#        # Use native res
+#        iniSet "UseNativeResolutionFactor" "1"
+#        # Enable legacy blending
+#        iniSet "EnableLegacyBlending" "True"
+#        # Enable Threaded GL calls
+#        iniSet "ThreadedVideo" "True"
+#        # Swap frame buffers On buffer update (most performant)
+#        iniSet "BufferSwapMode" "2"
+#        # Disable hybrid upscaling filter (needs better GPU)
+#        iniSet "EnableHybridFilter" "False"
+#
+#        if isPlatform "videocore"; then
+#            # Disable gles2n64 autores feature and use dispmanx upscaling
+#            iniConfig "=" "" "$md_conf_root/n64/gles2n64.conf"
+#            iniSet "auto resolution" "0"
+#
+#            setAutoConf mupen64plus_audio 1
+#            setAutoConf mupen64plus_compatibility_check 1
+#        elif isPlatform "mesa"; then
+#            setAutoConf mupen64plus_audio 0
+#            setAutoConf mupen64plus_compatibility_check 0
+#        fi
+#    else
+#        addAutoConf mupen64plus_audio 0
+#        addAutoConf mupen64plus_compatibility_check 0
+#    fi
+#
+#    addAutoConf mupen64plus_hotkeys 1
+#    addAutoConf mupen64plus_texture_packs 1
+#
+#    chown -R $user:$user "$md_conf_root/n64"
+    
+    local system
+    for system in n64 n64-dd n64-extras n64-japan n64-usa ; do
+        if isPlatform "rpi"; then
+            # kms needs to run at full screen as it doesn't benefit from our SDL scaling hint
+            if isPlatform "mesa"; then
+                addEmulator 0 "${md_id}-GLideN64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=1"
+                addEmulator 0 "${md_id}-GLideN64-highres" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=2"
+                addEmulator 0 "${md_id}-gles2n64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
+                if isPlatform "32bit"; then
+                    addEmulator 0 "${md_id}-gles2rice$name" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% $res"
+                fi
+            else
+                for res in "${resolutions[@]}"; do
+                    local name=""
+                    local nativeResFactor=1
+                    if [[ "$res" == "640x480" ]]; then
+                        name="-highres"
+                        nativeResFactor=2
+                    fi
+                    addEmulator 0 "${md_id}-GLideN64$name" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res 0 --set Video-GLideN64[UseNativeResolutionFactor]\=$nativeResFactor"
+                    addEmulator 0 "${md_id}-gles2rice$name" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% $res"
+                done
+                addEmulator 1 "${md_id}-auto" "$system" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
             fi
-            iniSet "VerticalSync" "True"
+            addEmulator 0 "${md_id}-gles2n64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
+        elif isPlatform "mali"; then
+            addEmulator 1 "${md_id}-gles2n64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-n64 %ROM%"
+            addEmulator 0 "${md_id}-GLideN64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM%"
+            addEmulator 0 "${md_id}-glide64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM%"
+            addEmulator 0 "${md_id}-gles2rice" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM%"
+            addEmulator 0 "${md_id}-auto" "$system" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
+        else
+            addEmulator 0 "${md_id}-GLideN64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res"
+            addEmulator 1 "${md_id}-glide64" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
+            if isPlatform "x86"; then
+                ! isPlatform "kms" && res="640x480"
+                addEmulator 0 "${md_id}-GLideN64-LLE" "$system" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res mupen64plus-rsp-cxd4-sse2"
+            fi
         fi
-        # Create GlideN64 section in .cfg
-        if ! grep -q "\[Video-GLideN64\]" "$config"; then
-            echo "[Video-GLideN64]" >> "$config"
+        addSystem "$system"
+
+        mkRomDir "$system"
+
+        [[ "$md_mode" == "remove" ]] && return
+
+        # copy hotkey remapping start script
+        # maybe need modified for extra n64 systems
+        cp "$md_data/mupen64plus.sh" "$md_inst/bin/"
+        chmod +x "$md_inst/bin/mupen64plus.sh"
+
+        mkUserDir "$md_conf_root/$system/"
+
+        # Copy config files
+        cp -v "$md_inst/share/mupen64plus/"{*.ini,font.ttf} "$md_conf_root/$system/"
+        isPlatform "rpi" && cp -v "$md_inst/share/mupen64plus/"*.conf "$md_conf_root/$system/"
+
+        local config="$md_conf_root/$system/mupen64plus.cfg"
+        local cmd="$md_inst/bin/mupen64plus --configdir $md_conf_root/$system --datadir $md_conf_root/$system"
+
+        # if the user has an existing mupen64plus config we back it up, generate a new configuration
+        # copy that to rp-dist and put the original config back again. We then make any ini changes
+        # on the rp-dist file. This preserves any user configs from modification and allows us to have
+        # a default config for reference
+        if [[ -f "$config" ]]; then
+            mv "$config" "$config.user"
+            su "$user" -c "$cmd"
+            mv "$config" "$config.rp-dist"
+            mv "$config.user" "$config"
+            config+=".rp-dist"
+        else
+            su "$user" -c "$cmd"
         fi
-        # Settings version. Don't touch it.
-        iniSet "configVersion" "17"
-        # Bilinear filtering mode (0=N64 3point, 1=standard)
-        iniSet "bilinearMode" "1"
-        iniSet "EnableFBEmulation" "True"
-        # Use native res
-        iniSet "UseNativeResolutionFactor" "1"
-        # Enable legacy blending
-        iniSet "EnableLegacyBlending" "True"
-        # Enable Threaded GL calls
-        iniSet "ThreadedVideo" "True"
-        # Swap frame buffers On buffer update (most performant)
-        iniSet "BufferSwapMode" "2"
-        # Disable hybrid upscaling filter (needs better GPU)
-        iniSet "EnableHybridFilter" "False"
 
-        if isPlatform "videocore"; then
-            # Disable gles2n64 autores feature and use dispmanx upscaling
-            iniConfig "=" "" "$md_conf_root/n64/gles2n64.conf"
-            iniSet "auto resolution" "0"
+        # RPI main/GLideN64 settings
+        if isPlatform "rpi"; then
+            iniConfig " = " "" "$config"
+            # VSync is mandatory for good performance on KMS
+            if isPlatform "kms"; then
+                if ! grep -q "\[Video-General\]" "$config"; then
+                    echo "[Video-General]" >> "$config"
+                fi
+                iniSet "VerticalSync" "True"
+            fi
+            # Create GlideN64 section in .cfg
+            if ! grep -q "\[Video-GLideN64\]" "$config"; then
+                echo "[Video-GLideN64]" >> "$config"
+            fi
+            # Settings version. Don't touch it.
+            iniSet "configVersion" "17"
+            # Bilinear filtering mode (0=N64 3point, 1=standard)
+            iniSet "bilinearMode" "1"
+            iniSet "EnableFBEmulation" "True"
+            # Use native res
+            iniSet "UseNativeResolutionFactor" "1"
+            # Enable legacy blending
+            iniSet "EnableLegacyBlending" "True"
+            # Enable Threaded GL calls
+            iniSet "ThreadedVideo" "True"
+            # Swap frame buffers On buffer update (most performant)
+            iniSet "BufferSwapMode" "2"
+            # Disable hybrid upscaling filter (needs better GPU)
+            iniSet "EnableHybridFilter" "False"
 
-            setAutoConf mupen64plus_audio 1
-            setAutoConf mupen64plus_compatibility_check 1
-        elif isPlatform "mesa"; then
-            setAutoConf mupen64plus_audio 0
-            setAutoConf mupen64plus_compatibility_check 0
+            if isPlatform "videocore"; then
+                # Disable gles2n64 autores feature and use dispmanx upscaling
+                iniConfig "=" "" "$md_conf_root/$system/gles2n64.conf"
+                iniSet "auto resolution" "0"
+
+                setAutoConf mupen64plus_audio 1
+                setAutoConf mupen64plus_compatibility_check 1
+            elif isPlatform "mesa"; then
+                setAutoConf mupen64plus_audio 0
+                setAutoConf mupen64plus_compatibility_check 0
+            fi
+        else
+            addAutoConf mupen64plus_audio 0
+            addAutoConf mupen64plus_compatibility_check 0
         fi
-    else
-        addAutoConf mupen64plus_audio 0
-        addAutoConf mupen64plus_compatibility_check 0
-    fi
 
-    addAutoConf mupen64plus_hotkeys 1
-    addAutoConf mupen64plus_texture_packs 1
+        addAutoConf mupen64plus_hotkeys 1
+        addAutoConf mupen64plus_texture_packs 1
 
-    chown -R $user:$user "$md_conf_root/n64"
+        chown -R $user:$user "$md_conf_root/$system"
+
+    done
+
+
 }

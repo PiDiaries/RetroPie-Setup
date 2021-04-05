@@ -10,7 +10,7 @@
 #
 
 function onstart_retroarch_joystick() {
-    iniConfig " = " '"' "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+    iniConfig " = " '"' "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
     iniGet "input_joypad_driver"
     local input_joypad_driver="$ini_value"
     if [[ -z "$input_joypad_driver" ]]; then
@@ -28,7 +28,7 @@ function onstart_retroarch_joystick() {
 }
 
 function onstart_retroarch_keyboard() {
-    iniConfig " = " '"' "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+    iniConfig " = " '"' "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
 
     _retroarch_select_hotkey=1
 
@@ -366,7 +366,7 @@ function onend_retroarch_joystick() {
 
     # disable any auto configs for the same device to avoid duplicates
     local file
-    local dir="/home/RetroPie/configs/$user/retroarch/autoconfig"
+    local dir="/home/RetroPie/configs/$user/all/retroarch/autoconfig"
     while read -r file; do
         mv "$file" "$file.bak"
     done < <(grep -Fl "\"$DEVICE_NAME\"" "$dir/"*.cfg 2>/dev/null)

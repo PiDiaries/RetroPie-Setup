@@ -43,10 +43,20 @@ function install_snes9x() {
 }
 
 function configure_snes9x() {
-    mkRomDir "snes"
+    #mkRomDir "snes"
 
     setDispmanx "$md_id" 1
 
-    addEmulator 0 "$md_id" "snes" "$md_inst/snes9x %ROM%"
-    addSystem "snes"
-}
+    #addEmulator 0 "$md_id" "snes" "$md_inst/snes9x %ROM%"
+    #addSystem "snes"
+
+    local system
+    local def
+    for system in snes sfc snes-extras snes-usa smwhacks ; do
+        def=0
+        #[[ "$system" == "" ]] && def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/snes9x %ROM%"
+        addSystem "$system"
+    done
+    }

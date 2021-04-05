@@ -46,9 +46,20 @@ function install_lr-bsnes() {
 }
 
 function configure_lr-bsnes() {
-    mkRomDir "snes"
-    ensureSystemretroconfig "snes"
+    #mkRomDir "snes"
+    #ensureSystemretroconfig "snes"
 
-    addEmulator 1 "$md_id" "snes" "$md_inst/bsnes_libretro.so"
-    addSystem "snes"
+    #addEmulator 1 "$md_id" "snes" "$md_inst/bsnes_libretro.so"
+    #addSystem "snes"
+
+    local system
+    local def
+    for system in snes sfc snes-extras snes-usa sufami smwhacks ; do
+        def=1
+        #[[ "$system" == "" ]] && def=0
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/bsnes_libretro.so"
+        addSystem "$system"
+        ensureSystemretroconfig "$system"
+    done
 }

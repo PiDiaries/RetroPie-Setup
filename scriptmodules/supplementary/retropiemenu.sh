@@ -136,10 +136,10 @@ function launch_retropiemenu() {
     case "$basename" in
         retroarch.rp)
             joy2keyStop
-            cp "/home/RetroPie/configs/$user/retroarch/retroarch.cfg" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg.bak"
-            chown $user:$user "/home/RetroPie/configs/$user/retroarch/retroarch.cfg.bak"
-            su $user -c "\"$emudir/retroarch/bin/retroarch\" --menu --config \"/home/RetroPie/configs/$user/retroarch/retroarch.cfg\""
-            iniConfig " = " '"' "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+            cp "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg" "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg.bak"
+            chown $user:$user "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg.bak"
+            su $user -c "\"$emudir/retroarch/bin/retroarch\" --menu --config \"/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg\""
+            iniConfig " = " '"' "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
             iniSet "config_save_on_exit" "false"
             ;;
         rpsetup.rp)

@@ -895,10 +895,12 @@ function ensureSystemretroconfig() {
     local config="$(mktemp)"
     # add the initial comment regarding include order
     echo -e "# Settings made here will only override settings in the global retroarch.cfg if placed above the #include line\n" >"$config"
-    echo -e "core_options_path = $configdir/$system/retroarch.cfg"  >>"$config"
     # add the per system default settings
     iniConfig " = " '"' "$config"
     iniSet "input_remapping_directory" "$configdir/$system/"
+    iniSet "core_options_path" "$configdir/$system/retroarch.cfg"
+    iniSet "savefile_directory" "$datadir/gamesaves/$user/savefile/$system/"
+    iniSet "savestate_directory" "$datadir/gamesaves/$user/savestate/$system/"
 
     if [[ -n "$shader" ]]; then
         iniUnset "video_smooth" "false"
@@ -907,10 +909,8 @@ function ensureSystemretroconfig() {
     fi
 
     # include the main retroarch config
-    echo -e "\ncore_options_path = \"$configdir/$system/retroarch.cfg\""
-    echo -e "\nsavefile_directory = \"$datadir/gamesaves/$user/savefile/$system/\""
-    echo -e "\nsavefile_directory = \"$datadir/gamesaves/$user/savestate_directory/$system/\""
-    echo -e "\n#include \"$configdir/all/retroarchretroarch.cfg\"" >>"$config"
+    echo -e "\n#include \"$configdir/all/retroarch.cfg\"" >>"$config"
+
     copyDefaultConfig "$config" "$configdir/$system/retroarch.cfg"
     rm "$config"
 }
@@ -918,16 +918,16 @@ function ensureSystemretroconfig() {
 ## @fn setRetroArchCoreOption()
 ## @param option option to set
 ## @param value value to set
-## @brief Sets a retroarch core option in `/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg`.
+## @brief Sets a retroarch core option in `/home/RetroPie/configs/$user/all/retroarch/retroarch-core-options.cfg`.
 function setRetroArchCoreOption() {
     local option="$1"
     local value="$2"
-    iniConfig " = " "\"" "/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg"
+    iniConfig " = " "\"" "/home/RetroPie/configs/$user/all/retroarch/retroarch-core-options.cfg"
     iniGet "$option"
     if [[ -z "$ini_value" ]]; then
         iniSet "$option" "$value"
     fi
-    chown $user:$user "/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg"
+    chown $user:$user "/home/RetroPie/configs/$user/all/retroarch/retroarch-core-options.cfg"
 }
 
 ## @fn setConfigRoot()

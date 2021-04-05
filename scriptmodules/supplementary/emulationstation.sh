@@ -12,6 +12,7 @@
 rp_module_id="emulationstation"
 rp_module_desc="EmulationStation - Frontend used by RetroPie for launching emulators"
 rp_module_licence="MIT https://raw.githubusercontent.com/RetroPie/EmulationStation/master/LICENSE.md"
+rp_module_repo="git https://github.com/RetroPie/EmulationStation :_get_branch_emulationstation"
 rp_module_section=""
 rp_module_flags="frontend"
 
@@ -362,7 +363,7 @@ function gui_emulationstation() {
                 setAutoConf "es_swap_a_b" "$es_swap"
                 local ra_swap="false"
                 getAutoConf "es_swap_a_b" && ra_swap="true"
-                iniSet "menu_swap_ok_cancel_buttons" "$ra_swap" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+                iniSet "menu_swap_ok_cancel_buttons" "$ra_swap" "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
                 printMsgs "dialog" "You will need to reconfigure you controller in Emulation Station for the changes to take effect."
                 ;;
         esac

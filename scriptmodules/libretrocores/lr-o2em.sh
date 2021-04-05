@@ -34,9 +34,21 @@ function install_lr-o2em() {
 }
 
 function configure_lr-o2em() {
-    mkRomDir "videopac"
-    ensureSystemretroconfig "videopac"
+#    mkRomDir "videopac"
+#    ensureSystemretroconfig "videopac"
 
-    addEmulator 1 "$md_id" "videopac" "$md_inst/o2em_libretro.so"
-    addSystem "videopac"
+#    addEmulator 1 "$md_id" "videopac" "$md_inst/o2em_libretro.so"
+#    addSystem "videopac"
+
+    local system
+    local def
+    for system in videopac odyssey2 ; do
+        def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system"  "$md_inst/o2em_libretro.so"
+        addSystem "$system"
+        ensureSystemretroconfig "$system"
+    done
+
+
 }

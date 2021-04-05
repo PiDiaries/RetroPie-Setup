@@ -84,7 +84,7 @@ function install_retroarch() {
 }
 
 function update_shaders_retroarch() {
-    local dir="/home/RetroPie/configs/$user/retroarch/shaders"
+    local dir="/home/RetroPie/configs/$user/all/retroarch/shaders"
     local branch=""
     isPlatform "rpi" && branch="rpi"
     # remove if not git repository for fresh checkout
@@ -94,15 +94,15 @@ function update_shaders_retroarch() {
 }
 
 function update_overlays_retroarch() {
-    local dir="/home/RetroPie/configs/$user/retroarch/overlay"
+    local dir="/home/RetroPie/configs/$user/all/retroarch/overlay"
     # remove if not a git repository for fresh checkout
     [[ ! -d "$dir/.git" ]] && rm -rf "$dir"
-    gitPullOrClone "/home/RetroPie/configs/$user/retroarch/overlay" https://github.com/libretro/common-overlays.git
+    gitPullOrClone "/home/RetroPie/configs/$user/all/retroarch/overlay" https://github.com/libretro/common-overlays.git
     chown -R $user:$user "$dir"
 }
 
 function update_assets_retroarch() {
-    local dir="/home/RetroPie/configs/$user/retroarch/assets"
+    local dir="/home/RetroPie/configs/$user/all/retroarch/assets"
     # remove if not a git repository for fresh checkout
     [[ ! -d "$dir/.git" ]] && rm -rf "$dir"
     gitPullOrClone "$dir" https://github.com/libretro/retroarch-assets.git
@@ -110,7 +110,7 @@ function update_assets_retroarch() {
 }
 
 function install_minimal_assets_retroarch() {
-    local dir="/home/RetroPie/configs/$user/retroarch/assets"
+    local dir="/home/RetroPie/configs/$user/all/retroarch/assets"
     [[ -d "$dir/.git" ]] && return
     [[ ! -d "$dir" ]] && mkUserDir "$dir"
     downloadAndExtract "$__binary_base_url/retroarch-minimal-assets.tar.gz" "$dir"
@@ -137,9 +137,9 @@ function configure_retroarch() {
     moveConfigDir "$configdir/all/retroarch-joypads" "$configdir/all/retroarch/autoconfig"
  
     # move / symlink old assets / overlays and shader folder
-    moveConfigDir "$md_inst/assets" "/home/RetroPie/configs/$user/retroarch/assets"
-    moveConfigDir "$md_inst/overlays" "/home/RetroPie/configs/$user/retroarch/overlay"
-    moveConfigDir "$md_inst/shader" "/home/RetroPie/configs/$user/retroarch/shaders"
+    moveConfigDir "$md_inst/assets" "/home/RetroPie/configs/$user/all/retroarch/assets"
+    moveConfigDir "$md_inst/overlays" "/home/RetroPie/configs/$user/all/retroarch/overlay"
+    moveConfigDir "$md_inst/shader" "/home/RetroPie/configs/$user/all/retroarch/shaders"
 
     # install shaders by default
     update_shaders_retroarch
@@ -163,15 +163,20 @@ function configure_retroarch() {
     iniSet "video_aspect_ratio_auto" "true"
     iniSet "rgui_show_start_screen" "false"
     iniSet "rgui_browser_directory" "$romdir"
+    iniSet "content_directory" "$datadir/retroarch/"
+    iniSet "menu_show_core_updater" "true"
+
+
 
     if ! isPlatform "x86"; then
         iniSet "video_threaded" "true"
     fi
 
     iniSet "video_font_size" "24"
-    iniSet "core_options_path" "/home/RetroPie/configs/$user/retroarch/retroarch-core-options.cfg"
+    iniSet "core_options_path" "/home/RetroPie/configs/$user/all/retroarch/retroarch-core-options.cfg"
     iniSet "global_core_options" "true"
     isPlatform "x11" && iniSet "video_fullscreen" "true"
+    isPlatform "x11" && iniSet "menu_driver" "ozone"
     isPlatform "mesa" && iniSet "video_fullscreen" "true"
 
     # set default render resolution to 640x480 for rpi1
@@ -247,7 +252,7 @@ function configure_retroarch() {
     # enable video shaders
     iniSet "video_shader_enable" "true"
 
-    copyDefaultConfig "$config" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+    copyDefaultConfig "$config" "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
     rm "$config"
 
     # if no menu_driver is set, force RGUI, as the default has now changed to XMB.
@@ -274,8 +279,8 @@ function configure_retroarch() {
 }
 
 function keyboard_retroarch() {
-    if [[ ! -f "/home/RetroPie/configs/$user/retroarch/retroarch.cfg" ]]; then
-        printMsgs "dialog" "No RetroArch configuration file found at /home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+    if [[ ! -f "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg" ]]; then
+        printMsgs "dialog" "No RetroArch configuration file found at /home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
         return
     fi
     local input
@@ -287,14 +292,14 @@ function keyboard_retroarch() {
         key+=("${parts[0]}")
         options+=("${parts[0]}" $i 2 "${parts[*]:2}" $i 26 16 0)
         ((i++))
-    done < <(grep "^[[:space:]]*input_player[0-9]_[a-z]*" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg")
+    done < <(grep "^[[:space:]]*input_player[0-9]_[a-z]*" "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg")
     local cmd=(dialog --backtitle "$__backtitle" --form "RetroArch keyboard configuration" 22 48 16)
     local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
     if [[ -n "$choice" ]]; then
         local value
         local values
         readarray -t values <<<"$choice"
-        iniConfig " = " "" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+        iniConfig " = " "" "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
         i=0
         for value in "${values[@]}"; do
             iniSet "${key[$i]}" "$value" >/dev/null
@@ -304,7 +309,7 @@ function keyboard_retroarch() {
 }
 
 function hotkey_retroarch() {
-    iniConfig " = " '"' "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+    iniConfig " = " '"' "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
     local cmd=(dialog --backtitle "$__backtitle" --menu "Choose the desired hotkey behaviour." 22 76 16)
     local options=(1 "Hotkeys enabled. (default)"
              2 "Press ALT to enable hotkeys."
@@ -340,7 +345,7 @@ function gui_retroarch() {
         local dir
         local i=1
         for name in "${names[@]}"; do
-            if [[ -d "/home/RetroPie/configs/$user/retroarch/${dirs[i-1]}/.git" ]]; then
+            if [[ -d "/home/RetroPie/configs/$user/all/retroarch/${dirs[i-1]}/.git" ]]; then
                 options+=("$i" "Manage $name (installed)")
             else
                 options+=("$i" "Manage $name (not installed)")
@@ -366,7 +371,7 @@ function gui_retroarch() {
                         "update_${name}_retroarch"
                         ;;
                     2)
-                        rm -rf "/home/RetroPie/configs/$user/retroarch/$dir"
+                        rm -rf "/home/RetroPie/configs/$user/all/retroarch/$dir"
                         [[ "$dir" == "assets" ]] && install_xmb_monochrome_assets_retroarch
                         ;;
                     *)
@@ -389,12 +394,12 @@ function gui_retroarch() {
     done
 }
 
-# adds a retroarch global config option in `/home/RetroPie/configs/$user/retroarch/retroarch.cfg`, if not already set
+# adds a retroarch global config option in `/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg`, if not already set
 function _set_config_option_retroarch()
 {
     local option="$1"
     local value="$2"
-    iniConfig " = " "\"" "/home/RetroPie/configs/$user/retroarch/retroarch.cfg"
+    iniConfig " = " "\"" "/home/RetroPie/configs/$user/all/retroarch/retroarch.cfg"
     iniGet "$option"
     if [[ -z "$ini_value" ]]; then
         iniSet "$option" "$value"

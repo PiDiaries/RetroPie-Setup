@@ -41,11 +41,12 @@ function configure_lr-beetle-supergrafx() {
 
     local system
     local def
-    for system in pce-cd pcengine tg-cd tg16 supergrafx; do
+    for system in pce-cd pcengine tg-cd tg16 supergrafx ; do
         def=0
         [[ "$system" == "supergrafx" ]] && def=1
         mkRomDir "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/mednafen_supergrafx_libretro.so"
         addSystem "$system"
+        ensureSystemretroconfig "$system"
     done
 }

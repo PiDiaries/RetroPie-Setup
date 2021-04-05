@@ -40,11 +40,25 @@ function install_lr-snes9x2002() {
 }
 
 function configure_lr-snes9x2002() {
-    mkRomDir "snes"
-    ensureSystemretroconfig "snes"
+    #mkRomDir "snes"
+    #ensureSystemretroconfig "snes"
 
-    local def=0
-    isPlatform "armv6" && def=1
-    addEmulator $def "$md_id" "snes" "$md_inst/snes9x2002_libretro.so"
-    addSystem "snes"
-}
+    #local def=0
+    #isPlatform "armv6" && def=1
+    #addEmulator $def "$md_id" "snes" "$md_inst/snes9x2002_libretro.so"
+    #addSystem "snes"
+
+    local system
+    local def
+    for system in snes sfc snes-extras snes-usa sufami smwhacks ; do
+        def=0
+        isPlatform "armv6" && def=1
+        #[[ "$system" == "" ]] && def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/snes9x2002_libretro.so"
+        addSystem "$system"
+        ensureSystemretroconfig "$system"
+    done
+    
+    
+    }

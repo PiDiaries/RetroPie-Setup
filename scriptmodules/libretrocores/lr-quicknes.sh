@@ -33,12 +33,24 @@ function install_lr-quicknes() {
 }
 
 function configure_lr-quicknes() {
-    mkRomDir "nes"
-    ensureSystemretroconfig "nes"
+    #mkRomDir "nes"
+    #ensureSystemretroconfig "nes"
 
-    local def=0
-    isPlatform "armv6" && def=1
+    #local def=0
+    #isPlatform "armv6" && def=1
 
-    addEmulator "$def" "$md_id" "nes" "$md_inst/quicknes_libretro.so"
-    addSystem "nes"
+    #addEmulator "$def" "$md_id" "nes" "$md_inst/quicknes_libretro.so"
+    #addSystem "nes"
+
+    local system
+    local def
+    for system in famicom fds nes nes-extras nes-usa ; do
+        def=0
+        isPlatform "armv6" && def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator 0 "$md_id" "$system" "$md_inst/quicknes_libretro.so"
+        addSystem "$system"
+    done
+    
 }

@@ -47,13 +47,30 @@ function install_pisnes() {
 }
 
 function configure_pisnes() {
-    mkRomDir "snes"
+#    mkRomDir "snes"
 
-    addEmulator 0 "$md_id" "snes" "$md_inst/snes9x %ROM%"
-    addSystem "snes"
+#    addEmulator 0 "$md_id" "snes" "$md_inst/snes9x %ROM%"
+#    addSystem "snes"
 
-    [[ "$md_mode" == "remove" ]] && return
+#    [[ "$md_mode" == "remove" ]] && return
 
-    moveConfigFile "$md_inst/snes9x.cfg" "$md_conf_root/snes/snes9x.cfg"
-    copyDefaultConfig "$md_inst/snes9x.cfg.template" "$md_conf_root/snes/snes9x.cfg"
+#    moveConfigFile "$md_inst/snes9x.cfg" "$md_conf_root/snes/snes9x.cfg"
+#    copyDefaultConfig "$md_inst/snes9x.cfg.template" "$md_conf_root/snes/snes9x.cfg"
+
+
+    local system
+    local def
+    for system in snes sfc snes-extras snes-usa smwhacks ; do
+        def=0
+        mkRomDir "$system"
+
+        addEmulator 0 "$md_id" "$system" "$md_inst/snes9x %ROM%"
+        addSystem "$system"
+
+        [[ "$md_mode" == "remove" ]] && return
+
+        copyDefaultConfig "$md_inst/snes9x.cfg" "$md_conf_root/$system/snes9x.cfg"
+        copyDefaultConfig "$md_inst/snes9x.cfg.template" "$md_conf_root/$system/snes9x.cfg"
+    done
+    
 }

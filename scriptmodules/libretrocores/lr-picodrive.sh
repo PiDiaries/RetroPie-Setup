@@ -49,7 +49,7 @@ function install_lr-picodrive() {
 function configure_lr-picodrive() {
     local system
     local def
-    for system in megadrive mastersystem segacd sega32x; do
+    for system in genesis mastersystem megadrive megadrive-extras megadrive-japan segacd segacd-extras segacd-japan segacd-usa sega32x; do
         def=0
         # default on megadrive / mastersystem only on armv6 for performance
         [[ "$system" =~ megadrive|mastersystem ]] && isPlatform "arm6" && def=1

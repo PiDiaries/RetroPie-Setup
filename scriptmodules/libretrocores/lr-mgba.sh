@@ -43,7 +43,7 @@ function install_lr-mgba() {
 function configure_lr-mgba() {
     local system
     local def
-    for system in gb gbc gba; do
+    for system in gb gbc gba pokemonhacks; do
         def=0
         [[ "$system" == "gba" ]] && ! isPlatform "armv6" && def=1
         mkRomDir "$system"

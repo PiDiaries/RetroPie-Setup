@@ -76,19 +76,40 @@ function install_lr-mupen64plus-next() {
 }
 
 function configure_lr-mupen64plus-next() {
-    mkRomDir "n64"
-    ensureSystemretroconfig "n64"
-
-    if isPlatform "rpi"; then
+#    mkRomDir "n64"
+#    ensureSystemretroconfig "n64"
+#
+#    if isPlatform "rpi"; then
         # Disable hybrid upscaling filter (needs better GPU)
-        setRetroArchCoreOption "mupen64plus-next-HybridFilter" "False"
+#        setRetroArchCoreOption "mupen64plus-next-HybridFilter" "False"
         # Disable overscan/VI emulation (slight performance drain)
-        setRetroArchCoreOption "mupen64plus-next-EnableOverscan" "Disabled"
+#        setRetroArchCoreOption "mupen64plus-next-EnableOverscan" "Disabled"
         # Enable Threaded GL calls
-        setRetroArchCoreOption "mupen64plus-next-ThreadedRenderer" "True"
-    fi
-    setRetroArchCoreOption "mupen64plus-next-EnableNativeResFactor" "1"
+#        setRetroArchCoreOption "mupen64plus-next-ThreadedRenderer" "True"
+#    fi
+#    setRetroArchCoreOption "mupen64plus-next-EnableNativeResFactor" "1"
 
-    addEmulator 1 "$md_id" "n64" "$md_inst/mupen64plus_next_libretro.so"
-    addSystem "n64"
+#    addEmulator 1 "$md_id" "n64" "$md_inst/mupen64plus_next_libretro.so"
+#    addSystem "n64"
+
+    local system
+    local def
+    for system in n64 n64-dd n64-extras n64-japan n64-usa ; do
+        def=0
+        #[[ "$system" == "" ]] && def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        if isPlatform "rpi"; then
+            # Disable hybrid upscaling filter (needs better GPU)
+            setRetroArchCoreOption "mupen64plus-next-HybridFilter" "False"
+            # Disable overscan/VI emulation (slight performance drain)
+            setRetroArchCoreOption "mupen64plus-next-EnableOverscan" "Disabled"
+            # Enable Threaded GL calls
+            setRetroArchCoreOption "mupen64plus-next-ThreadedRenderer" "True"
+        fi
+        setRetroArchCoreOption "mupen64plus-next-EnableNativeResFactor" "1"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/mupen64plus_next_libretro.so"
+        addSystem "$system"
+    done
+
 }

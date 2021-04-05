@@ -38,9 +38,22 @@ function install_lr-vba-next() {
 }
 
 function configure_lr-vba-next() {
-    mkRomDir "gba"
-    ensureSystemretroconfig "gba"
+#    mkRomDir "gba"
+#    ensureSystemretroconfig "gba"
 
-    addEmulator 0 "$md_id" "gba" "$md_inst/vba_next_libretro.so"
-    addSystem "gba"
+#    addEmulator 0 "$md_id" "gba" "$md_inst/vba_next_libretro.so"
+#    addSystem "gba"
+
+    local system
+    local def
+    for system in ; do
+        def=0
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/vba_next_libretro.so"
+        addSystem "$system"
+    done
+
+
 }

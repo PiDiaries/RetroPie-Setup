@@ -44,17 +44,30 @@ function install_gpsp() {
 }
 
 function configure_gpsp() {
-    mkRomDir "gba"
-    chown $user:$user -R "$md_inst"
+#    mkRomDir "gba"
+#    chown $user:$user -R "$md_inst"
 
-    mkUserDir "$md_conf_root/gba"
+#    mkUserDir "$md_conf_root/gba"
 
-    # symlink the rom so so it can be installed with the other bios files
-    ln -sf "$biosdir/gba_bios.bin" "$md_inst/gba_bios.bin"
+#    # symlink the rom so so it can be installed with the other bios files
+#    ln -sf "$biosdir/gba_bios.bin" "$md_inst/gba_bios.bin"
 
     # move old config
-    moveConfigFile "gpsp.cfg" "$md_conf_root/gba/gpsp.cfg"
+#    moveConfigFile "gpsp.cfg" "$md_conf_root/gba/gpsp.cfg"
 
-    addEmulator 0 "$md_id" "gba" "$md_inst/gpsp %ROM%"
-    addSystem "gba"
+#    addEmulator 0 "$md_id" "gba" "$md_inst/gpsp %ROM%"
+#    addSystem "gba"
+
+    local system
+    local def
+    for system in gba pokemonhacks ; do
+        def=0
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        
+        isPlatform "armv6" && def=1
+        addEmulator $def "$md_id" "$system" "$md_inst/gpsp_libretro.so"
+        addSystem "$system"
+    done
 }

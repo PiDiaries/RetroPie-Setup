@@ -39,15 +39,24 @@ function install_lr-snes9x() {
 }
 
 function configure_lr-snes9x() {
-    mkRomDir "snes"
-    mkRomDir "snesmsu1"
-    ensureSystemretroconfig "snes"
-    ensureSystemretroconfig "snesmsu1"
+    #mkRomDir "snes"
+    #ensureSystemretroconfig "snes"
 
-    local def=0
-    ! isPlatform "armv6" && ! isPlatform "armv7" && def=1
-    addEmulator $def "$md_id" "snes" "$md_inst/snes9x_libretro.so"
-    addEmulator 1 "$md_id" "snesmsu1" "$md_inst/snes9x_libretro.so"
-    addSystem "snes"
-    addSystem "snesmsu1"
+    #local def=0
+    #! isPlatform "armv6" && ! isPlatform "armv7" && def=1
+    #addEmulator $def "$md_id" "snes" "$md_inst/snes9x_libretro.so"
+    #addSystem "snes"
+
+    local system
+    local def
+    for system in snes sfc snes-extras snes-usa snesmsu1 satellaview sufami smwhacks ; do
+        def=0
+        ! isPlatform "armv6" && ! isPlatform "armv7" && def=1
+        [[ "$system" == "snesmsu1" ]] && def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/snes9x_libretro.so"
+        addSystem "$system"
+        ensureSystemretroconfig "$system"
+    done
+    
 }

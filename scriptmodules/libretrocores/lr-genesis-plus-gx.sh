@@ -38,7 +38,7 @@ function install_lr-genesis-plus-gx() {
 function configure_lr-genesis-plus-gx() {
     local system
     local def
-    for system in gamegear genesis mastersystem megadrive megadrive-japan sg-1000 segacd segacd-japan segacd-usa; do
+    for system in gamegear genesis mastersystem megadrive megadrive-extras mega-msu megadrive-japan sg-1000 segacd segacd-extras segacd-japan segacd-usa; do
         def=0
         [[ "$system" == "gamegear" || "$system" == "sg-1000"  || "$system" == "segacd" || "$system" ==   "segacd-japan" || "$system" == "segacd-usa" ]] && def=1
         # always default emulator for non armv6
