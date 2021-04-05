@@ -45,22 +45,23 @@ function install_lr-gpsp() {
 }
 
 function configure_lr-gpsp() {
-    mkRomDir "gba"
-    ensureSystemretroconfig "gba"
+#    mkRomDir "gba"
+#    ensureSystemretroconfig "gba"
 
-    local def=0
-    isPlatform "armv6" && def=1
-    addEmulator $def "$md_id" "gba" "$md_inst/gpsp_libretro.so"
-    addSystem "gba"
+#    local def=0
+#    isPlatform "armv6" && def=1
+#    addEmulator $def "$md_id" "gba" "$md_inst/gpsp_libretro.so"
+#    addSystem "gba"
 
     local system
     local def
-    for system in ; do
-        def=0
-        [[ "$system" == "" ]] && def=1
+    for system in gba pokemonhacks ; do
         mkRomDir "$system"
-        addEmulator "$def" "$md_id" "$system" 
-        addSystem "$system"
         ensureSystemretroconfig "$system"
+
+        def=0
+        isPlatform "armv6" && def=1
+        addEmulator $def "$md_id" "$system" "$md_inst/gpsp_libretro.so"
+        addSystem "$system"
     done
 }
