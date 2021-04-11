@@ -75,7 +75,7 @@ function configure_drastic() {
     local system
     local def
     for system in nds nds-extras nds-japan nds-usa ; do
-        def=0
+        def=1
         mkRomDir "$system"
         mkUserDir "$md_conf_root/$system/drastic"
         mkUserDir "$md_conf_root/$system/drastic/system"
