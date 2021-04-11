@@ -37,13 +37,25 @@ function install_lr-nestopia() {
 }
 
 function configure_lr-nestopia() {
-    mkRomDir "nes"
-    mkRomDir "fds"
-    ensureSystemretroconfig "nes"
-    ensureSystemretroconfig "fds"
+#    mkRomDir "nes"
+#    mkRomDir "fds"
+#    ensureSystemretroconfig "nes"
+#    ensureSystemretroconfig "fds"
 
-    addEmulator 0 "$md_id" "nes" "$md_inst/nestopia_libretro.so"
-    addEmulator 1 "$md_id" "fds" "$md_inst/nestopia_libretro.so"
-    addSystem "nes"
-    addSystem "fds"
+#    addEmulator 0 "$md_id" "nes" "$md_inst/nestopia_libretro.so"
+#    addEmulator 1 "$md_id" "fds" "$md_inst/nestopia_libretro.so"
+#    addSystem "nes"
+#    addSystem "fds"
+
+    local system
+    local def
+    for system in famicom famicom-translations fds fds-translations nes nes-extras nes-usa ; do
+        def=0
+        isPlatform "armv6" && def=0
+        [[ "$system" == "fds" || "$system" == "fds-translations" ]] && def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/nestopia_libretro.so"
+        addSystem "$system"
+        ensureSystemretroconfig "$system"
+    done
 }

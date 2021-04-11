@@ -60,7 +60,7 @@ function configure_pisnes() {
 
     local system
     local def
-    for system in snes sfc snes-extras snes-usa smwhacks ; do
+    for system in sfc sfc-translations snes snes-extras snes-usa smwhacks ; do
         def=0
         mkRomDir "$system"
 

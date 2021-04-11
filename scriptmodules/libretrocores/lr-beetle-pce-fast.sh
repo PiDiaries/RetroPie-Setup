@@ -46,7 +46,7 @@ function configure_lr-beetle-pce-fast() {
     #addSystem "pcengine"
 
     local system
-    for system in pce-cd pcengine tg-cd tg16; do
+    for system in pce-cd pce-cd-translations pcengine pcengine-translations tg-cd tg16; do
         ensureSystemretroconfig "$system"
         mkRomDir "$system"
         addEmulator 1 "$md_id" "$system" "$md_inst/mednafen_pce_fast_libretro.so"

@@ -36,10 +36,22 @@ function install_quasi88() {
 }
 
 function configure_quasi88() {
-    mkRomDir "pc88"
-    moveConfigDir "$home/.quasi88" "$md_conf_root/pc88"
+#    mkRomDir "pc88"
+#    moveConfigDir "$home/.quasi88" "$md_conf_root/pc88"
     mkUserDir "$biosdir/pc88"
 
-    addEmulator 1 "$md_id" "pc88" "$md_inst/quasi88.sdl -f6 IMAGE-NEXT1 -f7 IMAGE-NEXT2 -f8 NOWAIT -f9 ROMAJI -f10 NUMLOCK -fullscreen %ROM%"
-    addSystem "pc88"
+#    addEmulator 1 "$md_id" "pc88" "$md_inst/quasi88.sdl -f6 IMAGE-NEXT1 -f7 IMAGE-NEXT2 -f8 NOWAIT -f9 ROMAJI -f10 NUMLOCK -fullscreen %ROM%"
+#    addSystem "pc88"
+
+    local system
+    local def
+    for system in pc-88 pc88-translations ; do
+        def=0
+        mkRomDir "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/quasi88.sdl -f6 IMAGE-NEXT1 -f7 IMAGE-NEXT2 -f8 NOWAIT -f9 ROMAJI -f10 NUMLOCK -fullscreen %ROM%"
+        addSystem "$system"
+    done
+
+
 }

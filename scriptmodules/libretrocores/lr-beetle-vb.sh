@@ -36,9 +36,21 @@ function install_lr-beetle-vb() {
 }
 
 function configure_lr-beetle-vb() {
-    mkRomDir "virtualboy"
-    ensureSystemretroconfig "virtualboy"
+#    mkRomDir "virtualboy"
+#    ensureSystemretroconfig "virtualboy"
 
-    addEmulator 1 "$md_id" "virtualboy" "$md_inst/mednafen_vb_libretro.so"
-    addSystem "virtualboy"
+#    addEmulator 1 "$md_id" "virtualboy" "$md_inst/mednafen_vb_libretro.so"
+#    addSystem "virtualboy"
+
+    local system
+    local def
+    for system in virtualboy virtualboy-translations ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator 1 "$md_id" "$system" "$md_inst/mednafen_vb_libretro.so"
+        addSystem "$system"
+    done
+
 }

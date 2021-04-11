@@ -38,21 +38,43 @@ function install_px68k() {
 }
 
 function configure_px68k() {
-    mkRomDir "x68000"
+#    mkRomDir "x68000"
 
-    moveConfigDir "$home/.keropi" "$md_conf_root/x68000"
+#    moveConfigDir "$home/.keropi" "$md_conf_root/x68000"
     mkUserDir "$biosdir/keropi"
 
-    local bios
-    for bios in cgrom.dat iplrom30.dat iplromco.dat iplrom.dat iplromxv.dat; do
-        if [[ -f "$biosdir/$bios" ]]; then
-            mv "$biosdir/$bios" "$biosdir/keropi/$bios"
-        fi
-        ln -sf "$biosdir/keropi/$bios" "$md_conf_root/x68000/$bios"
+#    local bios
+#    for bios in cgrom.dat iplrom30.dat iplromco.dat iplrom.dat iplromxv.dat; do
+#        if [[ -f "$biosdir/$bios" ]]; then
+#            mv "$biosdir/$bios" "$biosdir/keropi/$bios"
+#        fi
+#        ln -sf "$biosdir/keropi/$bios" "$md_conf_root/x68000/$bios"
+#    done
+
+#    setDispmanx "$md_id" 0
+
+#    addEmulator 1 "$md_id" "x68000" "$md_inst/px68k %ROM%"
+#    addSystem "x68000"
+
+
+    local system
+    local def
+    for system in x68000 x68000-translation ; do
+        def=0
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        
+        local bios
+        for bios in cgrom.dat iplrom30.dat iplromco.dat iplrom.dat iplromxv.dat; do
+            if [[ -f "$biosdir/$bios" ]]; then
+                mv "$biosdir/$bios" "$biosdir/keropi/$bios"
+            fi
+            ln -sf "$biosdir/keropi/$bios" "$md_conf_root/$system/$bios"
+        done
+        
+        setDispmanx "$md_id" 0
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/px68k %ROM%"
+        addSystem "$system"
     done
-
-    setDispmanx "$md_id" 0
-
-    addEmulator 1 "$md_id" "x68000" "$md_inst/px68k %ROM%"
-    addSystem "x68000"
 }

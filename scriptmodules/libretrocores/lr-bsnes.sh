@@ -54,12 +54,16 @@ function configure_lr-bsnes() {
 
     local system
     local def
-    for system in snes sfc snes-extras snes-usa sufami smwhacks ; do
+    for system in sfc sfc-translations sgb snes snes-extras snes-usa smwhacks ; do
         def=1
-        #[[ "$system" == "" ]] && def=0
+        [[ "$system" == "sgb" ]] && def=0
         mkRomDir "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/bsnes_libretro.so"
         addSystem "$system"
         ensureSystemretroconfig "$system"
     done
+    
+    addEmulator 1 "$md_id" "sgb" "$md_inst/bsnes_libretro.so %ROM% --subsystem sgb $biosdir/Super\ Game\ Boy\ \(World\)\ \(Rev\ 2\).sfc"
+    sed -i.bak '/^lr-bsnes =/ s/ %ROM%//2' $configdir/sgb/emulators.cfg
+    
 }

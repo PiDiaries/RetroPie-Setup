@@ -37,7 +37,7 @@ function install_lr-mesen() {
 
 function configure_lr-mesen() {
     local system
-    for system in famicom fds nes nes-extras nes-usa ; do
+    for system in famicom famicom-translations fds fds-translations nes nes-extras nes-usa ; do
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
         addEmulator 0 "$md_id" "$system" "$md_inst/mesen_libretro.so"

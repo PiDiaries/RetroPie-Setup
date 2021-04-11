@@ -47,7 +47,7 @@ function install_dgen() {
 
 function configure_dgen() {
     local system
-    for system in genesis megadrive megadrive-extras megadrive-japan segacd segacd-extras segacd-japan segacd-usa sega32x; do
+    for system in genesis megadrive megadrive-extras megadrive-japan megadrive-translations segacd segacd-extras segacd-japan segacd-translations segacd-usa sega32x; do
         mkRomDir "$system"
         addEmulator 0 "$md_id" "$system" "$md_inst/bin/dgen -r $md_conf_root/megadrive/dgenrc %ROM%"
         addSystem "$system"

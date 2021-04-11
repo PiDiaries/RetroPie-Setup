@@ -36,29 +36,50 @@ function install_lr-bluemsx() {
 }
 
 function configure_lr-bluemsx() {
-    mkRomDir "msx"
-    mkRomDir "msx2"
-    ensureSystemretroconfig "msx"
-    ensureSystemretroconfig "msx2"
+#    mkRomDir "msx"
+#    mkRomDir "msx2"
+#    ensureSystemretroconfig "msx"
+#    ensureSystemretroconfig "msx2"
 
-    mkRomDir "coleco"
-    ensureSystemretroconfig "coleco"
+#    mkRomDir "coleco"
+#    ensureSystemretroconfig "coleco"
 
     # force colecovision system
+#    local core_config="$configdir/coleco/retroarch.cfg"
+#    iniConfig " = " '"' "$configdir/coleco/retroarch.cfg"
+#    iniSet "core_options_path" "$core_config"
+#    iniSet "bluemsx_msxtype" "ColecoVision" "$core_config"
+#    chown $user:$user "$core_config"
+
+    cp -rv "$md_inst/"{Databases,Machines} "$biosdir/"
+    chown -R $user:$user "$biosdir/"{Databases,Machines}
+
+#    addEmulator 1 "$md_id" "msx" "$md_inst/bluemsx_libretro.so"
+#    addEmulator 1 "$md_id" "msx2" "$md_inst/bluemsx_libretro.so"
+#    addSystem "msx"
+#    addSystem "msx2"
+
+#    addEmulator 1 "$md_id" "coleco" "$md_inst/bluemsx_libretro.so"
+#    addSystem "coleco"
+
+
+    local system
+    local def
+    for system in coleco msx msx-translations msx-turbor msx-turbor-translations msx2 msx2-plus msx2-translations ; do
+        def=1
+        
+        mkRomDir "$system"
+        ensureSystemretroconfig "system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/bluemsx_libretro.so"
+
+        addSystem "$system"
+
+    done
+
     local core_config="$configdir/coleco/retroarch.cfg"
     iniConfig " = " '"' "$configdir/coleco/retroarch.cfg"
     iniSet "core_options_path" "$core_config"
     iniSet "bluemsx_msxtype" "ColecoVision" "$core_config"
     chown $user:$user "$core_config"
 
-    cp -rv "$md_inst/"{Databases,Machines} "$biosdir/"
-    chown -R $user:$user "$biosdir/"{Databases,Machines}
-
-    addEmulator 1 "$md_id" "msx" "$md_inst/bluemsx_libretro.so"
-    addEmulator 1 "$md_id" "msx2" "$md_inst/bluemsx_libretro.so"
-    addSystem "msx"
-    addSystem "msx2"
-
-    addEmulator 1 "$md_id" "coleco" "$md_inst/bluemsx_libretro.so"
-    addSystem "coleco"
 }

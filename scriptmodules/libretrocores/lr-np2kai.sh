@@ -34,9 +34,21 @@ function install_lr-np2kai() {
 }
 
 function configure_lr-np2kai() {
-    mkRomDir "pc98"
-    ensureSystemretroconfig "pc98"
+#    mkRomDir "pc98"
+#    ensureSystemretroconfig "pc98"
 
-    addEmulator 1 "$md_id" "pc98" "$md_inst/np2kai_libretro.so"
-    addSystem "pc98"
+#    addEmulator 1 "$md_id" "pc98" "$md_inst/np2kai_libretro.so"
+#    addSystem "pc98"
+
+    local system
+    local def
+    for system in pc98 pc98-translations ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/np2kai_libretro.so"
+        addSystem "$system"
+
+    done
 }

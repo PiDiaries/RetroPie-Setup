@@ -101,50 +101,94 @@ function configure_reicast() {
     cp "$md_data/reicast.sh" "$md_inst/bin/"
     chmod +x "$md_inst/bin/reicast.sh"
 
-    mkRomDir "dreamcast"
+#    mkRomDir "dreamcast"
 
     # move any old configs to the new location
-    moveConfigDir "$home/.reicast" "$md_conf_root/dreamcast/"
+#    moveConfigDir "$home/.reicast" "$md_conf_root/dreamcast/"
 
     # Create home VMU, cfg, and data folders. Copy dc_boot.bin and dc_flash.bin to the ~/.reicast/data/ folder.
-    mkdir -p "$md_conf_root/dreamcast/"{data,mappings}
+#    mkdir -p "$md_conf_root/dreamcast/"{data,mappings}
 
     # symlink bios
-    mkUserDir "$biosdir/dc"
-    ln -sf "$biosdir/dc/"{dc_boot.bin,dc_flash.bin} "$md_conf_root/dreamcast/data"
+#    mkUserDir "$biosdir/dc"
+#    ln -sf "$biosdir/dc/"{dc_boot.bin,dc_flash.bin} "$md_conf_root/dreamcast/data"
 
     # copy default mappings
-    cp "$md_inst/share/reicast/mappings/"*.cfg "$md_conf_root/dreamcast/mappings/"
+#    cp "$md_inst/share/reicast/mappings/"*.cfg "$md_conf_root/dreamcast/mappings/"
 
-    chown -R $user:$user "$md_conf_root/dreamcast"
+#    chown -R $user:$user "$md_conf_root/dreamcast"
 
-    if [[ "$md_mode" == "install" ]]; then
-        cat > "$romdir/dreamcast/+Start Reicast.sh" << _EOF_
+#    if [[ "$md_mode" == "install" ]]; then
+#        cat > "$romdir/dreamcast/+Start Reicast.sh" << _EOF_
+##!/bin/bash
+#$md_inst/bin/reicast.sh
+#_EOF_
+#        chmod a+x "$romdir/dreamcast/+Start Reicast.sh"
+#        chown $user:$user "$romdir/dreamcast/+Start Reicast.sh"
+#    else
+#        rm "$romdir/dreamcast/+Start Reicast.sh"
+#    fi
+
+#    if [[ "$md_mode" == "install" ]]; then
+        # possible audio backends: alsa, oss, omx
+#        if isPlatform "videocore"; then
+#            backends=(omx oss)
+#        else
+#            backends=(alsa)
+#        fi
+#    fi
+
+    # add system(s)
+#    for backend in "${backends[@]}"; do
+#        addEmulator 1 "${md_id}-audio-${backend}" "dreamcast" "$md_inst/bin/reicast.sh $backend ${params[*]}"
+#    done
+#    addSystem "dreamcast"
+
+#    addAutoConf reicast_input 1
+
+    local system
+    local def
+    for system in dreamcast dreamcast-extras dreamcast-japan dreamcast-translations dreamcast-usa ; do
+        # Create home VMU, cfg, and data folders. Copy dc_boot.bin and dc_flash.bin to the ~/.reicast/data/ folder.
+        mkdir -p "$md_conf_root/$system/"{data,mappings}
+
+        # symlink bios
+        mkUserDir "$biosdir/dc"
+        ln -sf "$biosdir/dc/"{dc_boot.bin,dc_flash.bin} "$md_conf_root/$system/data"
+
+        # copy default mappings
+        cp "$md_inst/share/reicast/mappings/"*.cfg "$md_conf_root/$system/mappings/"
+
+        chown -R $user:$user "$md_conf_root/$system"
+
+        if [[ "$md_mode" == "install" ]]; then
+            cat > "$romdir/$system/+Start Reicast.sh" << _EOF_
 #!/bin/bash
 $md_inst/bin/reicast.sh
 _EOF_
-        chmod a+x "$romdir/dreamcast/+Start Reicast.sh"
-        chown $user:$user "$romdir/dreamcast/+Start Reicast.sh"
-    else
-        rm "$romdir/dreamcast/+Start Reicast.sh"
-    fi
-
-    if [[ "$md_mode" == "install" ]]; then
-        # possible audio backends: alsa, oss, omx
-        if isPlatform "videocore"; then
-            backends=(omx oss)
+            chmod a+x "$romdir/$system/+Start Reicast.sh"
+            chown $user:$user "$romdir/$system/+Start Reicast.sh"
         else
-            backends=(alsa)
+            rm "$romdir/$system/+Start Reicast.sh"
         fi
-    fi
 
-    # add system(s)
-    for backend in "${backends[@]}"; do
-        addEmulator 1 "${md_id}-audio-${backend}" "dreamcast" "$md_inst/bin/reicast.sh $backend ${params[*]}"
+        if [[ "$md_mode" == "install" ]]; then
+            # possible audio backends: alsa, oss, omx
+            if isPlatform "videocore"; then
+                backends=(omx oss)
+            else
+                backends=(alsa)
+            fi
+        fi
+
+        # add system(s)
+        for backend in "${backends[@]}"; do
+            addEmulator 1 "${md_id}-audio-${backend}" "$system" "$md_inst/bin/reicast.sh $backend ${params[*]}"
+        done
+        addSystem "$system"
+
+        addAutoConf reicast_input 1
     done
-    addSystem "dreamcast"
-
-    addAutoConf reicast_input 1
 }
 
 function input_reicast() {

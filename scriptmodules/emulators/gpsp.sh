@@ -60,7 +60,7 @@ function configure_gpsp() {
 
     local system
     local def
-    for system in gba pokemonhacks ; do
+    for system in gba gba-translations pokemonhacks ; do
         def=0
         mkRomDir "$system"
         ensureSystemretroconfig "$system"

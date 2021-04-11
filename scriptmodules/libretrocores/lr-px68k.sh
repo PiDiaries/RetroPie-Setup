@@ -35,11 +35,23 @@ function install_lr-px68k() {
 }
 
 function configure_lr-px68k() {
-    mkRomDir "x68000"
-    ensureSystemretroconfig "x68000"
+#    mkRomDir "x68000"
+#    ensureSystemretroconfig "x68000"
 
     mkUserDir "$biosdir/keropi"
 
-    addEmulator 1 "$md_id" "x68000" "$md_inst/px68k_libretro.so"
-    addSystem "x68000"
+#    addEmulator 1 "$md_id" "x68000" "$md_inst/px68k_libretro.so"
+#    addSystem "x68000"
+
+    local system
+    local def
+    for system in x68000 x68000-translations ; do
+ 
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator 1 "$md_id" "$system" "$md_inst/px68k_libretro.so"
+        addSystem "$system"
+    done
+
 }

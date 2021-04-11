@@ -41,7 +41,7 @@ function configure_lr-beetle-supergrafx() {
 
     local system
     local def
-    for system in pce-cd pcengine tg-cd tg16 supergrafx ; do
+    for system in pce-cd pce-cd-translations pcengine pcengine-translations tg-cd tg16 supergrafx ; do
         def=0
         [[ "$system" == "supergrafx" ]] && def=1
         mkRomDir "$system"

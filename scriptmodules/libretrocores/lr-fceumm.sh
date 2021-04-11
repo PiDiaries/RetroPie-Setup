@@ -53,10 +53,10 @@ function configure_lr-fceumm() {
 
     local system
     local def
-    for system in famicom fds nes nes-extras nes-usa ; do
+    for system in famicom famicom-translations fds fds-translations nes nes-extras nes-usa ; do
         def=1
         isPlatform "armv6" && def=0
-        [[ "$system" == "fds" ]] && def=0
+        [[ "$system" == "fds" || "$system" == "fds-translations" ]] && def=0
         mkRomDir "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/fceumm_libretro.so"
         addSystem "$system"

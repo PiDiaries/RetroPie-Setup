@@ -89,7 +89,7 @@ function configure_lr-flycast() {
     
     local system
     local def
-    for system in dreamcast dreamcast-extras dreamcast-japan dreamcast-usa ; do
+    for system in dreamcast dreamcast-extras dreamcast-japan dreamcast-translations dreamcast-usa ; do
         def=0
         isPlatform "kms" && def=1
         mkRomDir "$system"

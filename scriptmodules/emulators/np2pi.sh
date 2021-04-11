@@ -11,7 +11,7 @@
 
 rp_module_id="np2pi"
 rp_module_desc="NEC PC-9801 emulator"
-rp_module_help="ROM Extensions: .d88 .d98 .88d .98d .fdi .xdf .hdm .dup .2hd .tfd .hdi .thd .nhd .hdd\n\nCopy your pc98 games to to $romdir/pc88\n\nCopy bios files 2608_bd.wav, 2608_hh.wav, 2608_rim.wav, 2608_sd.wav, 2608_tom.wav 2608_top.wav, bios.rom, FONT.ROM and sound.rom to $biosdir/pc98"
+rp_module_help="ROM Extensions: .d88 .d98 .88d .98d .fdi .xdf .hdm .dup .2hd .tfd .hdi .thd .nhd .hdd\n\nCopy your pc98 games to to $romdir/pc98\n\nCopy bios files 2608_bd.wav, 2608_hh.wav, 2608_rim.wav, 2608_sd.wav, 2608_tom.wav 2608_top.wav, bios.rom, FONT.ROM and sound.rom to $biosdir/pc98"
 rp_module_repo="git https://github.com/eagle0wl/np2pi.git master"
 rp_module_section="exp"
 rp_module_flags="!all dispmanx rpi !aarch64"
@@ -37,7 +37,7 @@ function install_np2pi() {
 }
 
 function configure_np2pi() {
-    mkRomDir "pc98"
+#    mkRomDir "pc98"
 
     mkUserDir "$md_conf_root/pc98"
     setDispmanx "$md_id" 1
@@ -47,14 +47,31 @@ function configure_np2pi() {
 
     # symlink bios files
     mkUserDir "$biosdir/pc98"
-    local bios
-    for bios in 2608_bd.wav 2608_hh.wav 2608_rim.wav 2608_sd.wav 2608_tom.wav 2608_top.wav bios.rom FONT.ROM sound.rom; do
-        ln -sf "$biosdir/pc98/$bios" "$md_conf_root/pc98/$bios"
-    done
+#    local bios
+#    for bios in 2608_bd.wav 2608_hh.wav 2608_rim.wav 2608_sd.wav 2608_tom.wav 2608_top.wav bios.rom FONT.ROM sound.rom; do
+#        ln -sf "$biosdir/pc98/$bios" "$md_conf_root/pc98/$bios"
+#    done
 
     # symlink font
-    ln -sf /usr/share/fonts/truetype/takao-gothic/TakaoGothic.ttf "$md_conf_root/pc98/default.ttf"
+#    ln -sf /usr/share/fonts/truetype/takao-gothic/TakaoGothic.ttf "$md_conf_root/pc98/default.ttf"
 
-    addEmulator 1 "$md_id" "pc98" "pushd $md_conf_root/pc98; $md_inst/np2 %ROM%; popd"
-    addSystem "pc98"
+#    addEmulator 1 "$md_id" "pc98" "pushd $md_conf_root/pc98; $md_inst/np2 %ROM%; popd"
+#    addSystem "pc98"
+
+    local system
+    local def
+    for system in pc98 pc98-translations ; do
+        def=0
+        mkRomDir "$system"
+        local bios
+        for bios in 2608_bd.wav 2608_hh.wav 2608_rim.wav 2608_sd.wav 2608_tom.wav 2608_top.wav bios.rom FONT.ROM sound.rom; do
+            ln -sf "$biosdir/pc98/$bios" "$md_conf_root/$system/$bios"
+        done
+
+        ln -sf /usr/share/fonts/truetype/takao-gothic/TakaoGothic.ttf "$md_conf_root/$system/default.ttf"
+
+        addEmulator "$def" "$md_id" "$system" "pushd $md_conf_root/$system; $md_inst/np2 %ROM%; popd"
+        addSystem "$system"
+    done
+
 }

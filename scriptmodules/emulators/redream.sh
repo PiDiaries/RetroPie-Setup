@@ -25,32 +25,62 @@ function install_bin_redream() {
 }
 
 function configure_redream() {
-    mkRomDir "dreamcast"
+#    mkRomDir "dreamcast"
 
-    addEmulator 1 "$md_id" "dreamcast" "$md_inst/redream %ROM%"
-    addSystem "dreamcast"
+#    addEmulator 1 "$md_id" "dreamcast" "$md_inst/redream %ROM%"
+#    addSystem "dreamcast"
 
-    [[ "$md_mode" == "remove" ]] && return
+#    [[ "$md_mode" == "remove" ]] && return
 
-    chown -R $user:$user "$md_inst"
+#    chown -R $user:$user "$md_inst"
 
-    local dest="$md_conf_root/dreamcast/redream"
-    mkUserDir "$dest"
+#    local dest="$md_conf_root/dreamcast/redream"
+#    mkUserDir "$dest"
 
     # symlinks configs and cache
-    moveConfigFile "$md_inst/redream.cfg" "$dest/redream.cfg"
-    moveConfigDir "$md_inst/cache" "$dest/cache"
-    moveConfigDir "$md_inst/saves" "$dest/saves"
-    moveConfigDir "$md_inst/states" "$dest/states"
+#    moveConfigFile "$md_inst/redream.cfg" "$dest/redream.cfg"
+#    moveConfigDir "$md_inst/cache" "$dest/cache"
+#    moveConfigDir "$md_inst/saves" "$dest/saves"
+#    moveConfigDir "$md_inst/states" "$dest/states"
 
     # copy / symlink vmus (memory cards)
-    local i
-    for i in 0 1 2 3; do
-      moveConfigFile "$md_inst/vmu$i.bin" "$dest/vmu$i.bin"
-    done
+#    local i
+#    for i in 0 1 2 3; do
+#      moveConfigFile "$md_inst/vmu$i.bin" "$dest/vmu$i.bin"
+#    done
 
     # symlink bios files to libretro core install locations
+
+    local system
+    local def
+    for system in dreamcast dreamcast-extras dreamcast-japan dreamcast-translations dreamcast-usa ; do
+        def=1
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/redream %ROM%"
+        addSystem "$system"
+        [[ "$md_mode" == "remove" ]] && return
+
+        chown -R $user:$user "$md_inst"
+
+        local dest="$md_conf_root/$system/redream"
+        mkUserDir "$dest"
+
+        # symlinks configs and cache
+        moveConfigFile "$md_inst/redream.cfg" "$dest/redream.cfg"
+        moveConfigDir "$md_inst/cache" "$dest/cache"
+        moveConfigDir "$md_inst/saves" "$dest/saves"
+        moveConfigDir "$md_inst/states" "$dest/states"
+
+        # copy / symlink vmus (memory cards)
+        local i
+        for i in 0 1 2 3; do
+        moveConfigFile "$md_inst/vmu$i.bin" "$dest/vmu$i.bin"
+        done
+
+    done
+
     mkUserDir "$biosdir/dc"
     ln -sf "$biosdir/dc/dc_boot.bin" "$md_inst/boot.bin"
     ln -sf "$biosdir/dc/dc_flash.bin" "$md_inst/flash.bin"
+    
 }

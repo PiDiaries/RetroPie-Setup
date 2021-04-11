@@ -42,12 +42,24 @@ function configure_lr-gambatte() {
     chown $user:$user "$biosdir/palettes/default.pal"
     setRetroArchCoreOption "gambatte_gb_colorization" "custom"
 
-    mkRomDir "gbc"
-    mkRomDir "gb"
-    ensureSystemretroconfig "gb"
-    ensureSystemretroconfig "gbc"
-    addEmulator 1 "$md_id" "gb" "$md_inst/gambatte_libretro.so"
-    addEmulator 1 "$md_id" "gbc" "$md_inst/gambatte_libretro.so"
-    addSystem "gb"
-    addSystem "gbc"
+#    mkRomDir "gbc"
+#    mkRomDir "gb"
+#    ensureSystemretroconfig "gb"
+#    ensureSystemretroconfig "gbc"
+#    addEmulator 1 "$md_id" "gb" "$md_inst/gambatte_libretro.so"
+#    addEmulator 1 "$md_id" "gbc" "$md_inst/gambatte_libretro.so"
+#    addSystem "gb"
+#    addSystem "gbc"
+
+    local system
+    local def
+    for system in gb gb-extras gb-japan gb-translations gb-usa gbc gbc-translations; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/gambatte_libretro.so"
+        addSystem "$system"
+    done
+
 }

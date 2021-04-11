@@ -49,7 +49,7 @@ function configure_lr-snes9x() {
 
     local system
     local def
-    for system in snes sfc snes-extras snes-usa snesmsu1 satellaview sufami smwhacks ; do
+    for system in sfc sfc-translations snes snes-extras snes-usa snesmsu1 satellaview sufami smwhacks ; do
         def=0
         ! isPlatform "armv6" && ! isPlatform "armv7" && def=1
         [[ "$system" == "snesmsu1" ]] && def=1

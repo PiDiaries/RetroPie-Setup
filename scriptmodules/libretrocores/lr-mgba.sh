@@ -43,9 +43,9 @@ function install_lr-mgba() {
 function configure_lr-mgba() {
     local system
     local def
-    for system in gb gbc gba pokemonhacks; do
+    for system in gb  gb-extras gb-japan gb-translations gb-usa gba gba-translations gbc  gbc-translations pokemonhacks; do
         def=0
-        [[ "$system" == "gba" ]] && ! isPlatform "armv6" && def=1
+        [[ "$system" == "gba" || "$system" == "gba-translations" ]] && ! isPlatform "armv6" && def=1
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/mgba_libretro.so"

@@ -52,7 +52,7 @@ function configure_snes9x() {
 
     local system
     local def
-    for system in snes sfc snes-extras snes-usa smwhacks ; do
+    for system in sfc sfc-translations snes snes-extras snes-usa smwhacks ; do
         def=0
         #[[ "$system" == "" ]] && def=1
         mkRomDir "$system"

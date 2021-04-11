@@ -38,7 +38,7 @@ function configure_lr-fmsx() {
 
     # default to MSX2+ core
     local system
-    for system in msx msx2; do
+    for system in msx msx-translations msx2 msx2-translations ; do
         mkRomDir "$system"
         ensureSystemretroconfig "$system"        
         local core_config="$configdir/$system/retroarch.cfg"

@@ -37,9 +37,17 @@ function install_lr-opera() {
 }
 
 function configure_lr-opera() {
-    mkRomDir "3do"
-    ensureSystemretroconfig "3do"
+    local system
+    local def
+    for system in 3do 3do-translations ; do
+        def=1
 
-    addEmulator 1 "$md_id" "3do" "$md_inst/opera_libretro.so"
-    addSystem "3do"
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator 1 "$md_id" "$system" "$md_inst/opera_libretro.so"
+        addSystem "$system"
+
+    done 
+    
 }

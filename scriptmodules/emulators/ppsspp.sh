@@ -171,11 +171,21 @@ function configure_ppsspp() {
         extra_params+=(--fullscreen)
     fi
 
-    mkRomDir "psp"
-    moveConfigDir "$home/.config/ppsspp" "$md_conf_root/psp"
-    mkUserDir "$md_conf_root/psp/PSP"
-    ln -snf "$romdir/psp" "$md_conf_root/psp/PSP/GAME"
+#    mkRomDir "psp"
+#    moveConfigDir "$home/.config/ppsspp" "$md_conf_root/psp"
+#    mkUserDir "$md_conf_root/psp/PSP"
+#    ln -snf "$romdir/psp" "$md_conf_root/psp/PSP/GAME"
 
-    addEmulator 0 "$md_id" "psp" "$md_inst/PPSSPPSDL ${extra_params[*]} %ROM%"
-    addSystem "psp"
+#    addEmulator 0 "$md_id" "psp" "$md_inst/PPSSPPSDL ${extra_params[*]} %ROM%"
+#    addSystem "psp"
+
+    local system
+    local def
+    for system in psp psp-extras psp-japan psp-translations psp-usa ; do
+        def=0
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/PPSSPPSDL ${extra_params[*]} %ROM%"
+        addSystem "$system"
+    done
+
 }

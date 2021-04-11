@@ -94,7 +94,7 @@ function configure_lr-mupen64plus() {
 
     local system
     local def
-    for system in  n64 n64-dd n64-extras n64-japan n64-usa  ; do
+    for system in  n64 n64-dd n64-extras n64-japan n64-translations n64-usa  ; do
         def=0
         #[[ "$system" == "" ]] && def=1
         mkRomDir "$system"

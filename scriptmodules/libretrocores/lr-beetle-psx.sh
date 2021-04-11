@@ -48,7 +48,7 @@ function configure_lr-beetle-psx() {
     #addSystem "psx"
     
     local system
-    for system in psx psx-usa psx-japan psx-extras; do
+    for system in psx psx-usa psx-japan psx-extras psx-translations ; do
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
         addEmulator 0 "$md_id" "$system" "$md_inst/mednafen_psx_hw_libretro.so"

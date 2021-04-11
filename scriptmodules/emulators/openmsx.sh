@@ -55,18 +55,18 @@ function install_openmsx() {
 }
 
 function configure_openmsx() {
-    mkRomDir "msx"
-    mkRomDir "msx2"
+    local system
+    local def
+    for system in msx msx-translations msx-turbor msx-turbor-translations msx2 msx2-plus msx2-translations ; do
+        mkRomDir "$system"
 
-    addEmulator 0 "$md_id" "msx" "$md_inst/bin/openmsx %ROM%"
-    addEmulator 0 "$md_id-msx2" "msx" "$md_inst/bin/openmsx -machine 'Boosted_MSX2_EN' %ROM%"
-    addEmulator 0 "$md_id-msx2-plus" "msx" "$md_inst/bin/openmsx -machine 'Boosted_MSX2+_JP' %ROM%"
-    addEmulator 0 "$md_id-msx-turbor" "msx" "$md_inst/bin/openmsx -machine 'Panasonic_FS-A1GT' %ROM%"
-    addSystem "msx"
-    addSystem "msx2"
-    
-    [[ $md_mode == "remove" ]] && return
-
+        addEmulator 0 "$md_id" "$system" "$md_inst/bin/openmsx %ROM%"
+        addEmulator 0 "$md_id-msx2" "$system" "$md_inst/bin/openmsx -machine 'Boosted_MSX2_EN' %ROM%"
+        addEmulator 0 "$md_id-msx2-plus" "$system" "$md_inst/bin/openmsx -machine 'Boosted_MSX2+_JP' %ROM%"
+        addEmulator 0 "$md_id-msx-turbor" "$system" "$md_inst/bin/openmsx -machine 'Panasonic_FS-A1GT' %ROM%"
+        addSystem "$system"
+        [[ $md_mode == "remove" ]] && return
+    done
     # Add a minimal configuration
     local config="$(mktemp)"
     echo "$(_default_settings_openmsx)" > "$config"

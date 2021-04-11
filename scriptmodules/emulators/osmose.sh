@@ -41,11 +41,23 @@ function install_osmose() {
 }
 
 function configure_osmose() {
-    mkRomDir "gamegear"
-    mkRomDir "mastersystem"
+#    mkRomDir "gamegear"
+#    mkRomDir "mastersystem"
 
-    addEmulator 0 "$md_id" "gamegear" "$md_inst/osmose %ROM% -tv -fs"
-    addEmulator 0 "$md_id" "mastersystem" "$md_inst/osmose %ROM% -tv -fs"
-    addSystem "gamegear"
-    addSystem "mastersystem"
+#    addEmulator 0 "$md_id" "gamegear" "$md_inst/osmose %ROM% -tv -fs"
+#    addEmulator 0 "$md_id" "mastersystem" "$md_inst/osmose %ROM% -tv -fs"
+#    addSystem "gamegear"
+#    addSystem "mastersystem"
+
+
+    local system
+    local def
+    for system in gamegear gamegear-extras gamegear-japan game-gear-translations gamegear-usa markiii markiii-translations ; do
+        def=0
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/osmose %ROM% -tv -fs"
+        addSystem "$system"
+    done
 }

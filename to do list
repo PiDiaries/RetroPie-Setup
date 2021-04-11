@@ -3,3 +3,6 @@ to do list
 N64 
 modify /home/iain/RetroPie-Setup/scriptmodules/supplementary/emulationstation/configscripts/mupen64plus.sh
 to put InputAutoCfg.ini into other N64 systems
+
+
+Check moveconfigfile

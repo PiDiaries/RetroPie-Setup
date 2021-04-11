@@ -37,8 +37,8 @@ function install_lr-ppsspp() {
 }
 
 function configure_lr-ppsspp() {
-    mkRomDir "psp"
-    ensureSystemretroconfig "psp"
+#    mkRomDir "psp"
+#    ensureSystemretroconfig "psp"
 
     if [[ "$md_mode" == "install" ]]; then
         mkUserDir "$biosdir/PPSSPP"
@@ -46,6 +46,17 @@ function configure_lr-ppsspp() {
         chown -R $user:$user "$biosdir/PPSSPP"
     fi
 
-    addEmulator 1 "$md_id" "psp" "$md_inst/ppsspp_libretro.so"
-    addSystem "psp"
+#    addEmulator 1 "$md_id" "psp" "$md_inst/ppsspp_libretro.so"
+#    addSystem "psp"
+
+    local system
+    local def
+    for system in psp psp-extras psp-japan psp-translations psp-usa ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/ppsspp_libretro.so"
+        addSystem "$system"
+    done
+
 }

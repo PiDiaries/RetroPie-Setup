@@ -378,7 +378,7 @@ function configure_mupen64plus() {
 #    chown -R $user:$user "$md_conf_root/n64"
     
     local system
-    for system in n64 n64-dd n64-extras n64-japan n64-usa ; do
+    for system in n64 n64-dd n64-extras n64-japan n64-translations n64-usa ; do
         if isPlatform "rpi"; then
             # kms needs to run at full screen as it doesn't benefit from our SDL scaling hint
             if isPlatform "mesa"; then

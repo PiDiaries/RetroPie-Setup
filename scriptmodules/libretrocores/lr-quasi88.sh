@@ -34,8 +34,19 @@ function install_lr-quasi88() {
 }
 
 function configure_lr-quasi88() {
-    mkRomDir "pc88"
-    ensureSystemretroconfig "pc88"
-    addEmulator 1 "$md_id" "pc88" "$md_inst/quasi88_libretro.so"
-    addSystem "pc88"
+#    mkRomDir "pc88"
+#    ensureSystemretroconfig "pc88"
+#    addEmulator 1 "$md_id" "pc88" "$md_inst/quasi88_libretro.so"
+#    addSystem "pc88"
+
+    local system
+    local def
+    for system in pc-88 pc88-translations ; do
+        def=1
+        mkRomDir "pc88"
+        ensureSystemretroconfig "pc88"
+        addEmulator "$def" "$md_id" "pc88" "$md_inst/quasi88_libretro.so"
+        addSystem "pc88"
+
+    done
 }
