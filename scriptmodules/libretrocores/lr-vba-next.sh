@@ -46,7 +46,7 @@ function configure_lr-vba-next() {
 
     local system
     local def
-    for system in gba gba-translations pokemonhacks ; do
+    for system in gba gba-extras gba-japan gba-translations gba-usa pokemonhacks ; do
         def=0
         mkRomDir "$system"
         ensureSystemretroconfig "$system"

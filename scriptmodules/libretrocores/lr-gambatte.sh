@@ -53,7 +53,7 @@ function configure_lr-gambatte() {
 
     local system
     local def
-    for system in gb gb-extras gb-japan gb-translations gb-usa gbc gbc-translations; do
+    for system in gb gb-extras gb-japan gb-translations gb-usa gbc gbc-extras gbc-japan gbc-translations gbc-usa ; do
         def=1
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
