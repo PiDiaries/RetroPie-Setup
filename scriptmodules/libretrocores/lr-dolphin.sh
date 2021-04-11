@@ -41,15 +41,28 @@ function install_lr-dolphin() {
 }
 
 function configure_lr-dolphin() {
-    mkRomDir "gc"
-    mkRomDir "wii"
+#    mkRomDir "gc"
+#    mkRomDir "wii"
 
-    ensureSystemretroconfig "gc"
-    ensureSystemretroconfig "wii"
+#    ensureSystemretroconfig "gc"
+#    ensureSystemretroconfig "wii"
 
-    addEmulator 1 "$md_id" "gc" "$md_inst/dolphin_libretro.so"
-    addEmulator 1 "$md_id" "wii" "$md_inst/dolphin_libretro.so"
+#    addEmulator 1 "$md_id" "gc" "$md_inst/dolphin_libretro.so"
+#    addEmulator 1 "$md_id" "wii" "$md_inst/dolphin_libretro.so"
 
-    addSystem "gc"
-    addSystem "wii"
+#    addSystem "gc"
+#    addSystem "wii"
+
+    local system
+    local def
+    for system in gc gc-extras gc-japan gc-translations gc-usa wii wii-extras wii-japan wii-translations wii-usa ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+
+        addEmulator "$def" "$md_id" "$system" "$md_inst/dolphin_libretro.so"
+        addSystem "$system"
+    done
+
+
 }

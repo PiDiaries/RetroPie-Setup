@@ -50,26 +50,47 @@ function install_dolphin() {
 }
 
 function configure_dolphin() {
-    mkRomDir "gc"
-    mkRomDir "wii"
+#    mkRomDir "gc"
+#    mkRomDir "wii"
 
-    moveConfigDir "$home/.dolphin-emu" "$md_conf_root/gc"
+#    moveConfigDir "$home/.dolphin-emu" "$md_conf_root/gc"
 
-    if [[ ! -f "$md_conf_root/gc/Config/Dolphin.ini" ]]; then
-        mkdir -p "$md_conf_root/gc/Config"
-        cat >"$md_conf_root/gc/Config/Dolphin.ini" <<_EOF_
+#    if [[ ! -f "$md_conf_root/gc/Config/Dolphin.ini" ]]; then
+#        mkdir -p "$md_conf_root/gc/Config"
+#        cat >"$md_conf_root/gc/Config/Dolphin.ini" <<_EOF_
+#[Display]
+#FullscreenResolution = Auto
+#Fullscreen = True
+#_EOF_
+#        chown -R $user:$user "$md_conf_root/gc/Config"
+#    fi
+
+#    addEmulator 1 "$md_id" "gc" "$md_inst/bin/dolphin-emu-nogui -e %ROM%"
+#    addEmulator 0 "$md_id-gui" "gc" "$md_inst/bin/dolphin-emu -b -e %ROM%"
+#    addEmulator 1 "$md_id" "wii" "$md_inst/bin/dolphin-emu-nogui -e %ROM%"
+#    addEmulator 0 "$md_id-gui" "wii" "$md_inst/bin/dolphin-emu -b -e %ROM%"
+
+#    addSystem "gc"
+#    addSystem "wii"
+
+
+    local system
+    local def
+    for system in gc gc-extras gc-japan gc-translations gc-usa wii wii-extras wii-japan wii-translations wii-usa ; do
+        def=0
+        mkRomDir "$system"
+        if [[ ! -f "$md_conf_root/$systemConfig/Dolphin.ini" ]]; then
+            mkdir -p "$md_conf_root/System/Config"
+            cat >"$md_conf_root/$system/Config/Dolphin.ini" <<_EOF_
 [Display]
 FullscreenResolution = Auto
 Fullscreen = True
 _EOF_
-        chown -R $user:$user "$md_conf_root/gc/Config"
-    fi
+            chown -R $user:$user "$md_conf_root/$system/Config"
+        fi
 
-    addEmulator 1 "$md_id" "gc" "$md_inst/bin/dolphin-emu-nogui -e %ROM%"
-    addEmulator 0 "$md_id-gui" "gc" "$md_inst/bin/dolphin-emu -b -e %ROM%"
-    addEmulator 1 "$md_id" "wii" "$md_inst/bin/dolphin-emu-nogui -e %ROM%"
-    addEmulator 0 "$md_id-gui" "wii" "$md_inst/bin/dolphin-emu -b -e %ROM%"
-
-    addSystem "gc"
-    addSystem "wii"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/bin/dolphin-emu-nogui -e %ROM%"
+        addEmulator "$def" "$md_id-gui" "$system" "$md_inst/bin/dolphin-emu -b -e %ROM%"
+        addSystem "$system"
+    done
 }
