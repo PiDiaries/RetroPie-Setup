@@ -34,21 +34,59 @@ function install_bin_drastic() {
 }
 
 function configure_drastic() {
-    mkRomDir "nds"
+#    mkRomDir "nds"
 
     # wrong permissions on game_database.xml
     chmod 644 "$md_inst/game_database.xml"
 
-    mkUserDir "$md_conf_root/nds/drastic"
-    mkUserDir "$md_conf_root/nds/drastic/system"
+#    mkUserDir "$md_conf_root/nds/drastic"
+#    mkUserDir "$md_conf_root/nds/drastic/system"
 
-    local file
-    for file in game_database.xml system/drastic_bios_arm7.bin system/drastic_bios_arm9.bin usrcheat.dat drastic_logo_0.raw drastic_logo_1.raw; do
-        ln -sfv "$md_inst/$file" "$md_conf_root/nds/drastic/$file"
-    done
+#    local file
+#    for file in game_database.xml system/drastic_bios_arm7.bin system/drastic_bios_arm9.bin usrcheat.dat drastic_logo_0.raw drastic_logo_1.raw; do
+#        ln -sfv "$md_inst/$file" "$md_conf_root/nds/drastic/$file"
+#    done
 
-    if [[ "$md_mode" == "install" ]]; then
-        cat > "$md_inst/drastic.sh" << _EOF_
+#    if [[ "$md_mode" == "install" ]]; then
+#        cat > "$md_inst/drastic.sh" << _EOF_
+##!/bin/bash
+## Don't start a window manager on x11 platforms
+#
+#if [[ -n \$DISPLAY && "\$2" == "kms" ]]; then
+#    matchbox-window-manager -use_cursor no &
+#    sleep 0.5
+#fi
+#pushd "$md_conf_root/nds/drastic"
+#$md_inst/drastic "\$1"
+#popd
+#_EOF_
+#        chmod +x "$md_inst/drastic.sh"
+#    fi
+
+    # Launch DraStic in an x11 session for KMS platforms
+#    if isPlatform "kms" && ! isPlatform "x11"; then
+#        addEmulator 1 "$md_id" "nds" "XINIT:$md_inst/drastic.sh %ROM% kms"
+#    else
+#        addEmulator 1 "$md_id" "nds" "$md_inst/drastic.sh %ROM%"
+#    fi
+
+#    addSystem "nds"
+
+    local system
+    local def
+    for system in nds nds-extras nds-japan nds-usa ; do
+        def=0
+        mkRomDir "$system"
+        mkUserDir "$md_conf_root/$system/drastic"
+        mkUserDir "$md_conf_root/$system/drastic/system"
+
+        local file
+        for file in game_database.xml system/drastic_bios_arm7.bin system/drastic_bios_arm9.bin usrcheat.dat drastic_logo_0.raw drastic_logo_1.raw; do
+            ln -sfv "$md_inst/$file" "$md_conf_root/$system/drastic/$file"
+        done
+
+        if [[ "$md_mode" == "install" ]]; then
+            cat > "$md_inst/drastic.sh" << _EOF_
 #!/bin/bash
 # Don't start a window manager on x11 platforms
 if [[ -n \$DISPLAY && "\$2" == "kms" ]]; then
@@ -59,15 +97,17 @@ pushd "$md_conf_root/nds/drastic"
 $md_inst/drastic "\$1"
 popd
 _EOF_
-        chmod +x "$md_inst/drastic.sh"
-    fi
+            chmod +x "$md_inst/drastic.sh"
+        fi
 
-    # Launch DraStic in an x11 session for KMS platforms
-    if isPlatform "kms" && ! isPlatform "x11"; then
-        addEmulator 1 "$md_id" "nds" "XINIT:$md_inst/drastic.sh %ROM% kms"
-    else
-        addEmulator 1 "$md_id" "nds" "$md_inst/drastic.sh %ROM%"
-    fi
+        # Launch DraStic in an x11 session for KMS platforms
+        if isPlatform "kms" && ! isPlatform "x11"; then
+            addEmulator "$def" "$md_id" "$system" "XINIT:$md_inst/drastic.sh %ROM% kms"
+        else
+            addEmulator "$def" "$md_id" "$system" "$md_inst/drastic.sh %ROM%"
+        fi
 
-    addSystem "nds"
+        addSystem "$system"
+
+    done
 }
