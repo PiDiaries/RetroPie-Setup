@@ -14,6 +14,7 @@ declare -A __sections=(
     [main]="main"
     [opt]="optional"
     [exp]="experimental"
+    [ext]="extras"
     [driver]="driver"
     [config]="configuration"
     [depends]="dependency"
