@@ -40,7 +40,7 @@ function install_pico8() {
 
 function configure_pico8() {
     mkRomDir "$md_id"
-    cp "$md_build/pico-8/lexaloffle-pico8.png" "$home/RetroPie/roms/$md_id"
+    cp "$md_build/pico-8/lexaloffle-pico8.png" "$romdir/$md_id"
     moveConfigDir "$home/.lexaloffle/" "$md_conf_root/$md_id"
     chmod +x "$md_inst/pico8_dyn"
 
@@ -53,6 +53,6 @@ _EOF_
     chown $user:$user "$romdir/pico8/+Start PICO8.sh"
     chmod u+x "$romdir/pico8/+Start PICO8.sh"
 
-    addEmulator 0 "$md_id" "pico8" "$md_inst/pico8_dyn -root_path $home/RetroPie/roms/$md_id -run %ROM%"
+    addEmulator 0 "$md_id" "pico8" "$md_inst/pico8_dyn -root_path $romdir/$md_id -run %ROM%"
     addSystem "pico8" "pico8 - The Fantasy Game Console" ".sh .p8 .png .SH .P8 .PNG"
 }

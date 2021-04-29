@@ -52,7 +52,7 @@ function configure_osmose() {
 
     local system
     local def
-    for system in gamegear gamegear-extras gamegear-japan game-gear-translations gamegear-usa markiii markiii-translations ; do
+    for system in gamegear gamegear-extras gamegear-japan gamegear-translations gamegear-usa markiii markiii-translations mastersystem mastersystem-usa ; do
         def=0
         mkRomDir "$system"
         ensureSystemretroconfig "$system"

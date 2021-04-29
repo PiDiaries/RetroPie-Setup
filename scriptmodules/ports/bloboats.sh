@@ -19,13 +19,13 @@ function depends_bloboats() {
 }
 
 function sources_bloboats() {
-    if [ ! -f "/opt/retropie/supplementary/glshim/libGL.so.1" ]; then
+    if [ ! -f "$datadir/supplementary/glshim/libGL.so.1" ]; then
         gitPullOrClone "$md_build/glshim" https://github.com/ptitseb/glshim.git
     fi
 }
  
 function build_bloboats() {
-    if [ ! -f "/opt/retropie/supplementary/glshim/libGL.so.1" ]; then
+    if [ ! -f "$datadir/supplementary/glshim/libGL.so.1" ]; then
        cd "$md_build/glshim"
        cmake . -DBCMHOST=1
        make GL
@@ -34,14 +34,14 @@ function build_bloboats() {
 
 function install_bin_bloboats() {
     aptInstall bloboats
-    if [ ! -f "/opt/retropie/supplementary/glshim/libGL.so.1" ]; then
-       mkdir -p /opt/retropie/supplementary/glshim/
-       cp "$md_build/glshim/lib/libGL.so.1" /opt/retropie/supplementary/glshim/
+    if [ ! -f "$datadir/supplementary/glshim/libGL.so.1" ]; then
+       mkdir -p $datadir/supplementary/glshim/
+       cp "$md_build/glshim/lib/libGL.so.1" $datadir/supplementary/glshim/
     fi
 }
  
 function configure_bloboats() {
     mkdir "ports"
     moveConfigDir "$home/.bloboats" "$md_conf_root/bloboats"
-    addPort "$md_id" "bloboats" "Bloboats" "LD_LIBRARY_PATH=/opt/retropie/supplementary/glshim LIBGL_FB=1 xinit bloboats"
+    addPort "$md_id" "bloboats" "Bloboats" "LD_LIBRARY_PATH=$datadir/supplementary/glshim LIBGL_FB=1 xinit bloboats"
 }

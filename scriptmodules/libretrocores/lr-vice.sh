@@ -36,14 +36,30 @@ function install_lr-vice() {
 }
 
 function configure_lr-vice() {
-    mkRomDir "c64"
-    ensureSystemretroconfig "c64"
+#    mkRomDir "c64"
+#    ensureSystemretroconfig "c64"
 
-    addEmulator 1 "$md_id" "c64" "$md_inst/vice_x64_libretro.so"
-    addSystem "c64"
+#    addEmulator 1 "$md_id" "c64" "$md_inst/vice_x64_libretro.so"
+#    addSystem "c64"
 
-    [[ "$md_mode" == "remove" ]] && return
+#    [[ "$md_mode" == "remove" ]] && return
+
+#    cp -R "$md_inst/data" "$biosdir"
+#    chown -R $user:$user "$biosdir/data"
+
+
+    local system
+    local def
+    for system in c64 c64-extras c64-usa ; do
+        def=0
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator 1 "$md_id" "$system" "$md_inst/vice_x64_libretro.so"
+        [[ "$md_mode" == "remove" ]] && return
+        addSystem "$system"
+    done
 
     cp -R "$md_inst/data" "$biosdir"
     chown -R $user:$user "$biosdir/data"
+
 }

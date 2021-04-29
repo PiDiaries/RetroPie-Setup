@@ -40,9 +40,22 @@ function install_lr-stella2014() {
 }
 
 function configure_lr-stella2014() {
-    mkRomDir "atari2600"
-    ensureSystemretroconfig "atari2600"
+#    mkRomDir "atari2600"
+#    ensureSystemretroconfig "atari2600"
 
-    addEmulator 1 "$md_id" "atari2600" "$md_inst/stella2014_libretro.so"
-    addSystem "atari2600"
+#    addEmulator 1 "$md_id" "atari2600" "$md_inst/stella2014_libretro.so"
+#    addSystem "atari2600"
+
+    local system
+    local def
+    for system in atari2600 atari2600-extras atari2600-japan atari2600-usa ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_id" "atari2600" "$md_inst/stella2014_libretro.so"
+        addSystem "$system"
+        
+    done
+
+
 }

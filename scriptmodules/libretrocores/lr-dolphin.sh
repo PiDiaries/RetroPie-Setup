@@ -19,6 +19,7 @@ rp_module_flags="!all 64bit"
 
 function depends_lr-dolphin() {
     depends_dolphin
+
 }
 
 function sources_lr-dolphin() {

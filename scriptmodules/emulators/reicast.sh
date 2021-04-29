@@ -104,14 +104,14 @@ function configure_reicast() {
 #    mkRomDir "dreamcast"
 
     # move any old configs to the new location
-#    moveConfigDir "$home/.reicast" "$md_conf_root/dreamcast/"
+    moveConfigDir "$home/.reicast" "$md_conf_root/dreamcast/"
 
     # Create home VMU, cfg, and data folders. Copy dc_boot.bin and dc_flash.bin to the ~/.reicast/data/ folder.
-#    mkdir -p "$md_conf_root/dreamcast/"{data,mappings}
+    mkdir -p "$md_conf_root/dreamcast/"{data,mappings}
 
     # symlink bios
-#    mkUserDir "$biosdir/dc"
-#    ln -sf "$biosdir/dc/"{dc_boot.bin,dc_flash.bin} "$md_conf_root/dreamcast/data"
+    mkUserDir "$biosdir/dc"
+    ln -sf "$biosdir/dc/"{dc_boot.bin,dc_flash.bin} "$md_conf_root/dreamcast/data"
 
     # copy default mappings
 #    cp "$md_inst/share/reicast/mappings/"*.cfg "$md_conf_root/dreamcast/mappings/"
@@ -162,14 +162,14 @@ function configure_reicast() {
         chown -R $user:$user "$md_conf_root/$system"
 
         if [[ "$md_mode" == "install" ]]; then
-            cat > "$romdir/$system/+Start Reicast.sh" << _EOF_
+            cat > "$romdir/$system/roms/+Start Reicast.sh" << _EOF_
 #!/bin/bash
 $md_inst/bin/reicast.sh
 _EOF_
-            chmod a+x "$romdir/$system/+Start Reicast.sh"
-            chown $user:$user "$romdir/$system/+Start Reicast.sh"
+            chmod a+x "$romdir/$system/roms/+Start Reicast.sh"
+            chown $user:$user "$romdir/roms/+Start Reicast.sh"
         else
-            rm "$romdir/$system/+Start Reicast.sh"
+            rm "$romdir/$system/roms/+Start Reicast.sh"
         fi
 
         if [[ "$md_mode" == "install" ]]; then

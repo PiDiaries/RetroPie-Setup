@@ -30,7 +30,7 @@ function build_pydance() {
 }
 
 function install_pydance() {
-    su -c 'make PREFIX="/opt/retropie/ports/pydance" install'
+    su -c 'make PREFIX="$datadir/ports/pydance" install'
 }
 
 function configure_pydance() {
@@ -84,6 +84,6 @@ function configure_pydance() {
         wget https://icculus.org/pyddr/pydance-cdtitle.png
         mv pydance-cdtitle.png pydance.png
     fi
-    chown -R $user:$user /opt/retropie/ports/pydance
+    chown -R $user:$user $datadir/ports/pydance
     addPort "$md_id" "pydance" "pydance - Open Source Dancing Game" "pushd $md_inst; python games/pydance; popd"
 }

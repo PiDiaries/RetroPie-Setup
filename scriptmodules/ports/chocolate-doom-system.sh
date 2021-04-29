@@ -69,12 +69,12 @@ function configure_chocolate-doom-system() {
     fi
 
 #    chown $user:$user "$romdir/doom/*"
-    addEmulator 0 "chocolate-doom" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doom.wad -file %ROM%"
-    addEmulator 0 "chocolate-doom1" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doom1.wad -file %ROM%"
-    addEmulator 0 "chocolate-doom2" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doom2.wad -file %ROM%"
-    addEmulator 0 "chocolate-doomu" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doomu.wad -file %ROM%"
-    addEmulator 0 "chocolate-freedoom1" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/freedoom1.wad -file %ROM%"
-    addEmulator 0 "chocolate-freedoom2" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/freedoom2.wad -file %ROM%"
+    addPort 0 "chocolate-doom" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doom.wad -file %ROM%"
+    addPort 0 "chocolate-doom1" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doom1.wad -file %ROM%"
+    addPort 0 "chocolate-doom2" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doom2.wad -file %ROM%"
+    addPort 0 "chocolate-doomu" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/doomu.wad -file %ROM%"
+    addPort 0 "chocolate-freedoom1" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/freedoom1.wad -file %ROM%"
+    addPort 0 "chocolate-freedoom2" "doom" "$md_inst/chocolate-doom -iwad $romdir/doom/freedoom2.wad -file %ROM%"
     addSystem "doom" "DOOM" ".pk3 .wad"
 
 }

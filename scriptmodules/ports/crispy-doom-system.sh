@@ -60,12 +60,12 @@ function configure_crispy-doom-system() {
     fi
 
 #    chown $user:$user "$romdir/doom/*"
-    addEmulator 0 "crispy-doom" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doom.wad -file %ROM%"
-    addEmulator 0 "crispy-doom1" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doom1.wad -file %ROM%"
-    addEmulator 0 "crispy-doom2" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doom2.wad -file %ROM%"
-    addEmulator 0 "crispy-doomu" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doomu.wad -file %ROM%"
-    addEmulator 0 "crispy-freedoom1" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/freedoom1.wad -file %ROM%"
-    addEmulator 0 "crispy-freedoom2" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/freedoom2.wad -file %ROM%"
+    addPort 0 "crispy-doom" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doom.wad -file %ROM%"
+    addPort 0 "crispy-doom1" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doom1.wad -file %ROM%"
+    addPort 0 "crispy-doom2" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doom2.wad -file %ROM%"
+    addPort 0 "crispy-doomu" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/doomu.wad -file %ROM%"
+    addPort 0 "crispy-freedoom1" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/freedoom1.wad -file %ROM%"
+    addPort 0 "crispy-freedoom2" "doom" "$md_inst/crispy-doom -iwad $romdir/doom/freedoom2.wad -file %ROM%"
     addSystem "doom" "DOOM" ".pk3 .wad"
 
 }

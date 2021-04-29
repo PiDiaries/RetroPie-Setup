@@ -11,7 +11,7 @@
 
 rp_module_id="sm64ex"
 rp_module_desc="sm64ex - Super Mario 64 PC Port (Pi 4 only)"
-rp_module_help="To compile properly, this port requires a Super Mario 64 ROM in z64 format.\n\nPlace your Super Mario 64 ROM into $home with the name baserom.<VERSION>.z64\nwhere VERSION can be us, eu or jp depending on the ROM you are using.\n\nFor example, a US Super Mario 64 ROM should be placed at /home/pi/baserom.us.z64."
+rp_module_help="To compile properly, this port requires a Super Mario 64 ROM in z64 format.\n\nPlace your bas ROM into $home with the name baserom.<VERSION>.z64\nwhere VERSION can be us, eu or jp depending on the ROM you are using.\n\nFor example, a US Super Mario 64 ROM should be placed at /home/$user/baserom.us.z64."
 rp_module_section="ext"
 rp_module_flags="!mali"
 
@@ -73,12 +73,12 @@ function install_sm64ex() {
 }
 
 function configure_sm64ex() {
-    chown pi:pi "$md_inst"
+    chown $user:$user "$md_inst"
 
     local dir
     for dir in .config .local/share; do
         moveConfigDir "$home/$dir/sm64pc" "$md_conf_root/sm64ex"
     done
 
-    addPort "$md_id" "sm64ex" "sm64ex - Super Mario 64 PC Port (Pi 4)" "/opt/retropie/ports/sm64ex/sm64ex.arm"
+    addPort "$md_id" "sm64ex" "sm64ex - Super Mario 64 PC Port (Pi 4)" "$datadir/ports/sm64ex/sm64ex.arm"
 }

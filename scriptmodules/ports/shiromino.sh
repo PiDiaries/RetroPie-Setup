@@ -39,7 +39,7 @@ function install_shiromino() {
 }
 
 function configure_shiromino() {
-    chown pi:pi "$md_inst"
+    chown $user:$user "$md_inst"
     mv "$md_inst/game" "$md_inst/shiromino"
     touch "$md_inst/scores.db"
     moveConfigFile "$md_inst/scores.db" "$md_conf_root/shiromino/scores.db"

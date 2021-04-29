@@ -54,7 +54,7 @@ function configure_pisnes() {
 
 #    [[ "$md_mode" == "remove" ]] && return
 
-#    moveConfigFile "$md_inst/snes9x.cfg" "$md_conf_root/snes/snes9x.cfg"
+    moveConfigFile "$md_inst/snes9x.cfg" "$md_conf_root/snes/snes9x.cfg"
 #    copyDefaultConfig "$md_inst/snes9x.cfg.template" "$md_conf_root/snes/snes9x.cfg"
 
 

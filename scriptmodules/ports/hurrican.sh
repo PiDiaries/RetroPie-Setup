@@ -78,8 +78,8 @@ function configure_hurrican() {
     touch "$md_inst/Hurrican.hsl"
     touch "$md_inst/Game_Log.txt"
     touch "$md_inst/Savegame0.sav"
-    chown pi:pi "$md_inst/Hurrican.cfg"
-    chown pi:pi "$md_inst/Hurrican.hsl"
-    chown pi:pi "$md_inst/Game_Log.txt"
-    chown pi:pi "$md_inst/Savegame0.sav"
+    chown $user:$user "$md_inst/Hurrican.cfg"
+    chown $user:$user "$md_inst/Hurrican.hsl"
+    chown $user:$user "$md_inst/Game_Log.txt"
+    chown $user:$user "$md_inst/Savegame0.sav"
 }

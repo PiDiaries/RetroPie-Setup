@@ -61,6 +61,8 @@ function configure_lr-mame2003_midway() {
     setRetroArchCoreOption "mame2003-samples" "enabled"
 
     addEmulator 0 "$md_id" "arcade" "$md_inst/mame2003_midway_libretro.so"
+    addEmulator 0 "$md_id" "mame2003-plus" "$md_inst/mame2003_midway_libretro.so"
+    addEmulator 0 "$md_id" "mame2003" "$md_inst/mame2003_midway_libretro.so"
     addEmulator 1 "$md_id" "mame-libretro" "$md_inst/mame2003_midway_libretro.so"
     addSystem "arcade"
     addSystem "mame-libretro"

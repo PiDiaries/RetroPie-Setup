@@ -54,7 +54,7 @@ function configure_lr-fbneo() {
         mkRomDir "$dir"
         ensureSystemretroconfig "$dir"
         if [[ "$dir" == "fba" ]]; then
-            for fba_sub_dir in arcade coleco fds gamegear megadrive msx nes ngp pce sg1000 sgx sms spectrum tg16; do
+            for fba_sub_dir in arcade channelf coleco fds gamegear megadrive msx nes ngp pce sg1000 sgx sms spectrum tg16; do
                 mkUserDir "$romdir/$dir/roms/$fba_sub_dir/"
             done
         fi    

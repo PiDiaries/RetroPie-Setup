@@ -56,7 +56,7 @@ function install_openbor() {
 }
 
 function configure_openbor() {
-    mkRomDir "ports/$md_id"
+    mkRomDir "openbor"
 
     local dir
     for dir in ScreenShots Saves; do
@@ -64,8 +64,8 @@ function configure_openbor() {
         ln -snf "$md_conf_root/$md_id/$dir" "$md_inst/$dir"
     done
 
-    ln -snf "$romdir/ports/$md_id" "$md_inst/Paks"
+    ln -snf "$romdir/openbor" "$md_inst/Paks"
     ln -snf "/dev/shm" "$md_inst/Logs"
-    addEmulator 0 "$md_id" "openbor" "$md_inst/OpenBOR %ROM%"
+    addEmulator 1 "$md_id" "openbor" "$md_inst/OpenBOR %ROM%"
     addSystem "openbor"
 }

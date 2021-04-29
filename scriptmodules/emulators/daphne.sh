@@ -48,7 +48,7 @@ function install_daphne() {
 
 function configure_daphne() {
     mkRomDir "daphne"
-    mkRomDir "daphne/roms"
+#    mkRomDir "daphne/roms"
 
     addEmulator 1 "$md_id" "daphne" "$md_inst/daphne.sh %ROM%"
     addSystem "daphne"

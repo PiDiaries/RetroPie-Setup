@@ -37,8 +37,8 @@ function install_lr-pocketcdg() {
 }
 
 function configure_lr-pocketcdg() {
-    mkRomDir "$romdir/pocketcdg"
+    mkRomDir "pocketcdg"
 
     addEmulator 0 "$md_id" "pocketcdg" "$md_inst/pocketcdg_libretro.so" 
-    addSystem "pocketcdg" "PocketCDG" ".cdg"
+    addSystem "pocketcdg" 
 }

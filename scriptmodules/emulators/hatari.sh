@@ -78,7 +78,7 @@ function install_hatari() {
 }
 
 function configure_hatari() {
-    mkRomDir "atarist"
+#    mkRomDir "atarist"
 
     local common_config=("--confirm-quit 0" "--statusbar 0")
     if ! isPlatform "x11"; then
@@ -87,11 +87,11 @@ function configure_hatari() {
         common_config+=("-f")
     fi
 
-    addEmulator 1 "$md_id-fast" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 0 --timer-d 1 --borders 0 %ROM%"
-    addEmulator 0 "$md_id-fast-borders" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 0 --timer-d 1 --borders 1 %ROM%"
-    addEmulator 0 "$md_id-compatible" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 1 --timer-d 0 --borders 0 %ROM%"
-    addEmulator 0 "$md_id-compatible-borders" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 1 --timer-d 0 --borders 1 %ROM%"
-    addSystem "atarist"
+#    addEmulator 1 "$md_id-fast" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 0 --timer-d 1 --borders 0 %ROM%"
+#    addEmulator 0 "$md_id-fast-borders" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 0 --timer-d 1 --borders 1 %ROM%"
+#    addEmulator 0 "$md_id-compatible" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 1 --timer-d 0 --borders 0 %ROM%"
+#    addEmulator 0 "$md_id-compatible-borders" "atarist" "$md_inst/bin/hatari ${common_config[*]} --compatible 1 --timer-d 0 --borders 1 %ROM%"
+#    addSystem "atarist"
 
     [[ "$md_mode" == "remove" ]] && return
 
@@ -99,4 +99,18 @@ function configure_hatari() {
     moveConfigDir "$home/.hatari" "$md_conf_root/atarist"
 
     ln -sf "$biosdir/tos.img" "$md_inst/share/hatari/tos.img"
+
+    local system
+    local def
+    for system in atarist atarist-extras atarist-usa ; do
+        def=0
+        mkRomDir "$system"
+        addEmulator 1 "$md_id-fast" "$system" "$md_inst/bin/hatari ${common_config[*]} --compatible 0 --timer-d 1 --borders 0 %ROM%"
+        addEmulator "$def" "$md_id-fast-borders" "$system" "$md_inst/bin/hatari ${common_config[*]} --compatible 0 --timer-d 1 --borders 1 %ROM%"
+        addEmulator "$def" "$md_id-compatible" "$system" "$md_inst/bin/hatari ${common_config[*]} --compatible 1 --timer-d 0 --borders 0 %ROM%"
+        addEmulator "$def" "$md_id-compatible-borders" "$system" "$md_inst/bin/hatari ${common_config[*]} --compatible 1 --timer-d 0 --borders 1 %ROM%"
+        addSystem "$system"
+
+    done
+    
 }

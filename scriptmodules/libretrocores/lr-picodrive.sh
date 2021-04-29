@@ -49,10 +49,10 @@ function install_lr-picodrive() {
 function configure_lr-picodrive() {
     local system
     local def
-    for system in genesis markiii markiii-translations mastersystem megadrive megadrive-extras megadrive-japan megadrive-translations segacd segacd-extras segacd-japan segacd-translations segacd-usa sega32x; do
+    for system in genesis markiii markiii-translations mastersystem mastersystem-usa megadrive megadrive-extras megadrive-japan megadrive-translations segacd segacd-extras segacd-japan segacd-translations segacd-usa sega32x sega32x-extras sega32x-japan sega32x-usa ; do
         def=0
         # default on megadrive / mastersystem only on armv6 for performance
-        [[ "$system" =~ genesis|markiii|markiii-translations|mastersystem|megadrive|megadrive-extras|megadrive-japan|megadrive-translations  ]] && isPlatform "arm6" && def=1
+        [[ "$system" =~ genesis|markiii|markiii-translations|mastersystem|mastersystem-usa|megadrive|megadrive-extras|megadrive-japan|megadrive-translations  ]] && isPlatform "arm6" && def=1
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
         addEmulator $def "$md_id" "$system" "$md_inst/picodrive_libretro.so"

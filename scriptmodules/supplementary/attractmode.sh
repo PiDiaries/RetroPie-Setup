@@ -181,7 +181,7 @@ function remove_attractmode() {
 }
 
 function configure_attractmode() {
-    #moveConfigDir "$home/.attract" "$home/.attract"
+    "$home/.attract" "$home/.attract"
 
     [[ "$md_mode" == "remove" ]] && return
 

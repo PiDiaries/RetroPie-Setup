@@ -57,7 +57,10 @@ function install_lr-mame() {
 
 function configure_lr-mame() {
     local system
-    for system in arcade mame-libretro; do
+    local def
+    for system in arcade mame-libretro mame mame2003-plus mame2003 ; do
+        def=0
+        [[ "$system" == "mame" ]] && def=1
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
         addEmulator 0 "$md_id" "$system" "$md_inst/mamearcade_libretro.so"

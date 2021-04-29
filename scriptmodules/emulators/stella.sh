@@ -37,10 +37,20 @@ function install_stella() {
 }
 
 function configure_stella() {
-    mkRomDir "atari2600"
+#    mkRomDir "atari2600"
 
     moveConfigDir "$home/.config/stella" "$md_conf_root/atari2600/stella"
 
-    addEmulator 1 "$md_id" "atari2600" "$md_inst/bin/stella -maxres 320x240 -fullscreen 1 -tia.fsfill 1 %ROM%"
-    addSystem "atari2600"
+#    addEmulator 1 "$md_id" "atari2600" "$md_inst/bin/stella -maxres 320x240 -fullscreen 1 -tia.fsfill 1 %ROM%"
+#    addSystem "atari2600"
+
+    local system
+    local def
+    for system in atari2600 atari2600-extras atari2600-japan atari2600-usa ; do
+        def=0
+        mkRomDir "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/bin/stella -maxres 320x240 -fullscreen 1 -tia.fsfill 1 %ROM%"
+        addSystem "$system"
+        
+    done
 }

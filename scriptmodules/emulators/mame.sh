@@ -23,11 +23,12 @@ function _get_branch_mame() {
 
 function _get_binary_name_mame() {
     # The MAME executable on 64-bit systems is called mame64 instead of mame. Rename it back to mame.
-    if isPlatform "64bit" && ! isPlatform "aarch64"; then
-        echo 'mame64'
-    else
-        echo 'mame'
-    fi
+#    if isPlatform "64bit" && ! isPlatform "aarch64"; then
+#        echo 'mame64'
+#    else
+#        echo 'mame'
+#    fi
+    echo 'mame'
 }
 
 function depends_mame() {
@@ -107,7 +108,7 @@ function configure_mame() {
         local temp_ini_mame="$(mktemp)"
 
         iniConfig " " "" "$temp_ini_mame"
-        iniSet "rompath"            "$romdir/$system;$romdir/arcade;$biosdir/$system"
+        iniSet "rompath"            "$romdir/$system/roms;$romdir/arcade/roms;$romdir/$system/chds;$romdir/arcade/chds;$biosdir/$system"
         iniSet "hashpath"           "$md_inst/hash"
         iniSet "samplepath"         "$romdir/$system/samples;$romdir/arcade/samples"
         iniSet "artpath"            "$romdir/$system/artwork;$romdir/arcade/artwork"
@@ -123,6 +124,8 @@ function configure_mame() {
         iniSet "diff_directory"     "$romdir/$system/diff"
         iniSet "comment_directory"  "$romdir/$system/comments"
 
+        iniSet "cheatpath" "$romdir/$system/cheat"
+        iniSet "skip_warnings" "1"
         iniSet "skip_gameinfo" "1"
         iniSet "plugin" "hiscore"
         iniSet "samplerate" "44100"
@@ -140,6 +143,25 @@ function configure_mame() {
         local temp_ini_ui="$(mktemp)"
         iniConfig " " "" "$temp_ini_ui"
         iniSet "scores_directory" "$romdir/$system/scores"
+        iniSet "historypath" "$romdir/$system/dats"
+        iniSet "categorypath" "$romdir/$system/folders"
+        iniSet "cabinets_directory" "$romdir/$system/cabinets"
+        iniSet "cpanels_directory" "$romdir/$system/cpanel"
+        iniSet "pcbs_directory" "$romdir/$system/pcb"
+        iniSet "flyers_directory" "$romdir/$system/flyers"
+        iniSet "titles_directory" "$romdir/$system/titles"
+        iniSet "ends_directory" "$romdir/$system/ends"
+        iniSet "marquees_directory" "$romdir/$system/marquees"
+        iniSet "artwork_preview_directory" "$romdir/$system/artpreview"
+        iniSet "bosses_directory" "$romdir/$system/bosses"
+        iniSet "logos_directory" "$romdir/$system/logos"
+        iniSet "versus_directory" "$romdir/$system/versus"
+        iniSet "gameover_directory" "$romdir/$system/gameover"
+        iniSet "howto_directory" "$romdir/$system/howto"
+        iniSet "select_directory" "$romdir/$system/select"
+        iniSet "icons_directory" "$romdir/$system/icons"
+        iniSet "covers_directory" "$romdir/$system/covers"
+
         copyDefaultConfig "$temp_ini_ui" "$md_conf_root/$system/ui.ini"
         rm "$temp_ini_ui"
 

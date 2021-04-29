@@ -34,10 +34,22 @@ function install_lr-prosystem() {
 }
 
 function configure_lr-prosystem() {
-    mkRomDir "atari7800"
+#    mkRomDir "atari7800"
+#
+#    ensureSystemretroconfig "atari7800"
 
-    ensureSystemretroconfig "atari7800"
+#    addEmulator 1 "$md_id" "atari7800" "$md_inst/prosystem_libretro.so"
+#    addSystem "atari7800"
 
-    addEmulator 1 "$md_id" "atari7800" "$md_inst/prosystem_libretro.so"
-    addSystem "atari7800"
+
+    local system
+    local def
+    for system in atari7800 atari7800-extras atari7800-japan atari7800-usa ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator "$def" "$system" "$md_inst/prosystem_libretro.so"
+        addSystem "$system"
+    done
+
 }

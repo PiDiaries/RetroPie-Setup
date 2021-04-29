@@ -44,17 +44,32 @@ function install_lr-hatari() {
 }
 
 function configure_lr-hatari() {
-    mkRomDir "atarist"
-    ensureSystemretroconfig "atarist"
+#    mkRomDir "atarist"
+#    ensureSystemretroconfig "atarist"
 
     # move any old configs to new location
     moveConfigDir "$home/.hatari" "$md_conf_root/atarist"
 
-    addEmulator 1 "$md_id" "atarist" "$md_inst/hatari_libretro.so"
-    addSystem "atarist"
+#    addEmulator 1 "$md_id" "atarist" "$md_inst/hatari_libretro.so"
+#    addSystem "atarist"
 
     # add LD_LIBRARY_PATH='$md_inst' to start of launch command
-    iniConfig " = " '"' "$configdir/atarist/emulators.cfg"
-    iniGet "$md_id"
-    iniSet "$md_id" "LD_LIBRARY_PATH='$md_inst' $ini_value"
+#    iniConfig " = " '"' "$configdir/atarist/emulators.cfg"
+#    iniGet "$md_id"
+#    iniSet "$md_id" "LD_LIBRARY_PATH='$md_inst' $ini_value"
+
+
+    local system
+    local def
+    for system in atarist atarist-extras atarist-usa ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system" 
+        addEmulator "$def" "$md_id" "$system" "$md_inst/hatari_libretro.so"
+        addSystem "$system"
+        iniConfig " = " '"' "$configdir/$system/emulators.cfg"
+        iniGet "$md_id"
+        iniSet "$md_id" "LD_LIBRARY_PATH='$md_inst' $ini_value"
+
+    done 
 }

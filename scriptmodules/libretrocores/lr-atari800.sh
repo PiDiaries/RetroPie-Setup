@@ -34,17 +34,27 @@ function install_lr-atari800() {
 }
 
 function configure_lr-atari800() {
-    mkRomDir "atari800"
-    mkRomDir "atari5200"
+#    mkRomDir "atari"
+#    mkRomDir "atari5200"
 
-    ensureSystemretroconfig "atari800"
-    ensureSystemretroconfig "atari5200"
+#    ensureSystemretroconfig "atari800"
+#    ensureSystemretroconfig "atari5200"
 
     mkUserDir "$md_conf_root/atari800"
     moveConfigFile "$home/.lr-atari800.cfg" "$md_conf_root/atari800/lr-atari800.cfg"
 
-    addEmulator 1 "lr-atari800" "atari800" "$md_inst/atari800_libretro.so"
-    addEmulator 1 "lr-atari800" "atari5200" "$md_inst/atari800_libretro.so"
-    addSystem "atari800"
-    addSystem "atari5200"
+#    addEmulator 1 "lr-atari800" "atari800" "$md_inst/atari800_libretro.so"
+#    addEmulator 1 "lr-atari800" "atari5200" "$md_inst/atari800_libretro.so"
+#    addSystem "atari800"
+#    addSystem "atari5200"
+
+    local system
+    local def
+    for system in atari800 atari5200 atari5200-extras ; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator "$def" "lr-atari800" "$system" "$md_inst/atari800_libretro.so"
+        addSystem "$system"
+    done
 }

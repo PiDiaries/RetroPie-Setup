@@ -55,6 +55,6 @@ function configure_lr-prboom-system() {
     chown $user:$user "$romdir/doom/prboom.wad"
 
     addEmulator 0 "lr-prboom" "doom" "$md_inst/prboom_libretro.so %ROM%"
-    addSystem "doom" "DOOM" ".pk3 .wad"
+    addSystem "doom" 
 
 }

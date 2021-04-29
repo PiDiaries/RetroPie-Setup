@@ -172,9 +172,9 @@ function configure_ppsspp() {
     fi
 
 #    mkRomDir "psp"
-#    moveConfigDir "$home/.config/ppsspp" "$md_conf_root/psp"
-#    mkUserDir "$md_conf_root/psp/PSP"
-#    ln -snf "$romdir/psp" "$md_conf_root/psp/PSP/GAME"
+    moveConfigDir "$home/.config/ppsspp" "$md_conf_root/psp"
+    mkUserDir "$md_conf_root/psp/PSP"
+    ln -snf "$romdir/psp" "$md_conf_root/psp/PSP/GAME"
 
 #    addEmulator 0 "$md_id" "psp" "$md_inst/PPSSPPSDL ${extra_params[*]} %ROM%"
 #    addSystem "psp"

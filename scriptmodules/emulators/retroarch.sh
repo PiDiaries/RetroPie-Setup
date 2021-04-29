@@ -84,7 +84,7 @@ function install_retroarch() {
 }
 
 function update_shaders_retroarch() {
-    local dir="/home/RetroPie/configs/$user/all/retroarch/shaders"
+    local dir="$datadir/retroarch_content/shaders"
     local branch=""
     isPlatform "rpi" && branch="rpi"
     # remove if not git repository for fresh checkout
@@ -94,15 +94,15 @@ function update_shaders_retroarch() {
 }
 
 function update_overlays_retroarch() {
-    local dir="/home/RetroPie/configs/$user/all/retroarch/overlay"
+    local dir="$datadir/retroarch_content/overlay"
     # remove if not a git repository for fresh checkout
     [[ ! -d "$dir/.git" ]] && rm -rf "$dir"
-    gitPullOrClone "/home/RetroPie/configs/$user/all/retroarch/overlay" https://github.com/libretro/common-overlays.git
+    gitPullOrClone "$datadir/retroarch_content/overlay" https://github.com/libretro/common-overlays.git
     chown -R $user:$user "$dir"
 }
 
 function update_assets_retroarch() {
-    local dir="/home/RetroPie/configs/$user/all/retroarch/assets"
+    local dir="$datadir/retroarch_content/assets"
     # remove if not a git repository for fresh checkout
     [[ ! -d "$dir/.git" ]] && rm -rf "$dir"
     gitPullOrClone "$dir" https://github.com/libretro/retroarch-assets.git
@@ -110,7 +110,7 @@ function update_assets_retroarch() {
 }
 
 function install_minimal_assets_retroarch() {
-    local dir="/home/RetroPie/configs/$user/all/retroarch/assets"
+    local dir="$datadir/retroarch_content/assets"
     [[ -d "$dir/.git" ]] && return
     [[ ! -d "$dir" ]] && mkUserDir "$dir"
     downloadAndExtract "$__binary_base_url/retroarch-minimal-assets.tar.gz" "$dir"
@@ -137,9 +137,9 @@ function configure_retroarch() {
     moveConfigDir "$configdir/all/retroarch-joypads" "$configdir/all/retroarch/autoconfig"
  
     # move / symlink old assets / overlays and shader folder
-    moveConfigDir "$md_inst/assets" "/home/RetroPie/configs/$user/all/retroarch/assets"
-    moveConfigDir "$md_inst/overlays" "/home/RetroPie/configs/$user/all/retroarch/overlay"
-    moveConfigDir "$md_inst/shader" "/home/RetroPie/configs/$user/all/retroarch/shaders"
+    moveConfigDir "$md_inst/assets" "$datadir/retroarch_content/assets"
+    moveConfigDir "$md_inst/overlays" "$datadir/retroarch_content/overlay"
+    moveConfigDir "$md_inst/shader" "$datadir/retroarch_content/shaders"
 
     # install shaders by default
     update_shaders_retroarch

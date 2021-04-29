@@ -20,13 +20,13 @@ function depends_fofix() {
 }
 
 function sources_fofix() {
-    if [ ! -f "/opt/retropie/supplementary/glshim/libGL.so.1" ]; then
+    if [ ! -f "$datadir/supplementary/glshim/libGL.so.1" ]; then
         gitPullOrClone "$md_build/glshim" https://github.com/ptitseb/glshim.git
     fi
 }
  
 function build_fofix() {
-    if [ ! -f "/opt/retropie/supplementary/glshim/libGL.so.1" ]; then
+    if [ ! -f "$datadir/supplementary/glshim/libGL.so.1" ]; then
         cd "$md_build/glshim"
         cmake . -DBCMHOST=1
         make GL
@@ -35,14 +35,14 @@ function build_fofix() {
 
 function install_bin_fofix() {
     aptInstall fofix
-    if [ ! -f "/opt/retropie/supplementary/glshim/libGL.so.1" ]; then
-       mkdir -p /opt/retropie/supplementary/glshim/
-       cp "$md_build/glshim/lib/libGL.so.1" /opt/retropie/supplementary/glshim/
+    if [ ! -f "$datadir/supplementary/glshim/libGL.so.1" ]; then
+       mkdir -p $datadir/supplementary/glshim/
+       cp "$md_build/glshim/lib/libGL.so.1" $datadir/supplementary/glshim/
     fi
 }
  
 function configure_fofix() {
     mkdir "ports"
     moveConfigDir "$home/.fofix" "$md_conf_root/$md_id"
-    addPort "$md_id" "fofix" "FoFix - Guitar Hero and Rock Band clone" "LD_LIBRARY_PATH=/opt/retropie/supplementary/glshim LIBGL_FB=1 xinit fofix"
+    addPort "$md_id" "fofix" "FoFix - Guitar Hero and Rock Band clone" "LD_LIBRARY_PATH=$datadir/supplementary/glshim LIBGL_FB=1 xinit fofix"
 }

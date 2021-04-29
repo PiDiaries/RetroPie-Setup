@@ -53,7 +53,7 @@ function configure_dolphin() {
 #    mkRomDir "gc"
 #    mkRomDir "wii"
 
-#    moveConfigDir "$home/.dolphin-emu" "$md_conf_root/gc"
+    moveConfigDir "$home/.dolphin-emu" "$md_conf_root/gc"
 
 #    if [[ ! -f "$md_conf_root/gc/Config/Dolphin.ini" ]]; then
 #        mkdir -p "$md_conf_root/gc/Config"

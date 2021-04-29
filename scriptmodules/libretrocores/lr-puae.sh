@@ -33,8 +33,18 @@ function install_lr-puae() {
 }
 
 function configure_lr-puae() {
-    mkRomDir "amiga"
-    ensureSystemretroconfig "amiga"
-    addEmulator 1 "$md_id" "amiga" "$md_inst/puae_libretro.so"
-    addSystem "amiga"
+#    mkRomDir "amiga"
+#    ensureSystemretroconfig "amiga"
+#    addEmulator 1 "$md_id" "amiga" "$md_inst/puae_libretro.so"
+#    addSystem "amiga"
+
+    local system
+    local def
+    for system in amiga amiga-extras amiga-usa amigacd amigacd-usa amigacd32 amigacd32-usa amigacdtv amigacdtv-usa; do
+        def=1
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator 1 "$md_id" "$system" "$md_inst/puae_libretro.so"
+        addSystem "$system"
+    done
 }

@@ -40,7 +40,7 @@ function configure_lr-gambatte() {
     mkUserDir "$biosdir/palettes"
     cp "$md_data/default.pal" "$biosdir/palettes/"
     chown $user:$user "$biosdir/palettes/default.pal"
-    setRetroArchCoreOption "gambatte_gb_colorization" "custom"
+#    setRetroArchCoreOption "gambatte_gb_colorization" "custom"
 
 #    mkRomDir "gbc"
 #    mkRomDir "gb"
@@ -60,6 +60,12 @@ function configure_lr-gambatte() {
 
         addEmulator "$def" "$md_id" "$system" "$md_inst/gambatte_libretro.so"
         addSystem "$system"
+
+        local core_config="$configdir/$system/retroarch.cfg"
+        iniConfig " = " '"' "$configdir/$system/retroarch.cfg"
+        iniSet "gambatte_gb_colorization"  "custom" 
+        chown $user:$user "$core_config"
+
     done
 
 }

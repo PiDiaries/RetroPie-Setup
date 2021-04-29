@@ -65,21 +65,23 @@ function configure_lr-bluemsx() {
 
     local system
     local def
-    for system in coleco msx msx-translations msx-turbor msx-turbor-translations msx2 msx2-plus msx2-translations ; do
+    for system in coleco coleco-extras coleco-usa msx msx-translations msx-turbor msx-turbor-translations msx2 msx2-plus msx2-translations ; do
         def=1
         
         mkRomDir "$system"
-        ensureSystemretroconfig "system"
+        ensureSystemretroconfig "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/bluemsx_libretro.so"
 
         addSystem "$system"
 
     done
+    
+    for system in coleco coleco-extras coleco-usa ; do
 
-    local core_config="$configdir/coleco/retroarch.cfg"
-    iniConfig " = " '"' "$configdir/coleco/retroarch.cfg"
-    iniSet "core_options_path" "$core_config"
-    iniSet "bluemsx_msxtype" "ColecoVision" "$core_config"
-    chown $user:$user "$core_config"
-
+        local core_config="$configdir/$system/retroarch.cfg"
+        iniConfig " = " '"' "$configdir/$system/retroarch.cfg"
+        iniSet "core_options_path" "$core_config"
+        iniSet "bluemsx_msxtype" "ColecoVision" "$core_config"
+        chown $user:$user "$core_config"
+    done
 }

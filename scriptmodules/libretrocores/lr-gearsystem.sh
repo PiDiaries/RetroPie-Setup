@@ -37,7 +37,7 @@ function install_lr-gearsystem() {
 
 function configure_lr-gearsystem() {
     local system
-    for system in gamegear gamegear-extras gamegear-japan game-gear-translations gamegear-usa markiii markiii-translations mastersystem sg-1000 sg-1000-translations ; do
+    for system in gamegear gamegear-extras gamegear-japan gamegear-translations gamegear-usa markiii markiii-translations mastersystem mastersystem-usa sg-1000 sg-1000-translations ; do
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
         addEmulator 0 "$md_id" "$system" "$md_inst/gearsystem_libretro.so"

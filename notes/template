@@ -3,10 +3,7 @@
     for system in ; do
         def=0
         mkRomDir "$system"
-        ensureSystemretroconfig "$system"
-
-        addEmulator "$def" "$md_id" "$system" "$md_inst/vba_next_libretro.so"
-        addSystem "$system"
+  
     done
 
 

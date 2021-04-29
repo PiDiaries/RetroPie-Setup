@@ -52,7 +52,7 @@ function configure_lr-beetle-wswan() {
 
     local system
     local def
-    for system in winderswan wonderswan-translations wonderswancolor wonderswancolor-translations ; do
+    for system in wonderswan wonderswan-extras wonderswan-translations wonderswancolor wonderswancolor-extras wonderswancolor-translations ; do
         def=1
         mkRomDir "$system"
         ensureSystemretroconfig "$system"

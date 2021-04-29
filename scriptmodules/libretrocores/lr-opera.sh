@@ -39,7 +39,7 @@ function install_lr-opera() {
 function configure_lr-opera() {
     local system
     local def
-    for system in 3do 3do-translations ; do
+    for system in 3do 3do-extras 3do-japan 3do-translations 3do-usa ; do
         def=1
 
         mkRomDir "$system"

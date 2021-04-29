@@ -71,53 +71,109 @@ _EOF_
 
     chmod +x "$md_inst/bin/vice.sh"
 
-    mkRomDir "c64"
+#    mkRomDir "c64"
 
-    addEmulator 1 "$md_id-x64" "c64" "$md_inst/bin/vice.sh x64 %ROM%"
-    addEmulator 0 "$md_id-x64dtv" "c64" "$md_inst/bin/vice.sh x64dtv %ROM%"
-    addEmulator 0 "$md_id-x64sc" "c64" "$md_inst/bin/vice.sh x64sc %ROM%"
-    addEmulator 0 "$md_id-x128" "c64" "$md_inst/bin/vice.sh x128 %ROM%"
-    addEmulator 0 "$md_id-xpet" "c64" "$md_inst/bin/vice.sh xpet %ROM%"
-    addEmulator 0 "$md_id-xplus4" "c64" "$md_inst/bin/vice.sh xplus4 %ROM%"
-    addEmulator 0 "$md_id-xvic" "c64" "$md_inst/bin/vice.sh xvic %ROM%"
-    addEmulator 0 "$md_id-xvic-cart" "c64" "$md_inst/bin/vice.sh xvic %ROM% -cartgeneric"
-    addSystem "c64"
+#    addEmulator 1 "$md_id-x64" "c64" "$md_inst/bin/vice.sh x64 %ROM%"
+#    addEmulator 0 "$md_id-x64dtv" "c64" "$md_inst/bin/vice.sh x64dtv %ROM%"
+#    addEmulator 0 "$md_id-x64sc" "c64" "$md_inst/bin/vice.sh x64sc %ROM%"
+#    addEmulator 0 "$md_id-x128" "c64" "$md_inst/bin/vice.sh x128 %ROM%"
+#    addEmulator 0 "$md_id-xpet" "c64" "$md_inst/bin/vice.sh xpet %ROM%"
+#    addEmulator 0 "$md_id-xplus4" "c64" "$md_inst/bin/vice.sh xplus4 %ROM%"
+#    addEmulator 0 "$md_id-xvic" "c64" "$md_inst/bin/vice.sh xvic %ROM%"
+#    addEmulator 0 "$md_id-xvic-cart" "c64" "$md_inst/bin/vice.sh xvic %ROM% -cartgeneric"
+#    addSystem "c64"
 
-    [[ "$md_mode" == "remove" ]] && return
+ #   [[ "$md_mode" == "remove" ]] && return
 
     # copy configs and symlink the old and new config folders to $md_conf_root/c64/
-    moveConfigDir "$home/.vice" "$md_conf_root/c64"
-    moveConfigDir "$home/.config/vice" "$md_conf_root/c64"
+#    moveConfigDir "$home/.vice" "$md_conf_root/c64"
+#    moveConfigDir "$home/.config/vice" "$md_conf_root/c64"
 
-    local config="$(mktemp)"
-    echo "[C64]" > "$config"
-    iniConfig "=" "" "$config"
-    if ! isPlatform "x11"; then
-        iniSet "Mouse" "1"
-        iniSet "VICIIDoubleSize" "0"
-        iniSet "VICIIDoubleScan" "0"
-        iniSet "VICIIFilter" "0"
-        iniSet "VICIIVideoCache" "0"
-        iniSet "SDLWindowWidth" "384"
-        iniSet "SDLWindowHeight" "272"
-        isPlatform "rpi1" && iniSet "SoundSampleRate" "22050"
-        iniSet "SidEngine" "0"
-    fi
+#    local config="$(mktemp)"
+#    echo "[C64]" > "$config"
+#    iniConfig "=" "" "$config"
+#    if ! isPlatform "x11"; then
+#        iniSet "Mouse" "1"
+#        iniSet "VICIIDoubleSize" "0"
+#        iniSet "VICIIDoubleScan" "0"
+#        iniSet "VICIIFilter" "0"
+#        iniSet "VICIIVideoCache" "0"
+#        iniSet "SDLWindowWidth" "384"
+#        iniSet "SDLWindowHeight" "272"
+#        isPlatform "rpi1" && iniSet "SoundSampleRate" "22050"
+#        iniSet "SidEngine" "0"
+#    fi
 
-    if isPlatform "x11" || isPlatform "kms"; then
-        iniSet "VICIIFullscreen" "1"
-    fi
+#    if isPlatform "x11" || isPlatform "kms"; then
+#        iniSet "VICIIFullscreen" "1"
+#    fi
 
-    copyDefaultConfig "$config" "$md_conf_root/c64/sdl-vicerc"
-    rm "$config"
+#    copyDefaultConfig "$config" "$md_conf_root/c64/sdl-vicerc"
+#    rm "$config"
 
-    if ! isPlatform "x11"; then
-        # enforce a few settings to ensure a smooth upgrade from sdl1
-        iniConfig "=" "" "$md_conf_root/c64/sdl-vicerc"
-        iniDel "SDLBitdepth"
-        iniSet "VICIIDoubleSize" "0"
-        iniSet "VICIIDoubleScan" "0"
-        iniSet "SDLWindowWidth" "384"
-        iniSet "SDLWindowHeight" "272"
-    fi
-}
+#    if ! isPlatform "x11"; then
+#        # enforce a few settings to ensure a smooth upgrade from sdl1
+#        iniConfig "=" "" "$md_conf_root/c64/sdl-vicerc"
+#        iniDel "SDLBitdepth"
+#        iniSet "VICIIDoubleSize" "0"
+#        iniSet "VICIIDoubleScan" "0"
+#        iniSet "SDLWindowWidth" "384"
+#        iniSet "SDLWindowHeight" "272"
+#    fi
+
+    local system
+    local def
+    for system in c64 c64-extras c64-usa ; do
+        def=0
+        mkRomDir "$system"
+
+        addEmulator 1 "$md_id-x64" "$system" "$md_inst/bin/vice.sh x64 %ROM%"
+        addEmulator 0 "$md_id-x64dtv" "$system" "$md_inst/bin/vice.sh x64dtv %ROM%"
+        addEmulator 0 "$md_id-x64sc" "$system" "$md_inst/bin/vice.sh x64sc %ROM%"
+        addEmulator 0 "$md_id-x128" "$system" "$md_inst/bin/vice.sh x128 %ROM%"
+        addEmulator 0 "$md_id-xpet" "$system" "$md_inst/bin/vice.sh xpet %ROM%"
+        addEmulator 0 "$md_id-xplus4" "$system" "$md_inst/bin/vice.sh xplus4 %ROM%"
+        addEmulator 0 "$md_id-xvic" "$system" "$md_inst/bin/vice.sh xvic %ROM%"
+        addEmulator 0 "$md_id-xvic-cart" "$system" "$md_inst/bin/vice.sh xvic %ROM% -cartgeneric"
+        addSystem "$system"
+
+        [[ "$md_mode" == "remove" ]] && return
+
+        moveConfigDir "$home/.vice" "$md_conf_root/c64"
+        moveConfigDir "$home/.config/vice" "$md_conf_root/c64"
+
+        local config="$(mktemp)"
+        echo "[C64]" > "$config"
+        iniConfig "=" "" "$config"
+        if ! isPlatform "x11"; then
+            iniSet "Mouse" "1"
+            iniSet "VICIIDoubleSize" "0"
+            iniSet "VICIIDoubleScan" "0"
+            iniSet "VICIIFilter" "0"
+            iniSet "VICIIVideoCache" "0"
+            iniSet "SDLWindowWidth" "384"
+            iniSet "SDLWindowHeight" "272"
+            isPlatform "rpi1" && iniSet "SoundSampleRate" "22050"
+            iniSet "SidEngine" "0"
+        fi
+
+        if isPlatform "x11" || isPlatform "kms"; then
+            iniSet "VICIIFullscreen" "1"
+        fi
+
+        copyDefaultConfig "$config" "$md_conf_root/$system/sdl-vicerc"
+        rm "$config"
+
+        if ! isPlatform "x11"; then
+            # enforce a few settings to ensure a smooth upgrade from sdl1
+            iniConfig "=" "" "$md_conf_root/$system/sdl-vicerc"
+            iniDel "SDLBitdepth"
+            iniSet "VICIIDoubleSize" "0"
+            iniSet "VICIIDoubleScan" "0"
+            iniSet "SDLWindowWidth" "384"
+            iniSet "SDLWindowHeight" "272"
+        fi
+
+    done
+    
+    }

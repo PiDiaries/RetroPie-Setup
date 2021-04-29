@@ -37,7 +37,7 @@ function install_quasi88() {
 
 function configure_quasi88() {
 #    mkRomDir "pc88"
-#    moveConfigDir "$home/.quasi88" "$md_conf_root/pc88"
+    moveConfigDir "$home/.quasi88" "$md_conf_root/pc88"
     mkUserDir "$biosdir/pc88"
 
 #    addEmulator 1 "$md_id" "pc88" "$md_inst/quasi88.sdl -f6 IMAGE-NEXT1 -f7 IMAGE-NEXT2 -f8 NOWAIT -f9 ROMAJI -f10 NUMLOCK -fullscreen %ROM%"

@@ -27,10 +27,19 @@ function install_bin_coolcv() {
 }
 
 function configure_coolcv() {
-    mkRomDir "coleco"
+#    mkRomDir "coleco"
 
     moveConfigFile "$home/coolcv_mapping.txt" "$md_conf_root/coleco/coolcv_mapping.txt"
 
-    addEmulator 1 "$md_id" "coleco" "$md_inst/coolcv_pi %ROM%"
-    addSystem "coleco"
+#    addEmulator 1 "$md_id" "coleco" "$md_inst/coolcv_pi %ROM%"
+#    addSystem "coleco"
+
+    local system
+    local def
+    for system in coleco coleco-extras coleco-usa ; do
+        def=0
+        mkRomDir "$system"
+        addEmulator "$md_id" "$system" "$md_inst/coolcv_pi %ROM%"
+        addSystem "$system"
+    done
 }

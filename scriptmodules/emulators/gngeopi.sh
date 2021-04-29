@@ -11,7 +11,7 @@
 
 rp_module_id="gngeopi"
 rp_module_desc="NeoGeo emulator GnGeoPi"
-rp_module_help="ROM Extension: .zip\n\nCopy your GnGeoPi roms to $romdir/neogeo\n\nCopy the required BIOS file neogeo.zip BIOS to $romdir/neogeo"
+rp_module_help="ROM Extension: .zip\n\nCopy your GnGeoPi roms to $romdir/neogeo\n\nCopy the required BIOS file neogeo.zip BIOS to $romdir/roms/neogeo"
 rp_module_licence="NONCOM https://raw.githubusercontent.com/ymartel06/GnGeo-Pi/master/gngeo/COPYING"
 rp_module_repo="git https://github.com/ymartel06/GnGeo-Pi.git master"
 rp_module_section="opt"

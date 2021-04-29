@@ -42,7 +42,7 @@ function configure_lr-o2em() {
 
     local system
     local def
-    for system in videopac odyssey2 ; do
+    for system in videopac videopac-plus odyssey2 odyssey2-japan ; do
         def=1
         mkRomDir "$system"
         addEmulator "$def" "$md_id" "$system"  "$md_inst/o2em_libretro.so"
