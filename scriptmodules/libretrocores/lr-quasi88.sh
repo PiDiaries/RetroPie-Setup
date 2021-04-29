@@ -41,12 +41,12 @@ function configure_lr-quasi88() {
 
     local system
     local def
-    for system in pc-88 pc88-translations ; do
+    for system in pc88 pc88-translations ; do
         def=1
-        mkRomDir "pc88"
-        ensureSystemretroconfig "pc88"
-        addEmulator "$def" "$md_id" "pc88" "$md_inst/quasi88_libretro.so"
-        addSystem "pc88"
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator "$def" "$md_id" "$system" "$md_inst/quasi88_libretro.so"
+        addSystem "$system"
 
     done
 }

@@ -33,14 +33,14 @@ function install_lr-prboom() {
 }
 
 function game_data_lr-prboom() {
-    local dest="$romdir/ports/doom"
+    local dest="$romdir/doom"
     mkUserDir "$dest"
     if [[ ! -f "$dest/doom1.wad" ]]; then
         # download doom 1 shareware
         download "$__archive_url/doom1.wad" "$dest/doom1.wad"
     fi
 
-    if ! echo "e9bf428b73a04423ea7a0e9f4408f71df85ab175 $romdir/ports/doom/freedoom1.wad" | sha1sum -c &>/dev/null; then
+    if ! echo "e9bf428b73a04423ea7a0e9f4408f71df85ab175 $romdir/doom/freedoom1.wad" | sha1sum -c &>/dev/null; then
         # download (or update) freedoom
         downloadAndExtract "https://github.com/freedoom/freedoom/releases/download/v0.12.1/freedoom-0.12.1.zip" "$dest" -j -LL
     fi
@@ -51,7 +51,7 @@ function game_data_lr-prboom() {
 
 function _add_games_lr-prboom() {
     local cmd="${@}"
-    local addon="$romdir/ports/doom/addon"
+    local addon="$romdir/doom/addon"
 
     declare -A games=(
         ['doom1.wad']="Doom"
@@ -77,15 +77,15 @@ function _add_games_lr-prboom() {
     local doswad
     local wad
     for game in "${!games[@]}"; do
-        doswad="$romdir/ports/doom/${game^^}"
-        wad="$romdir/ports/doom/$game"
+        doswad="$romdir/doom/${game^^}"
+        wad="$romdir/doom/$game"
         if [[ -f "$doswad" ]]; then
             mv "$doswad" "$wad"
         fi
         if [[ -f "$wad" ]]; then
-            addPort "$md_id" "doom" "${games[$game]}" "$cmd" "$wad"
+            addEmulator "$md_id" "doom" "${games[$game]}" "$cmd" "$wad"
             if [[ "$md_id" =~ "zdoom" ]]; then
-                addPort "$md_id-addon" "doom" "${games[$game]}" "$cmd -file ${addon}/*" "$wad"
+                addEmulator "$md_id-addon" "doom" "${games[$game]}" "$cmd -file ${addon}/*" "$wad"
             fi
         fi
     done
@@ -96,15 +96,16 @@ function add_games_lr-prboom() {
 }
 
 function configure_lr-prboom() {
-    setConfigRoot "ports"
+    #setConfigRoot "ports"
 
-    mkRomDir "ports/doom"
-    ensureSystemretroconfig "ports/doom"
+    mkRomDir "doom"
+    ensureSystemretroconfig "doom"
 
     [[ "$md_mode" == "install" ]] && game_data_lr-prboom
 
     add_games_lr-prboom
 
-    cp prboom.wad "$romdir/ports/doom/"
-    chown $user:$user "$romdir/ports/doom/prboom.wad"
+    cp prboom.wad "$romdir/doom/"
+    chown $user:$user "$romdir/doom/prboom.wad"
+    addSystem "doom"
 }

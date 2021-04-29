@@ -45,7 +45,7 @@ function configure_quasi88() {
 
     local system
     local def
-    for system in pc-88 pc88-translations ; do
+    for system in pc88 pc88-translations ; do
         def=0
         mkRomDir "$system"
 

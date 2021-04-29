@@ -60,7 +60,7 @@ _EOF_
     cat >"$md_inst/extract.sh" <<_EOF_
 #!/bin/bash
 PORTDIR="$md_inst"
-BORROMDIR="$romdir/ports/$md_id"
+BORROMDIR="$romdir/$md_id"
 mkdir \$BORROMDIR/original/
 mkdir \$BORROMDIR/original/borpak/
 mv \$BORROMDIR/*.pak \$BORROMDIR/original/
@@ -86,5 +86,5 @@ _EOF_
         ln -snf "$md_conf_root/$md_id/$dir" "$md_inst/$dir"
     done
 
-    ln -snf "$romdir/ports/$md_id" "$md_inst/Paks"
+    ln -snf "$romdir/$md_id" "$md_inst/Paks"
 }

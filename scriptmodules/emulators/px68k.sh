@@ -59,7 +59,7 @@ function configure_px68k() {
 
     local system
     local def
-    for system in x68000 x68000-translation ; do
+    for system in x68000 x68000-translations ; do
         def=0
         mkRomDir "$system"
         ensureSystemretroconfig "$system"
