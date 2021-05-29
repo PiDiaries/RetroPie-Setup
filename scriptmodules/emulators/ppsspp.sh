@@ -184,7 +184,7 @@ function configure_ppsspp() {
     for system in psp psp-extras psp-japan psp-translations psp-usa ; do
         def=0
         mkRomDir "$system"
-        addEmulator "$def" "$md_id" "$system" "$md_inst/PPSSPPSDL ${extra_params[*]} %ROM%"
+        addEmulator "$def" "$md_id" "$system" "pushd $md_inst; $md_inst/PPSSPPSDL ${extra_params[*]} %ROM%; popd"
         addSystem "$system"
     done
 
