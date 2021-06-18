@@ -413,7 +413,8 @@ function rp_hasBinaries() {
 
 function rp_getBinaryUrl() {
     local id="$1"
-    local url="$__binary_url/${__mod_info[$id/type]}/$id.tar.gz"
+    local url=""
+    rp_hasBinaries && url="$__binary_url/${__mod_info[$id/type]}/$id.tar.gz"
     if fnExists "install_bin_${id}"; then
         if fnExists "__binary_url_${id}"; then
             url="$(__binary_url_${id})"
@@ -459,11 +460,11 @@ function rp_hasBinary() {
     [[ -z "$url" ]] && return 1
 
     [[ -n "${__mod_info[$id/has_binary]}" ]] && return "${__mod_info[$id/has_binary]}"
+
     local ret=1
-    if rp_hasBinaries; then
-        rp_remoteFileExists "$url"
-        ret="$?"
-    fi
+    rp_remoteFileExists "$url"
+    ret="$?"
+
     # if there wasn't an error, cache the result
     [[ "$ret" -ne 2 ]] && __mod_info[$id/has_binary]="$ret"
     return "$ret"
@@ -636,10 +637,14 @@ function rp_hasNewerModule() {
                     ;;
             esac
 
-            # if we are currently not going to update - check the date of the module code
-            # if it's newer than the install date of the module we force an update
+            # if we are currently not going to update - check the last commit date of the module code
+            # if it's newer than the install date of the module we force an update, in case patches or build
+            # related options have been changed
             if [[ "$ret" -eq 1 && "$__ignore_module_date" -ne 1 ]]; then
-                local module_date="$(date -Iseconds -r "${__mod_info[$id/path]}")"
+                local vendor="${__mod_info[$id/vendor]}"
+                local repo_dir="$scriptdir"
+                [[ "$vendor" != "RetroPie" ]] && repo_dir+="/ext/$vendor"
+                local module_date="$(git -C "$repo_dir" log -1 --format=%aI -- "${__mod_info[$id/path]}")"
                 if rp_dateIsNewer "$pkg_date" "$module_date"; then
                     ret=0
                 fi

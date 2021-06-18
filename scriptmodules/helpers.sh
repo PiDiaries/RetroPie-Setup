@@ -904,6 +904,9 @@ function setESSystem() {
 ## @param shader set a default shader to use (deprecated)
 ## @brief Creates a default retroarch.cfg for specified system in `/home/$user/RetroPie/opt/configs/$system/retroarch.cfg`.
 function ensureSystemretroconfig() {
+    # don't do any config work on module removal
+    [[ "$md_mode" == "remove" ]] && return
+
     local system="$1"
     local shader="$2"
 
@@ -1032,7 +1035,7 @@ function applyPatch() {
 function runCurl() {
     local params=("$@")
     # add any user supplied curl opts - timeouts can be overridden as curl uses the last parameters given
-    [[ -z "$__curl_opts" ]] && params+=($__curl_opts)
+    [[ -n "$__curl_opts" ]] && params+=($__curl_opts)
 
     local cmd_err
     local ret
@@ -1085,7 +1088,7 @@ function download() {
 
     local params=(--location)
     if [[ "$dest" == "-" ]]; then
-        params+=(-s)
+        params+=(--silent --no-buffer)
     else
         printMsgs "console" "Downloading $url to $dest ..."
         params+=(-o "$dest")
