@@ -931,7 +931,7 @@ function ensureSystemretroconfig() {
     fi
 
     # include the main retroarch config
-    echo -e "\n#include \"$configdir/all/retroarch.cfg\"" >>"$config"
+    echo -e "\n#include \"$configdir/all/retroarch/retroarch.cfg\"" >>"$config"
 
     copyDefaultConfig "$config" "$configdir/$system/retroarch.cfg"
     rm "$config"

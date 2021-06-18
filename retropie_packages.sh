@@ -14,7 +14,7 @@ __version="4.7.14"
 [[ "$__debug" -eq 1 ]] && set -x
 
 # main retropie install location
-rootdir="/home/RetroPie/opt"
+rootdir="/opt/retropie"
 
 # if __user is set, try and install for that user, else use SUDO_USER
 if [[ -n "$__user" ]]; then
