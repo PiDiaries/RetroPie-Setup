@@ -67,7 +67,7 @@ function configure_lr-bsnes() {
         def=0
         mkRomDir "$system"
         [[ "$system" == "sgb" ]] && def=1
-        addEmulator "$def" "$md_id" "$system" "$md_inst/bsnes_libretro.so %ROM% --subsystem sgb $biosdir/Super\ Game\ Boy\ \(World\)\ \(Rev\ 2\).sfc"
+        addEmulator "$def" "$md_id-sgb" "$system" "$md_inst/bsnes_libretro.so %ROM% --subsystem sgb $biosdir/Super\ Game\ Boy\ \(World\)\ \(Rev\ 2\).sfc"
         sed -i.bak '/^lr-bsnes =/ s/ %ROM%//2' $configdir/$system/emulators.cfg
         addSystem "$system"
         ensureSystemretroconfig "$system"
