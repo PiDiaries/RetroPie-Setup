@@ -8,6 +8,8 @@
 # See the LICENSE.md file at the top-level directory of this distribution and
 # at https://raw.githubusercontent.com/RetroPie/RetroPie-Setup/master/LICENSE.md
 #
+# Editor's note: You may notice "\c \%" escape sequences, these are needed
+# to avoid the initial % char to be swallowed by doxygen.
 
 ## @file supplementary/runcommand/runcommand.sh
 ## @brief runcommand launching script
@@ -50,19 +52,28 @@
 ## Video mode switching only happens if the monitor reports the modes as available
 ## (via tvservice) and the requested mode differs from the currently active mode
 ##
-## If `_SYS_` or `_PORT_` is provided for the second parameter, the commandline
-## will be extracted from `/home/$user/RetroPie/opt/configs/SYSTEM/emulators.cfg` with
-## `%ROM%` `%BASENAME%` being replaced with the ROM parameter. This is the
-## default mode used when launching in RetroPie so the user can switch emulator
-## used as well as other options from the runcommand GUI.
+## Additionally it is possible to pass in the current screen resolution
+## (selectable in the runcommand menu) to the emulator to be launched. The
+## respective variables are \c \%XRES% and \c \%YRES% which will be replaced
+## with the specific values as the placeholders \c \%ROM% and \c \%BASENAME%
+## (see below). For example it is possible to set \c
+## --displaysize=\%XRESx\%YRES% in emulators.cfg` if an emulator has a command
+## line switch to set the resolution.
 ##
-## If SAVE_NAME is included, that is used for loading and saving of video output
-## modes as well as rendering backend settings for the current COMMAND. If omitted,
+## If `_SYS_` or `_PORT_` is provided as the second parameter for the
+## `runcommand.sh` script, the commandline will be extracted from
+## `/opt/retropie/configs/SYSTEM/emulators.cfg` with \c \%ROM%, \c \%BASENAME%
+## being replaced with the `ROM` parameter. This is the default mode used when
+## launching in RetroPie so the user can switch emulator used as well as other
+## options from the runcommand GUI.
+##
+## If `SAVE_NAME` is included, that is used for loading and saving of video output
+## modes as well as rendering backend settings for the current `COMMAND`. If omitted,
 ## the binary name is used as a key for the loading and saving. The savename is
 ## also displayed in the video output menu (detailed below), so for our purposes
 ## we send the emulator module id, which is somewhat descriptive yet short.
 ##
-## On launch this script waits for 2 second for a key or joystick press. If
+## On launch this script waits for two seconds for a key or joystick press. If
 ## pressed the GUI is shown, where a user can set video modes, default emulators
 ## and other options (depending what is being launched).
 
@@ -75,6 +86,7 @@ VIDEO_CONF="$CONFIGDIR/all/videomodes.cfg"
 EMU_CONF="$CONFIGDIR/all/emulators.cfg"
 BACKENDS_CONF="$CONFIGDIR/all/backends.cfg"
 RETRONETPLAY_CONF="$CONFIGDIR/all/retronetplay.cfg"
+JOY2KEY="joy2key_sdl.py"
 
 # modesetting tools
 TVSERVICE="/opt/vc/bin/tvservice"
@@ -107,6 +119,8 @@ function get_config() {
         iniGet "image_delay"
         IMAGE_DELAY="$ini_value"
         [[ -z "$IMAGE_DELAY" ]] && IMAGE_DELAY=2
+        iniGet "joy2key_version"
+        [[ "$ini_value" == "0" ]] && JOY2KEY="joy2key.py"
     fi
 
     if [[ -n "$DISPLAY" ]] && $XRANDR &>/dev/null; then
@@ -127,13 +141,13 @@ function start_joy2key() {
     else
         JOY2KEY_DEV="/dev/input/jsX"
     fi
-    # if joy2key.py is installed run it with cursor keys for axis, and enter + tab for buttons 0 and 1
-    if [[ -f "$ROOTDIR/supplementary/runcommand/joy2key.py" && -n "$JOY2KEY_DEV" ]] && ! pgrep -f joy2key.py >/dev/null; then
+    # if joy2key is installed run it with cursor keys for axis, and enter + tab for buttons 0 and 1
+    if [[ -f "$ROOTDIR/supplementary/runcommand/$JOY2KEY" && -n "$JOY2KEY_DEV" ]] && ! pgrep -f "$JOY2KEY" >/dev/null; then
 
         # call joy2key.py: arguments are curses capability names or hex values starting with '0x'
         # see: http://pubs.opengroup.org/onlinepubs/7908799/xcurses/terminfo.html
-        "$ROOTDIR/supplementary/runcommand/joy2key.py" "$JOY2KEY_DEV" kcub1 kcuf1 kcuu1 kcud1 0x0a 0x09
-        JOY2KEY_PID=$(pgrep -f joy2key.py)
+        "$ROOTDIR/supplementary/runcommand/$JOY2KEY" "$JOY2KEY_DEV" kcub1 kcuf1 kcuu1 kcud1 0x0a 0x09
+        JOY2KEY_PID=$(pgrep -f "$JOY2KEY")
 
     # ensure coherency between on-screen prompts and actual button mapping functionality
     sleep 0.3
@@ -1308,6 +1322,10 @@ function launch_command() {
     return $ret
 }
 
+function log_info() {
+    echo -e "$SYSTEM\n$EMULATOR\n$ROM\n$COMMAND" >/dev/shm/runcommand.info
+}
+
 function runcommand() {
     get_config
 
@@ -1322,7 +1340,7 @@ function runcommand() {
     clear
 
     rm -f "$LOG"
-    echo -e "$SYSTEM\n$EMULATOR\n$ROM\n$COMMAND" >/dev/shm/runcommand.info
+    log_info
     user_script "runcommand-onstart.sh"
 
     set_save_vars
@@ -1349,6 +1367,9 @@ function runcommand() {
     COMMAND="${COMMAND//\%YRES\%/${MODE_CUR[3]}}"
     COMMAND="${COMMAND//\%REFRESH\%/${MODE_CUR[5]}}"
 
+    # resave info after menu and resolution replacements so runcommand.info is up to date
+    log_info
+
     [[ -n "$FB_NEW" ]] && switch_fb_res $FB_NEW
 
     config_backend "$SAVE_EMU"
@@ -1362,6 +1383,8 @@ function runcommand() {
     if [[ "$XINIT" -eq 1 && "$HAS_MODESET" != "x11" ]]; then
         build_xinitrc build
     fi
+
+    user_script "runcommand-onlaunch.sh"
 
     local ret
     launch_command
