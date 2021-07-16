@@ -14,7 +14,7 @@ __version="4.7.14"
 [[ "$__debug" -eq 1 ]] && set -x
 
 # main retropie install location
-rootdir="/opt/retropie"
+rootdir="/opt/retropie/$( dpkg --print-architecture )"
 
 # if __user is set, try and install for that user, else use SUDO_USER
 if [[ -n "$__user" ]]; then
@@ -34,6 +34,7 @@ biosdir="$datadir/BIOS"
 romdir="$datadir/roms"
 emudir="$rootdir/emulators"
 configdir="$datadir/configs/$user"
+core_inst="$datadir/retroarch_content/cores"
 
 scriptdir="$(dirname "$0")"
 scriptdir="$(cd "$scriptdir" && pwd)"

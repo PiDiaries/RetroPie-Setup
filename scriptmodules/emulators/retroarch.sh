@@ -138,9 +138,28 @@ function configure_retroarch() {
     moveConfigDir "$configdir/all/retroarch-joypads" "$configdir/all/retroarch/autoconfig"
  
     # move / symlink old assets / overlays and shader folder
+    #moveConfigDir "$md_inst/assets" "$configdir/all/retroarch/assets"
+    #moveConfigDir "$md_inst/overlays" "$configdir/all/retroarch/overlay"
+    #moveConfigDir "$md_inst/shader" "$configdir/all/retroarch/shaders"
+
     moveConfigDir "$md_inst/assets" "$datadir/retroarch_content/assets"
     moveConfigDir "$md_inst/overlays" "$datadir/retroarch_content/overlay"
     moveConfigDir "$md_inst/shader" "$datadir/retroarch_content/shaders"
+
+    moveConfigDir "$configdir/all/retroarch/assets" "$datadir/retroarch_content/assets"
+    moveConfigDir "$configdir/all/retroarch/overlays" "$datadir/retroarch_content/overlay"
+    moveConfigDir "$configdir/all/retroarch/shaders" "$datadir/retroarch_content/shaders"
+    moveConfigDir "$configdir/all/retroarch/cheats" "$datadir/retroarch_content/cheats"
+    moveConfigDir "$configdir/all/retroarch/core_backups" "$datadir/retroarch_content/core_backups"
+    moveConfigDir "$configdir/all/retroarch/cores" "$datadir/retroarch_content/cores"
+    moveConfigDir "$configdir/all/retroarch/database" "$datadir/retroarch_content/database"
+    moveConfigDir "$configdir/all/retroarch/downloads" "$datadir/retroarch_content/downloads"
+    moveConfigDir "$configdir/all/retroarch/filters" "$datadir/retroarch_content/filters"
+    moveConfigDir "$configdir/all/retroarch/layouts" "$datadir/retroarch_content/layouts"
+    moveConfigDir "$configdir/all/retroarch/overlay" "$datadir/retroarch_content/overlay"
+    moveConfigDir "$configdir/all/retroarch/thumbnails" "$datadir/retroarch_content/thumbnails"
+    moveConfigDir "$configdir/all/retroarch/playlists" "$datadir/retroarch_content/playlists"
+
 
     # install shaders by default
     update_shaders_retroarch
@@ -164,7 +183,7 @@ function configure_retroarch() {
     iniSet "video_aspect_ratio_auto" "true"
     iniSet "rgui_show_start_screen" "false"
     iniSet "rgui_browser_directory" "$romdir"
-    iniSet "content_directory" "$datadir/retroarch/"
+    iniSet "content_directory" "$datadir/retroarch_content"
     iniSet "menu_show_core_updater" "true"
 
 

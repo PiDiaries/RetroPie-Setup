@@ -43,9 +43,9 @@ function configure_lr-neocd() {
 
     local system
     local def
-    for system in neogeo neocdz ; do
+    for system in neogeo neogeo-cd ; do
         def=0
-        [[ "$system" == "neocdz" ]] && def=1
+        [[ "$system" == "neogeo-cd" ]] && def=1
         mkRomDir "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/neocd_libretro.so"
         addSystem "$system"

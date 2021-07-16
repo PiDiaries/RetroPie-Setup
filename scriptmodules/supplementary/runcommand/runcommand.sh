@@ -66,7 +66,7 @@
 ## pressed the GUI is shown, where a user can set video modes, default emulators
 ## and other options (depending what is being launched).
 
-ROOTDIR="/home/RetroPie/opt"
+ROOTDIR="/opt/retropie/$( dpkg --print-architecture )/"
 CONFIGDIR="/home/RetroPie/configs/$USER"
 LOG="/dev/shm/runcommand.log"
 

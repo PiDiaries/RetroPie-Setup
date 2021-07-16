@@ -1449,6 +1449,9 @@ function addEmulator() {
     # automatically add parameters for libretro modules
     if [[ "$id" == lr-* && "$cmd" =~ ^"$md_inst"[^[:space:]]*\.so ]]; then
         cmd="$emudir/retroarch/bin/retroarch -L $cmd --config $md_conf_root/$system/retroarch.cfg %ROM%"
+    elif [[ "$id" == lr-* && "$cmd" =~ ^"$core_inst"[^[:space:]]*\.so ]] ; then
+        cmd="$emudir/retroarch/bin/retroarch -L $cmd --config $md_conf_root/$system/retroarch.cfg %ROM%"
+        
     fi
 
     # create a config folder for the system / port

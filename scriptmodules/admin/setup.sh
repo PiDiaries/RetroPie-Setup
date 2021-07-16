@@ -445,7 +445,7 @@ function section_gui_setup() {
             U|I)
                 local mode="update"
                 [[ "$choice" == "I" ]] && mode="install"
-                dialog --defaultno --yesno "Are you sure you want to $mode all $section packages?" 22 76 2>&1 >/dev/tty || continue
+                dialog --defaultno --yesno "sure you want to $mode all $section packages?" 22 76 2>&1 >/dev/tty || continue
                 rps_logInit
                 {
                     rps_logStart
@@ -465,7 +465,7 @@ function section_gui_setup() {
                 rps_printInfo "$logfilename"
                 ;;
             X)
-                local text="Are you sure you want to remove all $section packages?"
+                local text="sure you want to remove all $section packages?"
                 [[ "$section" == "core" ]] && text+="\n\nWARNING - core packages are needed for RetroPie to function!"
                 dialog --defaultno --yesno "$text" 22 76 2>&1 >/dev/tty || continue
                 rps_logInit

@@ -6,3 +6,5 @@ to put InputAutoCfg.ini into other N64 systems
 
 
 Keymap not found in /home/iain/RetroPie/configs/iain/daphne/dapinput-forcekey.ini
+
+Move /libretrocores/lr-mame2003-plus/metadata/artwork roms/mame2003-plus

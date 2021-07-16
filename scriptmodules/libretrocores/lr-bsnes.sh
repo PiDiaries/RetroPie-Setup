@@ -58,9 +58,12 @@ function configure_lr-bsnes() {
         def=1
         mkRomDir "$system"
         addEmulator "$def" "$md_id" "$system" "$md_inst/bsnes_libretro.so"
+
         addSystem "$system"
-        ensureSystemretroconfig "$system"
+        ensureSystemretroconfig "$system"   
     done
+
+
     local system
     local def
     for system in  gb gb-extras gb-japan gb-translations gb-usa gbc gbc-extras gbc-japan gbc-translations gbc-usa sgb snes snes-extras snes-usa smwhacks ; do
@@ -72,4 +75,16 @@ function configure_lr-bsnes() {
         addSystem "$system"
         ensureSystemretroconfig "$system"
     done
+
+    if [ -e $core_inst/bsnes_hd_beta_libretro.so ] ;
+        then
+        local system
+        local def
+        for system in  sfc sfc-translations snes snes-extras snes-usa smwhacks ; do
+            def=0
+            addEmulator "$def" "$md_id-hd-beta-$( dpkg --print-architecture )" "$system" "$core_inst/bsnes_hd_beta_libretro.so"
+    done 
+    fi
+
+  
 }
