@@ -28,10 +28,19 @@ function install_bin_lr-duckstation() {
 }
 
 function configure_lr-duckstation() {
-    mkRomDir "psx"
-    ensureSystemretroconfig "psx"
+#    mkRomDir "psx"
+#    ensureSystemretroconfig "psx"
 
     # dynarec segfaults without redirecting stdin from </dev/null
-    addEmulator 0 "$md_id" "psx" "$md_inst/duckstation_libretro.so </dev/null"
-    addSystem "psx"
+#    addEmulator 0 "$md_id" "psx" "$md_inst/duckstation_libretro.so </dev/null"
+#    addSystem "psx"
+
+    local system
+    for system in psx psx-usa psx-japan psx-extras psx-translations ; do
+        mkRomDir "$system"
+        ensureSystemretroconfig "$system"
+        addEmulator 0 "$md_id" "$system" "$md_inst/duckstation_libretro.so </dev/null"
+        addSystem "$system"
+    done
+    
 }
